@@ -1,0 +1,45 @@
+{
+  "product": "juniper_workstation",
+  "tenant": "tenant_b",
+  "targets": {
+    "search": {
+      "frames": [
+        "workbench"
+      ],
+      "kind": "role",
+      "name": "Search member",
+      "role": "button"
+    },
+    "accounts": {
+      "frames": [
+        "workbench"
+      ],
+      "kind": "role",
+      "name": "Account overview",
+      "role": "button"
+    },
+    "balance": {
+      "frames": [
+        "workbench"
+      ],
+      "kind": "row_value",
+      "name": "Withdrawable funds",
+      "role": null
+    }
+  },
+  "frames": {
+    "workbench": "operations"
+  },
+  "alternates": {
+    "search": [
+      {
+        "frames": [
+          "workbench"
+        ],
+        "kind": "role",
+        "name": "Find member",
+        "role": "button"
+      }
+    ]
+  }
+}

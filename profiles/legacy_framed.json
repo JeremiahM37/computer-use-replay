@@ -1,0 +1,259 @@
+{
+  "product": "juniper_workstation",
+  "tenant": "legacy_framed",
+  "targets": {
+    "search": {
+      "frames": [
+        "legacy_panel"
+      ],
+      "kind": "role",
+      "name": "Locate record",
+      "role": "button"
+    },
+    "open_member": {
+      "frames": [
+        "legacy_panel"
+      ],
+      "kind": "role",
+      "name": "Open member",
+      "role": "button"
+    },
+    "accounts": {
+      "frames": [
+        "legacy_panel"
+      ],
+      "kind": "role",
+      "name": "Account catalogue",
+      "role": "button"
+    },
+    "savings": {
+      "frames": [
+        "legacy_panel"
+      ],
+      "kind": "role",
+      "name": "Open savings ledger",
+      "role": "button"
+    },
+    "dismiss_notice": {
+      "frames": [
+        "legacy_panel"
+      ],
+      "kind": "role",
+      "name": "Dismiss service notice",
+      "role": "button"
+    },
+    "renew_session": {
+      "frames": [
+        "legacy_panel"
+      ],
+      "kind": "role",
+      "name": "Renew session",
+      "role": "button"
+    },
+    "acknowledge": {
+      "frames": [
+        "legacy_panel"
+      ],
+      "kind": "role",
+      "name": "Acknowledge review",
+      "role": "button"
+    },
+    "finalize": {
+      "frames": [
+        "legacy_panel"
+      ],
+      "kind": "role",
+      "name": "Finalize account closure",
+      "role": "button"
+    },
+    "member_input": {
+      "kind": "row_input",
+      "name": "Member reference",
+      "frames": [
+        "legacy_panel"
+      ]
+    },
+    "member_identity": {
+      "frames": [
+        "legacy_panel"
+      ],
+      "kind": "row_value",
+      "name": "Member identifier",
+      "role": null
+    },
+    "balance": {
+      "frames": [
+        "legacy_panel"
+      ],
+      "kind": "row_value",
+      "name": "Available balance",
+      "role": null
+    },
+    "search_screen": {
+      "frames": [
+        "legacy_panel"
+      ],
+      "kind": "role",
+      "name": "Member search",
+      "role": "heading"
+    },
+    "results_screen": {
+      "frames": [
+        "legacy_panel"
+      ],
+      "kind": "role",
+      "name": "Search results",
+      "role": "heading"
+    },
+    "member_screen": {
+      "frames": [
+        "legacy_panel"
+      ],
+      "kind": "role",
+      "name": "Member summary",
+      "role": "heading"
+    },
+    "accounts_screen": {
+      "frames": [
+        "legacy_panel"
+      ],
+      "kind": "role",
+      "name": "Account directory",
+      "role": "heading"
+    },
+    "savings_screen": {
+      "frames": [
+        "legacy_panel"
+      ],
+      "kind": "role",
+      "name": "Savings account",
+      "role": "heading"
+    },
+    "not_found": {
+      "frames": [
+        "legacy_panel"
+      ],
+      "kind": "role",
+      "name": "Member not found",
+      "role": "heading"
+    },
+    "validation": {
+      "frames": [
+        "legacy_panel"
+      ],
+      "kind": "role",
+      "name": "Validation error",
+      "role": "heading"
+    },
+    "denied": {
+      "frames": [
+        "legacy_panel"
+      ],
+      "kind": "role",
+      "name": "Permission denied",
+      "role": "heading"
+    },
+    "expired": {
+      "frames": [
+        "legacy_panel"
+      ],
+      "kind": "role",
+      "name": "Session expired",
+      "role": "heading"
+    },
+    "notice": {
+      "frames": [
+        "legacy_panel"
+      ],
+      "kind": "role",
+      "name": "Service notice",
+      "role": "heading"
+    },
+    "loading": {
+      "frames": [
+        "legacy_panel"
+      ],
+      "kind": "role",
+      "name": "Loading accounts",
+      "role": "heading"
+    },
+    "unavailable": {
+      "frames": [
+        "legacy_panel"
+      ],
+      "kind": "role",
+      "name": "Service unavailable",
+      "role": "heading"
+    },
+    "review_dialog": {
+      "frames": [
+        "legacy_panel"
+      ],
+      "kind": "role",
+      "name": "Supervisor review",
+      "role": "dialog"
+    },
+    "subaccount": {
+      "frames": [
+        "legacy_panel"
+      ],
+      "kind": "role",
+      "name": "Start sub-account",
+      "role": "button"
+    },
+    "nickname_input": {
+      "kind": "row_input",
+      "name": "Account alias",
+      "frames": [
+        "legacy_panel"
+      ]
+    },
+    "review_subaccount": {
+      "frames": [
+        "legacy_panel"
+      ],
+      "kind": "role",
+      "name": "Review sub-account",
+      "role": "button"
+    },
+    "create_subaccount": {
+      "frames": [
+        "legacy_panel"
+      ],
+      "kind": "role",
+      "name": "Create sub-account",
+      "role": "button"
+    },
+    "subaccount_screen": {
+      "frames": [
+        "legacy_panel"
+      ],
+      "kind": "role",
+      "name": "Sub-account setup",
+      "role": "heading"
+    },
+    "confirmation_screen": {
+      "frames": [
+        "legacy_panel"
+      ],
+      "kind": "role",
+      "name": "Sub-account confirmation",
+      "role": "heading"
+    },
+    "review_status": {
+      "frames": [
+        "legacy_panel"
+      ],
+      "kind": "row_value",
+      "name": "Review status",
+      "role": null
+    },
+    "review_nickname": {
+      "kind": "row_value",
+      "frames": [
+        "legacy_panel"
+      ],
+      "name": "Nickname"
+    }
+  }
+}

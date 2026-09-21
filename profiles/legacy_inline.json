@@ -1,0 +1,195 @@
+{
+  "product": "juniper_workstation",
+  "tenant": "legacy_inline",
+  "targets": {
+    "search": {
+      "frames": [],
+      "kind": "role",
+      "name": "Locate record",
+      "role": "button"
+    },
+    "open_member": {
+      "frames": [],
+      "kind": "role",
+      "name": "Open member",
+      "role": "button"
+    },
+    "accounts": {
+      "frames": [],
+      "kind": "role",
+      "name": "Account catalogue",
+      "role": "button"
+    },
+    "savings": {
+      "frames": [],
+      "kind": "role",
+      "name": "Open savings ledger",
+      "role": "button"
+    },
+    "dismiss_notice": {
+      "frames": [],
+      "kind": "role",
+      "name": "Dismiss service notice",
+      "role": "button"
+    },
+    "renew_session": {
+      "frames": [],
+      "kind": "role",
+      "name": "Renew session",
+      "role": "button"
+    },
+    "acknowledge": {
+      "frames": [],
+      "kind": "role",
+      "name": "Acknowledge review",
+      "role": "button"
+    },
+    "finalize": {
+      "frames": [],
+      "kind": "role",
+      "name": "Finalize account closure",
+      "role": "button"
+    },
+    "member_input": {
+      "kind": "row_input",
+      "name": "Member reference",
+      "frames": []
+    },
+    "member_identity": {
+      "frames": [],
+      "kind": "row_value",
+      "name": "Member identifier",
+      "role": null
+    },
+    "balance": {
+      "frames": [],
+      "kind": "row_value",
+      "name": "Available balance",
+      "role": null
+    },
+    "search_screen": {
+      "frames": [],
+      "kind": "role",
+      "name": "Member search",
+      "role": "heading"
+    },
+    "results_screen": {
+      "frames": [],
+      "kind": "role",
+      "name": "Search results",
+      "role": "heading"
+    },
+    "member_screen": {
+      "frames": [],
+      "kind": "role",
+      "name": "Member summary",
+      "role": "heading"
+    },
+    "accounts_screen": {
+      "frames": [],
+      "kind": "role",
+      "name": "Account directory",
+      "role": "heading"
+    },
+    "savings_screen": {
+      "frames": [],
+      "kind": "role",
+      "name": "Savings account",
+      "role": "heading"
+    },
+    "not_found": {
+      "frames": [],
+      "kind": "role",
+      "name": "Member not found",
+      "role": "heading"
+    },
+    "validation": {
+      "frames": [],
+      "kind": "role",
+      "name": "Validation error",
+      "role": "heading"
+    },
+    "denied": {
+      "frames": [],
+      "kind": "role",
+      "name": "Permission denied",
+      "role": "heading"
+    },
+    "expired": {
+      "frames": [],
+      "kind": "role",
+      "name": "Session expired",
+      "role": "heading"
+    },
+    "notice": {
+      "frames": [],
+      "kind": "role",
+      "name": "Service notice",
+      "role": "heading"
+    },
+    "loading": {
+      "frames": [],
+      "kind": "role",
+      "name": "Loading accounts",
+      "role": "heading"
+    },
+    "unavailable": {
+      "frames": [],
+      "kind": "role",
+      "name": "Service unavailable",
+      "role": "heading"
+    },
+    "review_dialog": {
+      "frames": [],
+      "kind": "role",
+      "name": "Supervisor review",
+      "role": "dialog"
+    },
+    "subaccount": {
+      "frames": [],
+      "kind": "role",
+      "name": "Start sub-account",
+      "role": "button"
+    },
+    "nickname_input": {
+      "kind": "row_input",
+      "name": "Account alias",
+      "frames": []
+    },
+    "review_subaccount": {
+      "frames": [],
+      "kind": "role",
+      "name": "Review sub-account",
+      "role": "button"
+    },
+    "create_subaccount": {
+      "frames": [],
+      "kind": "role",
+      "name": "Create sub-account",
+      "role": "button"
+    },
+    "subaccount_screen": {
+      "frames": [],
+      "kind": "role",
+      "name": "Sub-account setup",
+      "role": "heading"
+    },
+    "confirmation_screen": {
+      "frames": [],
+      "kind": "role",
+      "name": "Sub-account confirmation",
+      "role": "heading"
+    },
+    "review_status": {
+      "frames": [],
+      "kind": "row_value",
+      "name": "Review status",
+      "role": null
+    },
+    "review_nickname": {
+      "kind": "row_value",
+      "frames": [],
+      "name": "Nickname"
+    }
+  }
+}

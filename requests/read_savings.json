@@ -1,0 +1,27 @@
+{
+  "inputs": {
+    "member_id": {
+      "kind": "identifier",
+      "pattern": "[0-9]{5}"
+    }
+  },
+  "outputs": {
+    "available_balance": {
+      "kind": "money",
+      "source": "balance"
+    }
+  },
+  "checkpoint": [
+    {
+      "target": "savings_screen",
+      "kind": "visible"
+    },
+    {
+      "target": "member_identity",
+      "kind": "equals_input",
+      "input": "member_id"
+    }
+  ],
+  "name": "read_savings",
+  "goal": "Look up the requested member and read their current available savings balance."
+}

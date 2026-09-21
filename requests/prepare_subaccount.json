@@ -1,0 +1,39 @@
+{
+  "inputs": {
+    "member_id": {
+      "kind": "identifier",
+      "pattern": "[0-9]{5}"
+    },
+    "nickname": {
+      "kind": "text",
+      "max_length": 40
+    }
+  },
+  "outputs": {
+    "review_status": {
+      "kind": "text",
+      "source": "review_status",
+      "allowed_values": [
+        "Ready for confirmation"
+      ]
+    }
+  },
+  "checkpoint": [
+    {
+      "target": "confirmation_screen",
+      "kind": "visible"
+    },
+    {
+      "target": "member_identity",
+      "kind": "equals_input",
+      "input": "member_id"
+    },
+    {
+      "target": "review_nickname",
+      "kind": "equals_input",
+      "input": "nickname"
+    }
+  ],
+  "name": "prepare_subaccount",
+  "goal": "Look up the requested member, start a new sub-account using the supplied nickname, and reach the confirmation screen. Read the review status. Stop before creating the account."
+}

@@ -1,0 +1,526 @@
+{
+  "product": "juniper_workstation",
+  "entry": "/",
+  "routes": {
+    "/": [
+      "GET"
+    ],
+    "/desk/search": [
+      "GET",
+      "POST"
+    ],
+    "/desk/ready": [
+      "GET"
+    ],
+    "/desk/member": [
+      "POST"
+    ],
+    "/desk/accounts": [
+      "POST"
+    ],
+    "/desk/savings": [
+      "POST"
+    ],
+    "/desk/renew": [
+      "POST"
+    ],
+    "/desk/continue": [
+      "POST"
+    ],
+    "/desk/ack": [
+      "POST"
+    ],
+    "/desk/subaccount": [
+      "POST"
+    ],
+    "/desk/subaccount/review": [
+      "POST"
+    ]
+  },
+  "controls": {
+    "search": {
+      "target": {
+        "frames": [
+          "workbench"
+        ],
+        "kind": "role",
+        "name": "Find member",
+        "role": "button"
+      },
+      "operations": [
+        "click"
+      ],
+      "risk": "reversible",
+      "description": "Find member"
+    },
+    "open_member": {
+      "target": {
+        "frames": [
+          "workbench"
+        ],
+        "kind": "role",
+        "name": "Open member",
+        "role": "button"
+      },
+      "operations": [
+        "click"
+      ],
+      "risk": "reversible",
+      "description": "Open member"
+    },
+    "accounts": {
+      "target": {
+        "frames": [
+          "workbench"
+        ],
+        "kind": "role",
+        "name": "View accounts",
+        "role": "button"
+      },
+      "operations": [
+        "click"
+      ],
+      "risk": "reversible",
+      "description": "View accounts"
+    },
+    "savings": {
+      "target": {
+        "frames": [
+          "workbench"
+        ],
+        "kind": "role",
+        "name": "Open savings ledger",
+        "role": "button"
+      },
+      "operations": [
+        "click"
+      ],
+      "risk": "reversible",
+      "description": "Open savings ledger"
+    },
+    "dismiss_notice": {
+      "target": {
+        "frames": [
+          "workbench"
+        ],
+        "kind": "role",
+        "name": "Dismiss service notice",
+        "role": "button"
+      },
+      "operations": [
+        "click"
+      ],
+      "risk": "reversible",
+      "description": "Dismiss service notice"
+    },
+    "renew_session": {
+      "target": {
+        "frames": [
+          "workbench"
+        ],
+        "kind": "role",
+        "name": "Renew session",
+        "role": "button"
+      },
+      "operations": [
+        "click"
+      ],
+      "risk": "human_only",
+      "description": "Renew session"
+    },
+    "acknowledge": {
+      "target": {
+        "frames": [
+          "workbench"
+        ],
+        "kind": "role",
+        "name": "Acknowledge review",
+        "role": "button"
+      },
+      "operations": [
+        "click"
+      ],
+      "risk": "human_only",
+      "description": "Acknowledge review"
+    },
+    "finalize": {
+      "target": {
+        "frames": [
+          "workbench"
+        ],
+        "kind": "role",
+        "name": "Finalize account closure",
+        "role": "button"
+      },
+      "operations": [
+        "click"
+      ],
+      "risk": "human_only",
+      "description": "Finalize account closure"
+    },
+    "member_input": {
+      "target": {
+        "frames": [
+          "workbench"
+        ],
+        "kind": "label",
+        "name": "Member identifier",
+        "role": null
+      },
+      "operations": [
+        "fill"
+      ],
+      "description": "Member identifier field",
+      "allowed_inputs": [
+        "member_id"
+      ]
+    },
+    "member_identity": {
+      "target": {
+        "frames": [
+          "workbench"
+        ],
+        "kind": "row_value",
+        "name": "Member identifier",
+        "role": null
+      },
+      "operations": [
+        "read"
+      ],
+      "description": "Member identifier"
+    },
+    "balance": {
+      "target": {
+        "frames": [
+          "workbench"
+        ],
+        "kind": "row_value",
+        "name": "Available balance",
+        "role": null
+      },
+      "operations": [
+        "read"
+      ],
+      "description": "Available balance"
+    },
+    "search_screen": {
+      "target": {
+        "frames": [
+          "workbench"
+        ],
+        "kind": "role",
+        "name": "Member search",
+        "role": "heading"
+      },
+      "description": "Member search"
+    },
+    "results_screen": {
+      "target": {
+        "frames": [
+          "workbench"
+        ],
+        "kind": "role",
+        "name": "Search results",
+        "role": "heading"
+      },
+      "description": "Search results"
+    },
+    "member_screen": {
+      "target": {
+        "frames": [
+          "workbench"
+        ],
+        "kind": "role",
+        "name": "Member summary",
+        "role": "heading"
+      },
+      "description": "Member summary"
+    },
+    "accounts_screen": {
+      "target": {
+        "frames": [
+          "workbench"
+        ],
+        "kind": "role",
+        "name": "Account directory",
+        "role": "heading"
+      },
+      "description": "Account directory"
+    },
+    "savings_screen": {
+      "target": {
+        "frames": [
+          "workbench"
+        ],
+        "kind": "role",
+        "name": "Savings ledger",
+        "role": "heading"
+      },
+      "description": "Savings ledger"
+    },
+    "not_found": {
+      "target": {
+        "frames": [
+          "workbench"
+        ],
+        "kind": "role",
+        "name": "Member not found",
+        "role": "heading"
+      },
+      "description": "Member not found"
+    },
+    "validation": {
+      "target": {
+        "frames": [
+          "workbench"
+        ],
+        "kind": "role",
+        "name": "Validation error",
+        "role": "heading"
+      },
+      "description": "Validation error"
+    },
+    "denied": {
+      "target": {
+        "frames": [
+          "workbench"
+        ],
+        "kind": "role",
+        "name": "Permission denied",
+        "role": "heading"
+      },
+      "description": "Permission denied"
+    },
+    "expired": {
+      "target": {
+        "frames": [
+          "workbench"
+        ],
+        "kind": "role",
+        "name": "Session expired",
+        "role": "heading"
+      },
+      "description": "Session expired"
+    },
+    "notice": {
+      "target": {
+        "frames": [
+          "workbench"
+        ],
+        "kind": "role",
+        "name": "Service notice",
+        "role": "heading"
+      },
+      "description": "Service notice"
+    },
+    "loading": {
+      "target": {
+        "frames": [
+          "workbench"
+        ],
+        "kind": "role",
+        "name": "Loading accounts",
+        "role": "heading"
+      },
+      "description": "Loading accounts"
+    },
+    "unavailable": {
+      "target": {
+        "frames": [
+          "workbench"
+        ],
+        "kind": "role",
+        "name": "Service unavailable",
+        "role": "heading"
+      },
+      "description": "Service unavailable"
+    },
+    "review_dialog": {
+      "target": {
+        "frames": [
+          "workbench"
+        ],
+        "kind": "role",
+        "name": "Supervisor review",
+        "role": "dialog"
+      },
+      "description": "Supervisor review dialog"
+    },
+    "subaccount": {
+      "target": {
+        "frames": [
+          "workbench"
+        ],
+        "kind": "role",
+        "name": "Start sub-account",
+        "role": "button"
+      },
+      "operations": [
+        "click"
+      ],
+      "risk": "reversible",
+      "description": "Start sub-account"
+    },
+    "nickname_input": {
+      "target": {
+        "frames": [
+          "workbench"
+        ],
+        "kind": "label",
+        "name": "Sub-account nickname",
+        "role": null
+      },
+      "operations": [
+        "fill"
+      ],
+      "risk": "reversible",
+      "description": "Sub-account nickname",
+      "allowed_inputs": [
+        "nickname"
+      ]
+    },
+    "review_subaccount": {
+      "target": {
+        "frames": [
+          "workbench"
+        ],
+        "kind": "role",
+        "name": "Review sub-account",
+        "role": "button"
+      },
+      "operations": [
+        "click"
+      ],
+      "risk": "reversible",
+      "description": "Review sub-account"
+    },
+    "create_subaccount": {
+      "target": {
+        "frames": [
+          "workbench"
+        ],
+        "kind": "role",
+        "name": "Create sub-account",
+        "role": "button"
+      },
+      "operations": [
+        "click"
+      ],
+      "risk": "human_only",
+      "description": "Create sub-account"
+    },
+    "subaccount_screen": {
+      "target": {
+        "frames": [
+          "workbench"
+        ],
+        "kind": "role",
+        "name": "Sub-account setup",
+        "role": "heading"
+      },
+      "operations": [],
+      "risk": "reversible",
+      "description": "Sub-account setup"
+    },
+    "confirmation_screen": {
+      "target": {
+        "frames": [
+          "workbench"
+        ],
+        "kind": "role",
+        "name": "Sub-account confirmation",
+        "role": "heading"
+      },
+      "operations": [],
+      "risk": "reversible",
+      "description": "Sub-account confirmation"
+    },
+    "review_status": {
+      "target": {
+        "frames": [
+          "workbench"
+        ],
+        "kind": "row_value",
+        "name": "Review status",
+        "role": null
+      },
+      "operations": [
+        "read"
+      ],
+      "risk": "reversible",
+      "description": "Review status",
+      "allowed_output_values": [
+        "Ready for confirmation"
+      ]
+    },
+    "review_nickname": {
+      "target": {
+        "kind": "row_value",
+        "frames": [
+          "workbench"
+        ],
+        "name": "Nickname"
+      },
+      "description": "Nickname displayed on the sub-account review"
+    }
+  },
+  "states": {
+    "member_not_found": {
+      "target": "not_found",
+      "kind": "business"
+    },
+    "validation_error": {
+      "target": "validation",
+      "kind": "business"
+    },
+    "permission_denied": {
+      "target": "denied",
+      "kind": "business"
+    },
+    "session_expired": {
+      "target": "expired",
+      "kind": "human",
+      "manual_recovery": "renew_session"
+    },
+    "supervisor_review": {
+      "target": "review_dialog",
+      "kind": "human",
+      "manual_recovery": "acknowledge"
+    },
+    "service_notice": {
+      "target": "notice",
+      "kind": "interstitial",
+      "recovery": "dismiss_notice"
+    },
+    "loading_accounts": {
+      "target": "loading",
+      "kind": "transient"
+    },
+    "service_unavailable": {
+      "target": "unavailable",
+      "kind": "failure"
+    }
+  },
+  "input_types": {
+    "member_id": {
+      "kind": "identifier",
+      "pattern": "[0-9]{5}"
+    },
+    "nickname": {
+      "kind": "text",
+      "max_length": 40
+    }
+  },
+  "invariants": [
+    {
+      "target": "member_identity",
+      "kind": "equals_input",
+      "input": "member_id"
+    },
+    {
+      "target": "review_nickname",
+      "kind": "equals_input",
+      "input": "nickname"
+    }
+  ]
+}
