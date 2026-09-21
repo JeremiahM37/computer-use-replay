@@ -1,0 +1,72 @@
+{"event": "started", "model": "gemma4:e4b", "llm_calls": 0, "sequence": 1, "time": "2026-09-15T10:37:24.170322+00:00"}
+{"event": "observation", "step": 0, "sequence": 2, "time": "2026-09-15T10:37:24.919869+00:00"}
+{"event": "model_response", "provider": "ollama", "model": "gemma4:e4b", "llm_calls": 1, "elapsed_ms": 9455, "prompt_tokens": 2347, "output_tokens": 21, "response_sha256": "cb1a0b2139a46c9dd84e6894f7b27341ab2aae7b43f40e5457e774ed0c860653", "sequence": 3, "time": "2026-09-15T10:37:34.416515+00:00"}
+{"event": "decision", "step": 0, "target": "username", "parameter": "username", "op": "fill", "code": "enter_parameter", "sequence": 4, "time": "2026-09-15T10:37:34.417172+00:00"}
+{"event": "action_started", "target": "username", "parameter": "username", "op": "fill", "sequence": 5, "time": "2026-09-15T10:37:34.552027+00:00"}
+{"event": "action_completed", "target": "username", "op": "fill", "sequence": 6, "time": "2026-09-15T10:37:34.590990+00:00"}
+{"event": "observation", "step": 1, "sequence": 7, "time": "2026-09-15T10:37:34.820175+00:00"}
+{"event": "model_response", "provider": "ollama", "model": "gemma4:e4b", "llm_calls": 2, "elapsed_ms": 4177, "prompt_tokens": 2381, "output_tokens": 21, "response_sha256": "032eebb07b33f08527d20023b0805a6237795aeb9f5fd9d60a39d98cf76018b6", "sequence": 8, "time": "2026-09-15T10:37:39.057112+00:00"}
+{"event": "decision", "step": 1, "target": "password", "parameter": "password", "op": "fill", "code": "enter_parameter", "sequence": 9, "time": "2026-09-15T10:37:39.057478+00:00"}
+{"event": "action_started", "target": "password", "parameter": "password", "op": "fill", "sequence": 10, "time": "2026-09-15T10:37:39.175432+00:00"}
+{"event": "action_completed", "target": "password", "op": "fill", "sequence": 11, "time": "2026-09-15T10:37:39.204347+00:00"}
+{"event": "observation", "step": 2, "sequence": 12, "time": "2026-09-15T10:37:39.417178+00:00"}
+{"event": "model_response", "provider": "ollama", "model": "gemma4:e4b", "llm_calls": 3, "elapsed_ms": 3356, "prompt_tokens": 2407, "output_tokens": 15, "response_sha256": "5f58edaf927401ee80d33983e54ac14e270faa81f42b8fb3bbd75d8751cd2590", "sequence": 13, "time": "2026-09-15T10:37:42.848649+00:00"}
+{"event": "decision", "step": 2, "target": "login", "op": "click", "code": "follow_navigation", "sequence": 14, "time": "2026-09-15T10:37:42.849057+00:00"}
+{"event": "action_started", "target": "login", "op": "click", "sequence": 15, "time": "2026-09-15T10:37:43.012588+00:00"}
+{"event": "action_completed", "target": "login", "op": "click", "sequence": 16, "time": "2026-09-15T10:37:43.060513+00:00"}
+{"event": "checkpoint_observed", "step": 2, "target": "unsaved", "sequence": 17, "time": "2026-09-15T10:37:45.440707+00:00"}
+{"event": "recovery", "step": 3, "target": "close_onboarding", "code": "onboarding_open", "sequence": 18, "time": "2026-09-15T10:37:45.624514+00:00"}
+{"event": "action_started", "target": "close_onboarding", "op": "click", "sequence": 19, "time": "2026-09-15T10:37:45.649492+00:00"}
+{"event": "action_completed", "target": "close_onboarding", "op": "click", "sequence": 20, "time": "2026-09-15T10:37:45.687767+00:00"}
+{"event": "observation", "step": 3, "sequence": 21, "time": "2026-09-15T10:37:45.907521+00:00"}
+{"event": "model_response", "provider": "ollama", "model": "gemma4:e4b", "llm_calls": 4, "elapsed_ms": 4899, "prompt_tokens": 2909, "output_tokens": 23, "response_sha256": "d9008724018354e94799c5bd47555886f00d584c6d93794646c5725ce3087456", "sequence": 22, "time": "2026-09-15T10:37:50.899480+00:00"}
+{"event": "decision", "step": 3, "target": "customer", "parameter": "customer_id", "op": "fill", "code": "enter_parameter", "sequence": 23, "time": "2026-09-15T10:37:50.899925+00:00"}
+{"event": "action_started", "target": "customer", "parameter": "customer_id", "op": "fill", "sequence": 24, "time": "2026-09-15T10:37:51.085974+00:00"}
+{"event": "action_completed", "target": "customer", "op": "fill", "sequence": 25, "time": "2026-09-15T10:37:51.128971+00:00"}
+{"event": "observation", "step": 4, "sequence": 26, "time": "2026-09-15T10:37:51.912337+00:00"}
+{"event": "model_response", "provider": "ollama", "model": "gemma4:e4b", "llm_calls": 5, "elapsed_ms": 3642, "prompt_tokens": 3098, "output_tokens": 25, "response_sha256": "d9c2e516ed5906ab80abdffaf575cdc34cd2507a4afdf47d9ce66b319d53f46e", "sequence": 27, "time": "2026-09-15T10:37:55.666471+00:00"}
+{"event": "decision", "step": 4, "target": "order_type", "parameter": "order_type", "op": "fill", "code": "enter_parameter", "sequence": 28, "time": "2026-09-15T10:37:55.666951+00:00"}
+{"event": "action_started", "target": "order_type", "parameter": "order_type", "op": "fill", "sequence": 29, "time": "2026-09-15T10:37:55.824661+00:00"}
+{"event": "action_completed", "target": "order_type", "op": "fill", "sequence": 30, "time": "2026-09-15T10:37:55.847288+00:00"}
+{"event": "observation", "step": 5, "sequence": 31, "time": "2026-09-15T10:37:55.953426+00:00"}
+{"event": "model_response", "provider": "ollama", "model": "gemma4:e4b", "llm_calls": 6, "elapsed_ms": 6335, "prompt_tokens": 3077, "output_tokens": 17, "response_sha256": "e70e3a9371af872375dce98b00a6df6120237dc41b72430f8127fa9e01f5d819", "sequence": 32, "time": "2026-09-15T10:38:02.333120+00:00"}
+{"event": "decision", "step": 5, "target": "customer_option", "op": "click", "code": "follow_navigation", "sequence": 33, "time": "2026-09-15T10:38:02.333512+00:00"}
+{"event": "action_started", "target": "customer_option", "op": "click", "sequence": 34, "time": "2026-09-15T10:38:02.623505+00:00"}
+{"event": "action_completed", "target": "customer_option", "op": "click", "sequence": 35, "time": "2026-09-15T10:38:02.666123+00:00"}
+{"event": "checkpoint_observed", "step": 5, "target": "customer_name", "sequence": 36, "time": "2026-09-15T10:38:03.236807+00:00"}
+{"event": "observation", "step": 6, "sequence": 37, "time": "2026-09-15T10:38:03.392851+00:00"}
+{"event": "model_response", "provider": "ollama", "model": "gemma4:e4b", "llm_calls": 7, "elapsed_ms": 6868, "prompt_tokens": 3241, "output_tokens": 17, "response_sha256": "39da52bcef40a2ad2f88e2bad4e2a0f157a1c2933dc264ef61e671f4ba2d7cfc", "sequence": 38, "time": "2026-09-15T10:38:10.409004+00:00"}
+{"event": "decision", "step": 6, "target": "edit_item", "op": "click", "code": "follow_navigation", "sequence": 39, "time": "2026-09-15T10:38:10.409345+00:00"}
+{"event": "action_started", "target": "edit_item", "op": "click", "sequence": 40, "time": "2026-09-15T10:38:10.726369+00:00"}
+{"event": "action_completed", "target": "edit_item", "op": "click", "sequence": 41, "time": "2026-09-15T10:38:10.859648+00:00"}
+{"event": "checkpoint_observed", "step": 6, "target": "row_editor", "sequence": 42, "time": "2026-09-15T10:38:11.052145+00:00"}
+{"event": "observation", "step": 7, "sequence": 43, "time": "2026-09-15T10:38:11.229040+00:00"}
+{"event": "model_response", "provider": "ollama", "model": "gemma4:e4b", "llm_calls": 8, "elapsed_ms": 8162, "prompt_tokens": 3514, "output_tokens": 23, "response_sha256": "59e54a9896778adb9efaee6afce0e082ec2a56a9a606408df7740d51df662d5a", "sequence": 44, "time": "2026-09-15T10:38:19.571913+00:00"}
+{"event": "decision", "step": 7, "target": "item", "parameter": "item_id", "op": "fill", "code": "enter_parameter", "sequence": 45, "time": "2026-09-15T10:38:19.572268+00:00"}
+{"event": "action_started", "target": "item", "parameter": "item_id", "op": "fill", "sequence": 46, "time": "2026-09-15T10:38:19.782926+00:00"}
+{"event": "action_completed", "target": "item", "op": "fill", "sequence": 47, "time": "2026-09-15T10:38:19.820629+00:00"}
+{"event": "observation", "step": 8, "sequence": 48, "time": "2026-09-15T10:38:20.181313+00:00"}
+{"event": "model_response", "provider": "ollama", "model": "gemma4:e4b", "llm_calls": 9, "elapsed_ms": 8254, "prompt_tokens": 3605, "output_tokens": 17, "response_sha256": "29cecba9e94ab55ab3b5dc0707bb5d4bc642e1d79602c2a3d7259ecca96e9e2c", "sequence": 49, "time": "2026-09-15T10:38:28.651654+00:00"}
+{"event": "decision", "step": 8, "target": "item_option", "op": "click", "code": "follow_navigation", "sequence": 50, "time": "2026-09-15T10:38:28.652030+00:00"}
+{"event": "action_started", "target": "item_option", "op": "click", "sequence": 51, "time": "2026-09-15T10:38:28.987587+00:00"}
+{"event": "action_completed", "target": "item_option", "op": "click", "sequence": 52, "time": "2026-09-15T10:38:29.036103+00:00"}
+{"event": "checkpoint_observed", "step": 8, "target": "priced_quote", "sequence": 53, "time": "2026-09-15T10:38:29.345754+00:00"}
+{"event": "observation", "step": 9, "sequence": 54, "time": "2026-09-15T10:38:29.522937+00:00"}
+{"event": "model_response", "provider": "ollama", "model": "gemma4:e4b", "llm_calls": 10, "elapsed_ms": 9566, "prompt_tokens": 3970, "output_tokens": 21, "response_sha256": "dfd2bf91b1e00dd4f8fa552529a58f1095e8337833ac64dc07d4b69e1f9f6b5f", "sequence": 55, "time": "2026-09-15T10:38:39.276149+00:00"}
+{"event": "decision", "step": 9, "target": "quantity", "parameter": "quantity", "op": "fill", "code": "enter_parameter", "sequence": 56, "time": "2026-09-15T10:38:39.276630+00:00"}
+{"event": "action_started", "target": "quantity", "parameter": "quantity", "op": "fill", "sequence": 57, "time": "2026-09-15T10:38:39.510473+00:00"}
+{"event": "action_completed", "target": "quantity", "op": "fill", "sequence": 58, "time": "2026-09-15T10:38:39.554873+00:00"}
+{"event": "observation", "step": 10, "sequence": 59, "time": "2026-09-15T10:38:39.919082+00:00"}
+{"event": "model_response", "provider": "ollama", "model": "gemma4:e4b", "llm_calls": 11, "elapsed_ms": 9488, "prompt_tokens": 3949, "output_tokens": 17, "response_sha256": "4d4a44b539f580e13804b0520712fcaf0f5a2bf88ea66cf5798a6dafc25a23d7", "sequence": 60, "time": "2026-09-15T10:38:49.626682+00:00"}
+{"event": "decision", "step": 10, "target": "close_editor", "op": "click", "code": "follow_navigation", "sequence": 61, "time": "2026-09-15T10:38:49.627054+00:00"}
+{"event": "action_started", "target": "close_editor", "op": "click", "sequence": 62, "time": "2026-09-15T10:38:49.966150+00:00"}
+{"event": "action_completed", "target": "close_editor", "op": "click", "sequence": 63, "time": "2026-09-15T10:38:50.030383+00:00"}
+{"event": "checkpoint_observed", "step": 10, "target": "total_quantity", "sequence": 64, "time": "2026-09-15T10:38:50.431888+00:00"}
+{"event": "observation", "step": 11, "sequence": 65, "time": "2026-09-15T10:38:50.607951+00:00"}
+{"event": "model_response", "provider": "ollama", "model": "gemma4:e4b", "llm_calls": 12, "elapsed_ms": 9135, "prompt_tokens": 3578, "output_tokens": 25, "response_sha256": "f4397437b0eb39780d35e833525f5fbeef9a6cf3753ccb6913dc58784f1602a1", "sequence": 66, "time": "2026-09-15T10:38:59.910780+00:00"}
+{"event": "decision", "step": 11, "target": "grand_total", "op": "read", "code": "extract_output", "sequence": 67, "time": "2026-09-15T10:38:59.911163+00:00"}
+{"event": "action_started", "target": "grand_total", "op": "read", "sequence": 68, "time": "2026-09-15T10:39:01.513440+00:00"}
+{"event": "action_completed", "target": "grand_total", "op": "read", "sequence": 69, "time": "2026-09-15T10:39:01.526364+00:00"}
+{"event": "completion_verified", "step": 11, "sequence": 70, "time": "2026-09-15T10:39:01.825101+00:00"}
+{"event": "artifact_saved", "llm_calls": 12, "artifact_sha256": "768e0c11801f0097a9d961c063d38491648678b97952d7dabd2c55bc3a1b835c", "sequence": 71, "time": "2026-09-15T10:39:01.836358+00:00"}
+{"event": "success", "llm_calls": 12, "sequence": 72, "time": "2026-09-15T10:39:01.836506+00:00"}

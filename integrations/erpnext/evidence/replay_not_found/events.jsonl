@@ -1,0 +1,13 @@
+{"event": "started", "capability": "prepare_quotation", "llm_calls": 0, "artifact_sha256": "c4b1c9d9a12a8ee5397b9df9f49434fd1cf7a86d1cadcab04d84040bc6e672ef", "sequence": 1, "time": "2026-09-21T02:43:31.816451+00:00"}
+{"event": "action_started", "target": "username", "parameter": "username", "op": "fill", "sequence": 2, "time": "2026-09-21T02:43:32.034732+00:00"}
+{"event": "action_completed", "target": "username", "op": "fill", "sequence": 3, "time": "2026-09-21T02:43:32.050285+00:00"}
+{"event": "action_started", "target": "password", "parameter": "password", "op": "fill", "sequence": 4, "time": "2026-09-21T02:43:32.122889+00:00"}
+{"event": "action_completed", "target": "password", "op": "fill", "sequence": 5, "time": "2026-09-21T02:43:32.136509+00:00"}
+{"event": "action_started", "target": "login", "op": "click", "sequence": 6, "time": "2026-09-21T02:43:32.209442+00:00"}
+{"event": "action_completed", "target": "login", "op": "click", "sequence": 7, "time": "2026-09-21T02:43:32.226631+00:00"}
+{"event": "recovery", "step": 2, "target": "close_onboarding", "code": "onboarding_open", "sequence": 8, "time": "2026-09-21T02:43:33.064550+00:00"}
+{"event": "action_started", "target": "close_onboarding", "op": "click", "sequence": 9, "time": "2026-09-21T02:43:33.073558+00:00"}
+{"event": "action_completed", "target": "close_onboarding", "op": "click", "sequence": 10, "time": "2026-09-21T02:43:33.091369+00:00"}
+{"event": "action_started", "target": "customer", "parameter": "customer_id", "op": "fill", "sequence": 11, "time": "2026-09-21T02:43:33.256742+00:00"}
+{"event": "action_completed", "target": "customer", "op": "fill", "sequence": 12, "time": "2026-09-21T02:43:33.273182+00:00"}
+{"event": "business_outcome", "code": "customer_not_found", "llm_calls": 0, "sequence": 13, "time": "2026-09-21T02:43:33.864563+00:00"}

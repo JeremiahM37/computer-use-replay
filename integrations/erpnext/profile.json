@@ -1,0 +1,952 @@
+{
+  "version": "1.0",
+  "product": "erpnext",
+  "entry": "/login?redirect-to=/desk/quotation/new-quotation",
+  "routes": {
+    "/login": [
+      "GET"
+    ]
+  },
+  "request_rules": [
+    {
+      "path": "/api/method/frappe\\.client\\.validate_link_and_fetch",
+      "methods": [
+        "GET"
+      ],
+      "query_keys": [
+        "docname",
+        "doctype",
+        "fields_to_fetch",
+        "filters",
+        "ignore_user_permissions",
+        "link_fieldname",
+        "page_length",
+        "query",
+        "reference_doctype",
+        "txt"
+      ],
+      "body_keys": [
+        "filters",
+        "ignore_user_permissions",
+        "link_fieldname",
+        "page_length",
+        "query",
+        "reference_doctype",
+        "txt"
+      ],
+      "body_equals": {},
+      "query_values": {
+        "query": [
+          "erpnext.controllers.queries.item_query"
+        ]
+      },
+      "body_values": {
+        "query": [
+          "erpnext.controllers.queries.item_query"
+        ]
+      },
+      "discard": false
+    },
+    {
+      "path": "/api/method/frappe\\.desk\\.desktop\\.get_onboarding_data",
+      "methods": [
+        "GET"
+      ],
+      "query_keys": [
+        "_",
+        "module"
+      ],
+      "body_keys": [],
+      "body_equals": {},
+      "discard": false
+    },
+    {
+      "path": "/api/method/frappe\\.desk\\.doctype\\.event\\.event\\.get_events",
+      "methods": [
+        "GET"
+      ],
+      "query_keys": [
+        "end",
+        "start"
+      ],
+      "body_keys": [],
+      "body_equals": {},
+      "discard": false
+    },
+    {
+      "path": "/api/method/frappe\\.desk\\.doctype\\.notification_log\\.notification_log\\.get_notification_logs",
+      "methods": [
+        "GET"
+      ],
+      "query_keys": [
+        "limit"
+      ],
+      "body_keys": [],
+      "body_equals": {},
+      "discard": false
+    },
+    {
+      "path": "/api/method/frappe\\.desk\\.form\\.load\\.getdoc",
+      "methods": [
+        "GET"
+      ],
+      "query_keys": [
+        "_",
+        "doctype",
+        "name"
+      ],
+      "body_keys": [],
+      "body_equals": {},
+      "discard": false
+    },
+    {
+      "path": "/api/method/frappe\\.desk\\.form\\.load\\.getdoctype",
+      "methods": [
+        "GET"
+      ],
+      "query_keys": [
+        "_",
+        "doctype",
+        "with_parent"
+      ],
+      "body_keys": [],
+      "body_equals": {},
+      "discard": false
+    },
+    {
+      "path": "/api/method/frappe\\.desk\\.search\\.search_link",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "query_keys": [
+        "doctype",
+        "filters",
+        "ignore_user_permissions",
+        "link_fieldname",
+        "page_length",
+        "query",
+        "reference_doctype",
+        "txt"
+      ],
+      "body_keys": [
+        "doctype",
+        "filters",
+        "ignore_user_permissions",
+        "link_fieldname",
+        "page_length",
+        "query",
+        "reference_doctype",
+        "txt"
+      ],
+      "body_equals": {},
+      "query_values": {
+        "query": [
+          "erpnext.controllers.queries.item_query"
+        ]
+      },
+      "body_values": {
+        "query": [
+          "erpnext.controllers.queries.item_query"
+        ]
+      },
+      "discard": false
+    },
+    {
+      "path": "/api/method/frappe\\.desk\\.search\\.search_widget",
+      "methods": [
+        "GET"
+      ],
+      "query_keys": [
+        "_",
+        "doctype",
+        "filters",
+        "page_length",
+        "query",
+        "searchfield",
+        "start",
+        "txt"
+      ],
+      "body_keys": [],
+      "body_equals": {},
+      "discard": false
+    },
+    {
+      "path": "/desk",
+      "methods": [
+        "GET"
+      ],
+      "query_keys": [],
+      "body_keys": [],
+      "body_equals": {},
+      "discard": false
+    },
+    {
+      "path": "/desk/quotation/new\\-quotation",
+      "methods": [
+        "GET"
+      ],
+      "query_keys": [],
+      "body_keys": [],
+      "body_equals": {},
+      "discard": false
+    },
+    {
+      "path": "/desk/quotation/undefined",
+      "methods": [
+        "GET"
+      ],
+      "query_keys": [],
+      "body_keys": [],
+      "body_equals": {},
+      "discard": true
+    },
+    {
+      "path": "/login",
+      "methods": [
+        "GET"
+      ],
+      "query_keys": [],
+      "body_keys": [],
+      "body_equals": {},
+      "discard": false
+    },
+    {
+      "path": "/socket\\.io/",
+      "methods": [
+        "GET"
+      ],
+      "query_keys": [
+        "EIO",
+        "t",
+        "transport"
+      ],
+      "body_keys": [],
+      "body_equals": {},
+      "discard": true
+    },
+    {
+      "path": "/undefined",
+      "methods": [
+        "GET"
+      ],
+      "query_keys": [],
+      "body_keys": [],
+      "body_equals": {},
+      "discard": true
+    },
+    {
+      "path": "/website_script\\.js",
+      "methods": [
+        "GET"
+      ],
+      "query_keys": [],
+      "body_keys": [],
+      "body_equals": {},
+      "discard": false
+    },
+    {
+      "path": "/api/method/erpnext\\.accounts\\.doctype\\.accounting_dimension\\.accounting_dimension\\.get_dimensions",
+      "methods": [
+        "POST"
+      ],
+      "query_keys": [],
+      "body_keys": [
+        "with_cost_center_and_project"
+      ],
+      "body_equals": {},
+      "discard": false
+    },
+    {
+      "path": "/api/method/erpnext\\.accounts\\.doctype\\.pricing_rule\\.pricing_rule\\.apply_pricing_rule",
+      "methods": [
+        "POST"
+      ],
+      "query_keys": [],
+      "body_keys": [
+        "args",
+        "doc"
+      ],
+      "body_equals": {},
+      "discard": false
+    },
+    {
+      "path": "/api/method/erpnext\\.accounts\\.party\\.get_party_details",
+      "methods": [
+        "POST"
+      ],
+      "query_keys": [],
+      "body_keys": [
+        "company",
+        "currency",
+        "doctype",
+        "fetch_payment_terms_template",
+        "party",
+        "party_type",
+        "posting_date",
+        "price_list"
+      ],
+      "body_equals": {},
+      "discard": false
+    },
+    {
+      "path": "/api/method/erpnext\\.controllers\\.accounts_controller\\.get_default_taxes_and_charges",
+      "methods": [
+        "POST"
+      ],
+      "query_keys": [],
+      "body_keys": [
+        "company",
+        "master_doctype",
+        "tax_template"
+      ],
+      "body_equals": {},
+      "discard": false
+    },
+    {
+      "path": "/api/method/erpnext\\.controllers\\.accounts_controller\\.get_taxes_and_charges",
+      "methods": [
+        "POST"
+      ],
+      "query_keys": [],
+      "body_keys": [
+        "master_doctype",
+        "master_name"
+      ],
+      "body_equals": {},
+      "discard": false
+    },
+    {
+      "path": "/api/method/erpnext\\.controllers\\.taxes_and_totals\\.get_round_off_applicable_accounts",
+      "methods": [
+        "POST"
+      ],
+      "query_keys": [],
+      "body_keys": [
+        "account_list",
+        "company",
+        "doc"
+      ],
+      "body_equals": {},
+      "discard": false
+    },
+    {
+      "path": "/api/method/erpnext\\.controllers\\.taxes_and_totals\\.get_rounding_tax_settings",
+      "methods": [
+        "POST"
+      ],
+      "query_keys": [],
+      "body_keys": [],
+      "body_equals": {},
+      "discard": false
+    },
+    {
+      "path": "/api/method/erpnext\\.setup\\.doctype\\.company\\.company\\.get_default_company_address",
+      "methods": [
+        "POST"
+      ],
+      "query_keys": [],
+      "body_keys": [
+        "existing_address",
+        "name"
+      ],
+      "body_equals": {},
+      "discard": false
+    },
+    {
+      "path": "/api/method/erpnext\\.stock\\.doctype\\.stock_settings\\.stock_settings\\.get_enable_stock_uom_editing",
+      "methods": [
+        "POST"
+      ],
+      "query_keys": [],
+      "body_keys": [],
+      "body_equals": {},
+      "discard": false
+    },
+    {
+      "path": "/api/method/erpnext\\.stock\\.get_item_details\\.apply_price_list",
+      "methods": [
+        "POST"
+      ],
+      "query_keys": [],
+      "body_keys": [
+        "ctx",
+        "doc"
+      ],
+      "body_equals": {},
+      "discard": false
+    },
+    {
+      "path": "/api/method/frappe\\.core\\.doctype\\.session_default_settings\\.session_default_settings\\.get_session_default_values",
+      "methods": [
+        "POST"
+      ],
+      "query_keys": [],
+      "body_keys": [],
+      "body_equals": {},
+      "discard": false
+    },
+    {
+      "path": "/api/method/frappe\\.desk\\.desk_page\\.getpage",
+      "methods": [
+        "POST"
+      ],
+      "query_keys": [],
+      "body_keys": [
+        "name"
+      ],
+      "body_equals": {},
+      "discard": false
+    },
+    {
+      "path": "/api/method/frappe\\.desk\\.search\\.get_link_title",
+      "methods": [
+        "POST"
+      ],
+      "query_keys": [],
+      "body_keys": [
+        "docname",
+        "doctype"
+      ],
+      "body_equals": {},
+      "discard": false
+    },
+    {
+      "path": "/api/method/login",
+      "methods": [
+        "POST"
+      ],
+      "query_keys": [],
+      "body_keys": [
+        "cmd",
+        "pwd",
+        "usr",
+        "redirect_to"
+      ],
+      "body_equals": {
+        "cmd": "login"
+      },
+      "body_values": {
+        "redirect_to": [
+          "/desk/quotation/new-quotation"
+        ]
+      },
+      "discard": false
+    },
+    {
+      "path": "/api/method/run_doc_method",
+      "methods": [
+        "POST"
+      ],
+      "query_keys": [],
+      "body_keys": [
+        "args",
+        "docs",
+        "item_idx",
+        "method",
+        "reset_item_details"
+      ],
+      "body_equals": {
+        "method": "process_item_selection",
+        "docs.doctype": "Quotation",
+        "docs.__islocal": 1,
+        "docs.docstatus": 0
+      },
+      "discard": false
+    },
+    {
+      "path": "/assets/(frappe|erpnext)/[A-Za-z0-9_./-]+",
+      "methods": [
+        "GET"
+      ],
+      "query_keys": [
+        "v"
+      ],
+      "body_keys": [],
+      "body_equals": {},
+      "discard": false
+    },
+    {
+      "path": "/login",
+      "methods": [
+        "GET"
+      ],
+      "query_keys": [
+        "redirect-to"
+      ],
+      "body_keys": [],
+      "body_equals": {},
+      "query_values": {
+        "redirect-to": [
+          "/desk/quotation/new-quotation"
+        ]
+      },
+      "discard": false
+    },
+    {
+      "path": "/api/method/frappe\\.utils\\.change_log\\.show_update_popup",
+      "methods": [
+        "POST"
+      ],
+      "query_keys": [],
+      "body_keys": [],
+      "body_equals": {},
+      "discard": true
+    }
+  ],
+  "controls": {
+    "page": {
+      "target": {
+        "frames": [],
+        "kind": "css",
+        "name": "body",
+        "role": null
+      },
+      "operations": [],
+      "risk": "reversible",
+      "description": "Application page",
+      "allowed_inputs": [],
+      "allowed_output_values": []
+    },
+    "username": {
+      "target": {
+        "frames": [],
+        "kind": "css",
+        "name": "#login_email",
+        "role": null
+      },
+      "operations": [
+        "fill"
+      ],
+      "risk": "reversible",
+      "description": "Login username",
+      "allowed_inputs": [
+        "username"
+      ],
+      "allowed_output_values": []
+    },
+    "password": {
+      "target": {
+        "frames": [],
+        "kind": "css",
+        "name": "#login_password",
+        "role": null
+      },
+      "operations": [
+        "fill"
+      ],
+      "risk": "reversible",
+      "description": "Login password",
+      "allowed_inputs": [
+        "password"
+      ],
+      "allowed_output_values": []
+    },
+    "login": {
+      "target": {
+        "frames": [],
+        "kind": "css",
+        "name": "button.btn-login",
+        "role": null
+      },
+      "operations": [
+        "click"
+      ],
+      "risk": "reversible",
+      "description": "Continue into application",
+      "allowed_inputs": [],
+      "allowed_output_values": []
+    },
+    "quotation_form": {
+      "target": {
+        "frames": [],
+        "kind": "css",
+        "name": "input[data-fieldname=\"party_name\"]",
+        "role": null
+      },
+      "operations": [],
+      "risk": "reversible",
+      "description": "Quotation customer form",
+      "checkpoint": true,
+      "allowed_inputs": [],
+      "allowed_output_values": []
+    },
+    "customer": {
+      "target": {
+        "frames": [],
+        "kind": "css",
+        "name": "input[data-fieldname=\"party_name\"]",
+        "role": null
+      },
+      "operations": [
+        "fill"
+      ],
+      "risk": "reversible",
+      "description": "Customer lookup",
+      "after_fill": {
+        "target": "customer_option",
+        "kind": "visible",
+        "input": null
+      },
+      "allowed_inputs": [
+        "customer_id"
+      ],
+      "allowed_output_values": []
+    },
+    "customer_option": {
+      "target": {
+        "frames": [],
+        "kind": "css",
+        "name": "[data-fieldname=\"party_name\"] [role=\"option\"] strong",
+        "role": null
+      },
+      "operations": [
+        "click"
+      ],
+      "risk": "reversible",
+      "description": "Exact requested customer result",
+      "match_input": "customer_id",
+      "allowed_inputs": [],
+      "allowed_output_values": []
+    },
+    "customer_name": {
+      "target": {
+        "frames": [],
+        "kind": "css",
+        "name": "[data-fieldname=\"customer_name\"] .control-value",
+        "role": null
+      },
+      "operations": [],
+      "risk": "reversible",
+      "description": "Selected customer identity",
+      "allowed_inputs": [],
+      "allowed_output_values": []
+    },
+    "no_customer_match": {
+      "target": {
+        "frames": [],
+        "kind": "css",
+        "name": "[data-fieldname=\"party_name\"] [role=\"option\"][aria-selected=\"true\"] p[title=\"Create a new Customer\"]",
+        "role": null
+      },
+      "operations": [],
+      "risk": "reversible",
+      "description": "Customer search settled with no exact match (the create-new option is first)",
+      "allowed_inputs": [],
+      "allowed_output_values": []
+    },
+    "order_type": {
+      "target": {
+        "frames": [],
+        "kind": "css",
+        "name": "select[data-fieldname=\"order_type\"]",
+        "role": null
+      },
+      "operations": [
+        "fill"
+      ],
+      "risk": "reversible",
+      "description": "Quotation order type",
+      "allowed_inputs": [
+        "order_type"
+      ],
+      "allowed_output_values": []
+    },
+    "edit_item": {
+      "target": {
+        "frames": [],
+        "kind": "css",
+        "name": "body:has([data-fieldname=customer_name]:visible) [data-fieldname=items] .btn-open-row",
+        "role": null
+      },
+      "operations": [
+        "click"
+      ],
+      "risk": "reversible",
+      "description": "Edit initial quotation line",
+      "allowed_inputs": [],
+      "allowed_output_values": []
+    },
+    "row_editor": {
+      "target": {
+        "frames": [],
+        "kind": "css",
+        "name": ".form-in-grid",
+        "role": null
+      },
+      "operations": [],
+      "risk": "reversible",
+      "description": "Expanded quotation line editor",
+      "checkpoint": true,
+      "allowed_inputs": [],
+      "allowed_output_values": []
+    },
+    "item": {
+      "target": {
+        "frames": [],
+        "kind": "css",
+        "name": "input[data-fieldname=\"item_code\"]",
+        "role": null
+      },
+      "operations": [
+        "fill"
+      ],
+      "risk": "reversible",
+      "description": "Item lookup",
+      "after_fill": {
+        "target": "item_option",
+        "kind": "visible",
+        "input": null
+      },
+      "allowed_inputs": [
+        "item_id"
+      ],
+      "allowed_output_values": []
+    },
+    "item_option": {
+      "target": {
+        "frames": [],
+        "kind": "css",
+        "name": "[data-fieldname=\"item_code\"] [role=\"option\"] strong",
+        "role": null
+      },
+      "operations": [
+        "click"
+      ],
+      "risk": "reversible",
+      "description": "Exact requested item result",
+      "match_input": "item_id",
+      "allowed_inputs": [],
+      "allowed_output_values": []
+    },
+    "no_item_match": {
+      "target": {
+        "frames": [],
+        "kind": "css",
+        "name": "[data-fieldname=\"item_code\"] [role=\"option\"][aria-selected=\"true\"] p[title=\"filter_description__link_option\"]",
+        "role": null
+      },
+      "operations": [],
+      "risk": "reversible",
+      "description": "Item search settled with no exact match (the applied-filters note is first)",
+      "allowed_inputs": [],
+      "allowed_output_values": []
+    },
+    "priced_item": {
+      "target": {
+        "frames": [],
+        "kind": "css",
+        "name": "[data-fieldname=\"price_list_rate\"] .control-value:not(:text-is(\"$ 0.00\"))",
+        "role": null
+      },
+      "operations": [],
+      "risk": "reversible",
+      "description": "Selected item with loaded nonzero price",
+      "allowed_inputs": [],
+      "allowed_output_values": []
+    },
+    "quantity": {
+      "target": {
+        "frames": [],
+        "kind": "css",
+        "name": ".grid-row:has([data-fieldname=price_list_rate] .control-value:not(:text-is(\"$ 0.00\"))) input[data-fieldname=qty]",
+        "role": null
+      },
+      "operations": [
+        "fill"
+      ],
+      "risk": "reversible",
+      "description": "Line quantity",
+      "after_fill": {
+        "target": "priced_item",
+        "kind": "visible",
+        "input": null
+      },
+      "allowed_inputs": [
+        "quantity"
+      ],
+      "allowed_output_values": []
+    },
+    "close_editor": {
+      "target": {
+        "frames": [],
+        "kind": "css",
+        "name": ".grid-collapse-row",
+        "role": null
+      },
+      "operations": [
+        "click"
+      ],
+      "risk": "reversible",
+      "description": "Close line editor and commit field changes",
+      "allowed_inputs": [],
+      "allowed_output_values": []
+    },
+    "total_quantity": {
+      "target": {
+        "frames": [],
+        "kind": "css",
+        "name": "[data-fieldname=\"total_qty\"] .control-value",
+        "role": null
+      },
+      "operations": [],
+      "risk": "reversible",
+      "description": "Calculated total quantity",
+      "allowed_inputs": [],
+      "allowed_output_values": []
+    },
+    "grand_total": {
+      "target": {
+        "frames": [],
+        "kind": "css",
+        "name": "[data-fieldname=\"grand_total\"] .control-value",
+        "role": null
+      },
+      "operations": [
+        "read"
+      ],
+      "risk": "reversible",
+      "description": "Calculated grand total including tax",
+      "allowed_inputs": [],
+      "allowed_output_values": []
+    },
+    "priced_quote": {
+      "target": {
+        "frames": [],
+        "kind": "css",
+        "name": "[data-fieldname=\"grand_total\"] .control-value:not(:text-is(\"$ 0.00\"))",
+        "role": null
+      },
+      "operations": [],
+      "risk": "reversible",
+      "description": "Nonzero quotation pricing loaded",
+      "allowed_inputs": [],
+      "allowed_output_values": []
+    },
+    "unsaved": {
+      "target": {
+        "frames": [],
+        "kind": "css",
+        "name": ".indicator-pill.orange",
+        "role": null
+      },
+      "operations": [],
+      "risk": "reversible",
+      "description": "Unsaved quotation indicator",
+      "allowed_inputs": [],
+      "allowed_output_values": []
+    },
+    "save": {
+      "target": {
+        "frames": [],
+        "kind": "css",
+        "name": "button.primary-action",
+        "role": null
+      },
+      "operations": [
+        "click"
+      ],
+      "risk": "human_only",
+      "description": "Save quotation",
+      "allowed_inputs": [],
+      "allowed_output_values": []
+    },
+    "onboarding": {
+      "target": {
+        "frames": [],
+        "kind": "css",
+        "name": ".onb-panel",
+        "role": null
+      },
+      "operations": [],
+      "risk": "reversible",
+      "description": "Getting Started panel covering form controls",
+      "allowed_inputs": [],
+      "allowed_output_values": []
+    },
+    "close_onboarding": {
+      "target": {
+        "frames": [],
+        "kind": "css",
+        "name": ".onb-header-actions button:has(use[href=\"#icon-x\"])",
+        "role": null
+      },
+      "operations": [
+        "click"
+      ],
+      "risk": "reversible",
+      "description": "Close Getting Started panel",
+      "allowed_inputs": [],
+      "allowed_output_values": []
+    }
+  },
+  "states": {
+    "onboarding_open": {
+      "target": "onboarding",
+      "kind": "interstitial",
+      "recovery": "close_onboarding",
+      "manual_recovery": null
+    },
+    "customer_not_found": {
+      "target": "no_customer_match",
+      "kind": "business",
+      "recovery": null,
+      "manual_recovery": null
+    },
+    "item_not_found": {
+      "target": "no_item_match",
+      "kind": "business",
+      "recovery": null,
+      "manual_recovery": null
+    }
+  },
+  "input_types": {
+    "username": {
+      "kind": "text",
+      "sensitive": true,
+      "max_length": 80,
+      "pattern": null
+    },
+    "password": {
+      "kind": "text",
+      "sensitive": true,
+      "max_length": 80,
+      "pattern": null
+    },
+    "customer_id": {
+      "kind": "identifier",
+      "sensitive": true,
+      "max_length": 80,
+      "pattern": "CP-CUSTOMER-[0-9]{3}"
+    },
+    "item_id": {
+      "kind": "identifier",
+      "sensitive": true,
+      "max_length": 80,
+      "pattern": "CP-[A-Z]+-[0-9]{3}"
+    },
+    "quantity": {
+      "kind": "identifier",
+      "sensitive": true,
+      "max_length": 80,
+      "pattern": "[1-9][0-9]{0,2}"
+    },
+    "order_type": {
+      "kind": "identifier",
+      "sensitive": true,
+      "max_length": 80,
+      "pattern": "Sales|Maintenance|Shopping Cart"
+    }
+  },
+  "invariants": [
+    {
+      "target": "page",
+      "kind": "visible",
+      "input": null
+    }
+  ],
+  "max_steps": 30,
+  "step_timeout": 8.0,
+  "run_timeout": 600.0,
+  "max_recoveries": 2
+}

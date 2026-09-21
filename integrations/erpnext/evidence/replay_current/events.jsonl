@@ -1,0 +1,29 @@
+{"event": "started", "capability": "prepare_quotation", "llm_calls": 0, "artifact_sha256": "c4b1c9d9a12a8ee5397b9df9f49434fd1cf7a86d1cadcab04d84040bc6e672ef", "sequence": 1, "time": "2026-09-21T02:43:18.850425+00:00"}
+{"event": "action_started", "target": "username", "parameter": "username", "op": "fill", "sequence": 2, "time": "2026-09-21T02:43:19.075074+00:00"}
+{"event": "action_completed", "target": "username", "op": "fill", "sequence": 3, "time": "2026-09-21T02:43:19.089624+00:00"}
+{"event": "action_started", "target": "password", "parameter": "password", "op": "fill", "sequence": 4, "time": "2026-09-21T02:43:19.164077+00:00"}
+{"event": "action_completed", "target": "password", "op": "fill", "sequence": 5, "time": "2026-09-21T02:43:19.176275+00:00"}
+{"event": "action_started", "target": "login", "op": "click", "sequence": 6, "time": "2026-09-21T02:43:19.251308+00:00"}
+{"event": "action_completed", "target": "login", "op": "click", "sequence": 7, "time": "2026-09-21T02:43:19.279352+00:00"}
+{"event": "recovery", "step": 2, "target": "close_onboarding", "code": "onboarding_open", "sequence": 8, "time": "2026-09-21T02:43:20.111474+00:00"}
+{"event": "action_started", "target": "close_onboarding", "op": "click", "sequence": 9, "time": "2026-09-21T02:43:20.121827+00:00"}
+{"event": "action_completed", "target": "close_onboarding", "op": "click", "sequence": 10, "time": "2026-09-21T02:43:20.161710+00:00"}
+{"event": "action_started", "target": "customer", "parameter": "customer_id", "op": "fill", "sequence": 11, "time": "2026-09-21T02:43:20.326430+00:00"}
+{"event": "action_completed", "target": "customer", "op": "fill", "sequence": 12, "time": "2026-09-21T02:43:20.343261+00:00"}
+{"event": "action_started", "target": "customer_option", "op": "click", "sequence": 13, "time": "2026-09-21T02:43:21.006629+00:00"}
+{"event": "action_completed", "target": "customer_option", "op": "click", "sequence": 14, "time": "2026-09-21T02:43:21.025553+00:00"}
+{"event": "action_started", "target": "order_type", "parameter": "order_type", "op": "fill", "sequence": 15, "time": "2026-09-21T02:43:21.263861+00:00"}
+{"event": "action_completed", "target": "order_type", "op": "fill", "sequence": 16, "time": "2026-09-21T02:43:21.280865+00:00"}
+{"event": "action_started", "target": "edit_item", "op": "click", "sequence": 17, "time": "2026-09-21T02:43:21.395157+00:00"}
+{"event": "action_completed", "target": "edit_item", "op": "click", "sequence": 18, "time": "2026-09-21T02:43:21.444046+00:00"}
+{"event": "action_started", "target": "item", "parameter": "item_id", "op": "fill", "sequence": 19, "time": "2026-09-21T02:43:21.582363+00:00"}
+{"event": "action_completed", "target": "item", "op": "fill", "sequence": 20, "time": "2026-09-21T02:43:21.597344+00:00"}
+{"event": "action_started", "target": "item_option", "op": "click", "sequence": 21, "time": "2026-09-21T02:43:21.853985+00:00"}
+{"event": "action_completed", "target": "item_option", "op": "click", "sequence": 22, "time": "2026-09-21T02:43:21.877175+00:00"}
+{"event": "action_started", "target": "quantity", "parameter": "quantity", "op": "fill", "sequence": 23, "time": "2026-09-21T02:43:22.036968+00:00"}
+{"event": "action_completed", "target": "quantity", "op": "fill", "sequence": 24, "time": "2026-09-21T02:43:22.055313+00:00"}
+{"event": "action_started", "target": "close_editor", "op": "click", "sequence": 25, "time": "2026-09-21T02:43:22.180151+00:00"}
+{"event": "action_completed", "target": "close_editor", "op": "click", "sequence": 26, "time": "2026-09-21T02:43:22.204853+00:00"}
+{"event": "action_started", "target": "grand_total", "op": "read", "sequence": 27, "time": "2026-09-21T02:43:22.506871+00:00"}
+{"event": "action_completed", "target": "grand_total", "op": "read", "sequence": 28, "time": "2026-09-21T02:43:22.511515+00:00"}
+{"event": "success", "llm_calls": 0, "sequence": 29, "time": "2026-09-21T02:43:22.669882+00:00"}

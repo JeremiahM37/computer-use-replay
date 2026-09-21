@@ -1,0 +1,87 @@
+{
+  "name": "prepare_quotation",
+  "goal": "Prepare an unsaved quotation for the requested customer, item, quantity and order type. Return its calculated grand total including tax. Leave the line editor closed; do not save.",
+  "inputs": {
+    "username": {
+      "kind": "text",
+      "sensitive": true,
+      "max_length": 80,
+      "pattern": null
+    },
+    "password": {
+      "kind": "text",
+      "sensitive": true,
+      "max_length": 80,
+      "pattern": null
+    },
+    "customer_id": {
+      "kind": "identifier",
+      "sensitive": true,
+      "max_length": 80,
+      "pattern": "CP-CUSTOMER-[0-9]{3}"
+    },
+    "item_id": {
+      "kind": "identifier",
+      "sensitive": true,
+      "max_length": 80,
+      "pattern": "CP-[A-Z]+-[0-9]{3}"
+    },
+    "quantity": {
+      "kind": "identifier",
+      "sensitive": true,
+      "max_length": 80,
+      "pattern": "[1-9][0-9]{0,2}"
+    },
+    "order_type": {
+      "kind": "identifier",
+      "sensitive": true,
+      "max_length": 80,
+      "pattern": "Sales|Maintenance|Shopping Cart"
+    }
+  },
+  "outputs": {
+    "grand_total": {
+      "source": "grand_total",
+      "kind": "money",
+      "sensitive": true,
+      "allowed_values": []
+    }
+  },
+  "checkpoint": [
+    {
+      "target": "page",
+      "kind": "visible",
+      "input": null
+    },
+    {
+      "target": "customer_name",
+      "kind": "equals_input",
+      "input": "customer_id"
+    },
+    {
+      "target": "order_type",
+      "kind": "equals_input",
+      "input": "order_type"
+    },
+    {
+      "target": "total_quantity",
+      "kind": "equals_input",
+      "input": "quantity"
+    },
+    {
+      "target": "row_editor",
+      "kind": "absent",
+      "input": null
+    },
+    {
+      "target": "unsaved",
+      "kind": "visible",
+      "input": null
+    },
+    {
+      "target": "priced_quote",
+      "kind": "visible",
+      "input": null
+    }
+  ]
+}

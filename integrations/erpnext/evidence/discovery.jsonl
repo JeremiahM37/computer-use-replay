@@ -1,0 +1,73 @@
+{"event": "started", "model": "qwen3.6:35b-a3b", "llm_calls": 0, "sequence": 1, "time": "2026-09-21T02:40:27.545087+00:00"}
+{"event": "observation", "step": 0, "sequence": 2, "time": "2026-09-21T02:40:27.772658+00:00"}
+{"event": "model_response", "provider": "ollama", "model": "qwen3.6:35b-a3b", "llm_calls": 1, "elapsed_ms": 6792, "prompt_tokens": 1829, "output_tokens": 38, "response_sha256": "51175f45ba25f37b49a2e28473f8c47c2e8342b7125e748417747351ffb7ab88", "sequence": 3, "time": "2026-09-21T02:40:34.598311+00:00"}
+{"event": "decision", "step": 0, "target": "username", "parameter": "username", "op": "fill", "code": "enter_parameter", "sequence": 4, "time": "2026-09-21T02:40:34.598852+00:00"}
+{"event": "action_started", "target": "username", "parameter": "username", "op": "fill", "sequence": 5, "time": "2026-09-21T02:40:34.647681+00:00"}
+{"event": "action_completed", "target": "username", "op": "fill", "sequence": 6, "time": "2026-09-21T02:40:34.661509+00:00"}
+{"event": "observation", "step": 1, "sequence": 7, "time": "2026-09-21T02:40:34.727323+00:00"}
+{"event": "model_response", "provider": "ollama", "model": "qwen3.6:35b-a3b", "llm_calls": 2, "elapsed_ms": 3677, "prompt_tokens": 1874, "output_tokens": 38, "response_sha256": "40e4db695db603a961997886e52de04e1b6555e969a1efe78091a646ddaef562", "sequence": 8, "time": "2026-09-21T02:40:38.428727+00:00"}
+{"event": "decision", "step": 1, "target": "password", "parameter": "password", "op": "fill", "code": "enter_parameter", "sequence": 9, "time": "2026-09-21T02:40:38.429226+00:00"}
+{"event": "action_started", "target": "password", "parameter": "password", "op": "fill", "sequence": 10, "time": "2026-09-21T02:40:38.474850+00:00"}
+{"event": "action_completed", "target": "password", "op": "fill", "sequence": 11, "time": "2026-09-21T02:40:38.487470+00:00"}
+{"event": "observation", "step": 2, "sequence": 12, "time": "2026-09-21T02:40:38.571070+00:00"}
+{"event": "model_retry", "code": "invalid_model_response", "provider": "ollama", "model": "qwen3.6:35b-a3b", "llm_calls": 3, "response_sha256": "f8af6521abe561e40c55b0afc6b3003ac635dfd91fd12a3224e3bfc11d0d917f", "sequence": 13, "time": "2026-09-21T02:40:41.567829+00:00"}
+{"event": "model_response", "provider": "ollama", "model": "qwen3.6:35b-a3b", "llm_calls": 4, "elapsed_ms": 5676, "prompt_tokens": 1952, "output_tokens": 26, "response_sha256": "bd6c4c707b580fe6b7045753d68384e0710b7a77f7032d79d9bafce0bfe1275a", "sequence": 14, "time": "2026-09-21T02:40:44.270707+00:00"}
+{"event": "decision", "step": 2, "target": "login", "op": "click", "code": "follow_navigation", "sequence": 15, "time": "2026-09-21T02:40:44.271086+00:00"}
+{"event": "action_started", "target": "login", "op": "click", "sequence": 16, "time": "2026-09-21T02:40:44.330157+00:00"}
+{"event": "action_completed", "target": "login", "op": "click", "sequence": 17, "time": "2026-09-21T02:40:44.349642+00:00"}
+{"event": "checkpoint_observed", "step": 2, "target": "quotation_form", "sequence": 18, "time": "2026-09-21T02:40:45.117937+00:00"}
+{"event": "recovery", "step": 3, "target": "close_onboarding", "code": "onboarding_open", "sequence": 19, "time": "2026-09-21T02:40:45.214299+00:00"}
+{"event": "action_started", "target": "close_onboarding", "op": "click", "sequence": 20, "time": "2026-09-21T02:40:45.223068+00:00"}
+{"event": "action_completed", "target": "close_onboarding", "op": "click", "sequence": 21, "time": "2026-09-21T02:40:45.249290+00:00"}
+{"event": "observation", "step": 3, "sequence": 22, "time": "2026-09-21T02:40:45.356590+00:00"}
+{"event": "model_response", "provider": "ollama", "model": "qwen3.6:35b-a3b", "llm_calls": 5, "elapsed_ms": 4589, "prompt_tokens": 2569, "output_tokens": 39, "response_sha256": "38b51370a929773eb7b00373e41ad218e6e4807212a856a20d7410778ea56362", "sequence": 23, "time": "2026-09-21T02:40:49.988312+00:00"}
+{"event": "decision", "step": 3, "target": "customer", "parameter": "customer_id", "op": "fill", "code": "enter_parameter", "sequence": 24, "time": "2026-09-21T02:40:49.988673+00:00"}
+{"event": "action_started", "target": "customer", "parameter": "customer_id", "op": "fill", "sequence": 25, "time": "2026-09-21T02:40:50.064658+00:00"}
+{"event": "action_completed", "target": "customer", "op": "fill", "sequence": 26, "time": "2026-09-21T02:40:50.082942+00:00"}
+{"event": "observation", "step": 4, "sequence": 27, "time": "2026-09-21T02:40:50.724750+00:00"}
+{"event": "model_response", "provider": "ollama", "model": "qwen3.6:35b-a3b", "llm_calls": 6, "elapsed_ms": 4709, "prompt_tokens": 2834, "output_tokens": 27, "response_sha256": "e8d1a354b9580af711088009cd8482be271015914ec1252a4cf7707cace3163d", "sequence": 28, "time": "2026-09-21T02:40:55.474329+00:00"}
+{"event": "decision", "step": 4, "target": "customer_option", "op": "click", "code": "follow_navigation", "sequence": 29, "time": "2026-09-21T02:40:55.474701+00:00"}
+{"event": "action_started", "target": "customer_option", "op": "click", "sequence": 30, "time": "2026-09-21T02:40:55.569762+00:00"}
+{"event": "action_completed", "target": "customer_option", "op": "click", "sequence": 31, "time": "2026-09-21T02:40:55.580643+00:00"}
+{"event": "checkpoint_observed", "step": 4, "target": "customer_name", "sequence": 32, "time": "2026-09-21T02:40:55.811836+00:00"}
+{"event": "observation", "step": 5, "sequence": 33, "time": "2026-09-21T02:40:55.864672+00:00"}
+{"event": "model_response", "provider": "ollama", "model": "qwen3.6:35b-a3b", "llm_calls": 7, "elapsed_ms": 5269, "prompt_tokens": 3045, "output_tokens": 40, "response_sha256": "5d8cc4d5592afdf4e753a12d92ceaac89bd46eecc18f7cf72193ecc3a904a6a5", "sequence": 34, "time": "2026-09-21T02:41:01.179409+00:00"}
+{"event": "decision", "step": 5, "target": "order_type", "parameter": "order_type", "op": "fill", "code": "enter_parameter", "sequence": 35, "time": "2026-09-21T02:41:01.179784+00:00"}
+{"event": "action_started", "target": "order_type", "parameter": "order_type", "op": "fill", "sequence": 36, "time": "2026-09-21T02:41:01.257875+00:00"}
+{"event": "action_completed", "target": "order_type", "op": "fill", "sequence": 37, "time": "2026-09-21T02:41:01.279568+00:00"}
+{"event": "observation", "step": 6, "sequence": 38, "time": "2026-09-21T02:41:01.391566+00:00"}
+{"event": "model_response", "provider": "ollama", "model": "qwen3.6:35b-a3b", "llm_calls": 8, "elapsed_ms": 4927, "prompt_tokens": 3018, "output_tokens": 27, "response_sha256": "4daeb70d8962ac9f2b31f0ca9f6cc0548d78a64f60fddba6a49eab5a7fd2a34d", "sequence": 39, "time": "2026-09-21T02:41:06.367563+00:00"}
+{"event": "decision", "step": 6, "target": "edit_item", "op": "click", "code": "follow_navigation", "sequence": 40, "time": "2026-09-21T02:41:06.367899+00:00"}
+{"event": "action_started", "target": "edit_item", "op": "click", "sequence": 41, "time": "2026-09-21T02:41:06.471023+00:00"}
+{"event": "action_completed", "target": "edit_item", "op": "click", "sequence": 42, "time": "2026-09-21T02:41:06.530073+00:00"}
+{"event": "checkpoint_observed", "step": 6, "target": "row_editor", "sequence": 43, "time": "2026-09-21T02:41:06.601338+00:00"}
+{"event": "observation", "step": 7, "sequence": 44, "time": "2026-09-21T02:41:06.674740+00:00"}
+{"event": "model_response", "provider": "ollama", "model": "qwen3.6:35b-a3b", "llm_calls": 9, "elapsed_ms": 5707, "prompt_tokens": 3371, "output_tokens": 39, "response_sha256": "5884ce421aa1944a2d7de4937ff344331238e05bfab4772e9ef4adc54f089a77", "sequence": 45, "time": "2026-09-21T02:41:12.443129+00:00"}
+{"event": "decision", "step": 7, "target": "item", "parameter": "item_id", "op": "fill", "code": "enter_parameter", "sequence": 46, "time": "2026-09-21T02:41:12.443467+00:00"}
+{"event": "action_started", "target": "item", "parameter": "item_id", "op": "fill", "sequence": 47, "time": "2026-09-21T02:41:12.524158+00:00"}
+{"event": "action_completed", "target": "item", "op": "fill", "sequence": 48, "time": "2026-09-21T02:41:12.541114+00:00"}
+{"event": "observation", "step": 8, "sequence": 49, "time": "2026-09-21T02:41:12.662631+00:00"}
+{"event": "model_response", "provider": "ollama", "model": "qwen3.6:35b-a3b", "llm_calls": 10, "elapsed_ms": 5569, "prompt_tokens": 3506, "output_tokens": 27, "response_sha256": "a31d95397844b49d8c0c6f9a31c44485a5103c84ed75d1d9aa9bd0fa4009ec62", "sequence": 50, "time": "2026-09-21T02:41:18.287875+00:00"}
+{"event": "decision", "step": 8, "target": "item_option", "op": "click", "code": "follow_navigation", "sequence": 51, "time": "2026-09-21T02:41:18.288233+00:00"}
+{"event": "action_started", "target": "item_option", "op": "click", "sequence": 52, "time": "2026-09-21T02:41:18.401495+00:00"}
+{"event": "action_completed", "target": "item_option", "op": "click", "sequence": 53, "time": "2026-09-21T02:41:18.414160+00:00"}
+{"event": "checkpoint_observed", "step": 8, "target": "priced_quote", "sequence": 54, "time": "2026-09-21T02:41:18.523719+00:00"}
+{"event": "observation", "step": 9, "sequence": 55, "time": "2026-09-21T02:41:18.586152+00:00"}
+{"event": "model_response", "provider": "ollama", "model": "qwen3.6:35b-a3b", "llm_calls": 11, "elapsed_ms": 6582, "prompt_tokens": 4023, "output_tokens": 38, "response_sha256": "fdd4ba38b09d565c02c911fe0952c12344023e4d2b66c6964a0d816fe2a6e44d", "sequence": 56, "time": "2026-09-21T02:41:25.239619+00:00"}
+{"event": "decision", "step": 9, "target": "quantity", "parameter": "quantity", "op": "fill", "code": "enter_parameter", "sequence": 57, "time": "2026-09-21T02:41:25.239986+00:00"}
+{"event": "action_started", "target": "quantity", "parameter": "quantity", "op": "fill", "sequence": 58, "time": "2026-09-21T02:41:25.326548+00:00"}
+{"event": "action_completed", "target": "quantity", "op": "fill", "sequence": 59, "time": "2026-09-21T02:41:25.345433+00:00"}
+{"event": "observation", "step": 10, "sequence": 60, "time": "2026-09-21T02:41:25.467497+00:00"}
+{"event": "model_response", "provider": "ollama", "model": "qwen3.6:35b-a3b", "llm_calls": 12, "elapsed_ms": 6285, "prompt_tokens": 3996, "output_tokens": 27, "response_sha256": "556ac3a1bcd1118df052981dabc855d6a8230c86407a2ae975b0633dddb2e57e", "sequence": 61, "time": "2026-09-21T02:41:31.820181+00:00"}
+{"event": "decision", "step": 10, "target": "close_editor", "op": "click", "code": "follow_navigation", "sequence": 62, "time": "2026-09-21T02:41:31.820620+00:00"}
+{"event": "action_started", "target": "close_editor", "op": "click", "sequence": 63, "time": "2026-09-21T02:41:31.949572+00:00"}
+{"event": "action_completed", "target": "close_editor", "op": "click", "sequence": 64, "time": "2026-09-21T02:41:31.976257+00:00"}
+{"event": "checkpoint_observed", "step": 10, "target": "total_quantity", "sequence": 65, "time": "2026-09-21T02:41:32.111474+00:00"}
+{"event": "observation", "step": 11, "sequence": 66, "time": "2026-09-21T02:41:32.171726+00:00"}
+{"event": "model_response", "provider": "ollama", "model": "qwen3.6:35b-a3b", "llm_calls": 13, "elapsed_ms": 5766, "prompt_tokens": 3400, "output_tokens": 38, "response_sha256": "415f9af0844de6a2fb9f1dbee29d3d9f02303e0c69b6ac82048e694a49a1b7f6", "sequence": 67, "time": "2026-09-21T02:41:37.990082+00:00"}
+{"event": "decision", "step": 11, "target": "grand_total", "op": "read", "code": "extract_output", "sequence": 68, "time": "2026-09-21T02:41:37.990412+00:00"}
+{"event": "action_started", "target": "grand_total", "op": "read", "sequence": 69, "time": "2026-09-21T02:41:38.158820+00:00"}
+{"event": "action_completed", "target": "grand_total", "op": "read", "sequence": 70, "time": "2026-09-21T02:41:38.163326+00:00"}
+{"event": "completion_verified", "step": 11, "sequence": 71, "time": "2026-09-21T02:41:38.255402+00:00"}
+{"event": "artifact_saved", "llm_calls": 13, "artifact_sha256": "c4b1c9d9a12a8ee5397b9df9f49434fd1cf7a86d1cadcab04d84040bc6e672ef", "sequence": 72, "time": "2026-09-21T02:41:38.257854+00:00"}
+{"event": "success", "llm_calls": 13, "sequence": 73, "time": "2026-09-21T02:41:38.257890+00:00"}

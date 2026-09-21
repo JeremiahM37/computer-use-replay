@@ -1,0 +1,300 @@
+{
+  "schema_version": "2.0",
+  "name": "prepare_quotation",
+  "version": "0.1.0",
+  "binding_sha256": "c6748b4eb5bbd0616c3696791acd729fee606d7297f061f37cf6958799906cb3",
+  "product": "erpnext",
+  "targets": {
+    "page": {
+      "frames": [],
+      "kind": "css",
+      "name": "body",
+      "role": null
+    },
+    "username": {
+      "frames": [],
+      "kind": "css",
+      "name": "#login_email",
+      "role": null
+    },
+    "password": {
+      "frames": [],
+      "kind": "css",
+      "name": "#login_password",
+      "role": null
+    },
+    "login": {
+      "frames": [],
+      "kind": "css",
+      "name": "button.btn-login",
+      "role": null
+    },
+    "quotation_form": {
+      "frames": [],
+      "kind": "css",
+      "name": "input[data-fieldname=\"party_name\"]",
+      "role": null
+    },
+    "customer": {
+      "frames": [],
+      "kind": "css",
+      "name": "input[data-fieldname=\"party_name\"]",
+      "role": null
+    },
+    "customer_option": {
+      "frames": [],
+      "kind": "css",
+      "name": "[data-fieldname=\"party_name\"] [role=\"option\"] strong",
+      "role": null
+    },
+    "customer_name": {
+      "frames": [],
+      "kind": "css",
+      "name": "[data-fieldname=\"customer_name\"] .control-value",
+      "role": null
+    },
+    "order_type": {
+      "frames": [],
+      "kind": "css",
+      "name": "select[data-fieldname=\"order_type\"]",
+      "role": null
+    },
+    "edit_item": {
+      "frames": [],
+      "kind": "css",
+      "name": "body:has([data-fieldname=customer_name]:visible) [data-fieldname=items] .btn-open-row",
+      "role": null
+    },
+    "row_editor": {
+      "frames": [],
+      "kind": "css",
+      "name": ".form-in-grid",
+      "role": null
+    },
+    "item": {
+      "frames": [],
+      "kind": "css",
+      "name": "input[data-fieldname=\"item_code\"]",
+      "role": null
+    },
+    "item_option": {
+      "frames": [],
+      "kind": "css",
+      "name": "[data-fieldname=\"item_code\"] [role=\"option\"] strong",
+      "role": null
+    },
+    "priced_item": {
+      "frames": [],
+      "kind": "css",
+      "name": "[data-fieldname=\"price_list_rate\"] .control-value:not(:text-is(\"$ 0.00\"))",
+      "role": null
+    },
+    "quantity": {
+      "frames": [],
+      "kind": "css",
+      "name": ".grid-row:has([data-fieldname=price_list_rate] .control-value:not(:text-is(\"$ 0.00\"))) input[data-fieldname=qty]",
+      "role": null
+    },
+    "close_editor": {
+      "frames": [],
+      "kind": "css",
+      "name": ".grid-collapse-row",
+      "role": null
+    },
+    "total_quantity": {
+      "frames": [],
+      "kind": "css",
+      "name": "[data-fieldname=\"total_qty\"] .control-value",
+      "role": null
+    },
+    "grand_total": {
+      "frames": [],
+      "kind": "css",
+      "name": "[data-fieldname=\"grand_total\"] .control-value",
+      "role": null
+    },
+    "priced_quote": {
+      "frames": [],
+      "kind": "css",
+      "name": "[data-fieldname=\"grand_total\"] .control-value:not(:text-is(\"$ 0.00\"))",
+      "role": null
+    },
+    "unsaved": {
+      "frames": [],
+      "kind": "css",
+      "name": ".indicator-pill.orange",
+      "role": null
+    }
+  },
+  "inputs": {
+    "username": {
+      "kind": "text",
+      "sensitive": true,
+      "max_length": 80,
+      "pattern": null
+    },
+    "password": {
+      "kind": "text",
+      "sensitive": true,
+      "max_length": 80,
+      "pattern": null
+    },
+    "customer_id": {
+      "kind": "identifier",
+      "sensitive": true,
+      "max_length": 80,
+      "pattern": "CP-CUSTOMER-[0-9]{3}"
+    },
+    "item_id": {
+      "kind": "identifier",
+      "sensitive": true,
+      "max_length": 80,
+      "pattern": "CP-[A-Z]+-[0-9]{3}"
+    },
+    "quantity": {
+      "kind": "identifier",
+      "sensitive": true,
+      "max_length": 80,
+      "pattern": "[1-9][0-9]{0,2}"
+    },
+    "order_type": {
+      "kind": "identifier",
+      "sensitive": true,
+      "max_length": 80,
+      "pattern": "Sales|Maintenance|Shopping Cart"
+    }
+  },
+  "outputs": {
+    "grand_total": {
+      "source": "grand_total",
+      "kind": "money",
+      "sensitive": true,
+      "allowed_values": []
+    }
+  },
+  "steps": [
+    {
+      "op": "fill",
+      "target": "username",
+      "input": "username"
+    },
+    {
+      "op": "fill",
+      "target": "password",
+      "input": "password"
+    },
+    {
+      "op": "click",
+      "target": "login",
+      "after": {
+        "target": "quotation_form",
+        "kind": "visible",
+        "input": null
+      }
+    },
+    {
+      "op": "fill",
+      "target": "customer",
+      "input": "customer_id"
+    },
+    {
+      "op": "click",
+      "target": "customer_option",
+      "after": {
+        "target": "customer_name",
+        "kind": "equals_input",
+        "input": "customer_id"
+      }
+    },
+    {
+      "op": "fill",
+      "target": "order_type",
+      "input": "order_type"
+    },
+    {
+      "op": "click",
+      "target": "edit_item",
+      "after": {
+        "target": "row_editor",
+        "kind": "visible",
+        "input": null
+      }
+    },
+    {
+      "op": "fill",
+      "target": "item",
+      "input": "item_id"
+    },
+    {
+      "op": "click",
+      "target": "item_option",
+      "after": {
+        "target": "priced_quote",
+        "kind": "visible",
+        "input": null
+      }
+    },
+    {
+      "op": "fill",
+      "target": "quantity",
+      "input": "quantity"
+    },
+    {
+      "op": "click",
+      "target": "close_editor",
+      "after": {
+        "target": "total_quantity",
+        "kind": "equals_input",
+        "input": "quantity"
+      }
+    },
+    {
+      "op": "read",
+      "target": "grand_total",
+      "output": "grand_total"
+    }
+  ],
+  "checkpoint": [
+    {
+      "target": "page",
+      "kind": "visible",
+      "input": null
+    },
+    {
+      "target": "customer_name",
+      "kind": "equals_input",
+      "input": "customer_id"
+    },
+    {
+      "target": "order_type",
+      "kind": "equals_input",
+      "input": "order_type"
+    },
+    {
+      "target": "total_quantity",
+      "kind": "equals_input",
+      "input": "quantity"
+    },
+    {
+      "target": "row_editor",
+      "kind": "absent",
+      "input": null
+    },
+    {
+      "target": "unsaved",
+      "kind": "visible",
+      "input": null
+    },
+    {
+      "target": "priced_quote",
+      "kind": "visible",
+      "input": null
+    }
+  ],
+  "provenance": {
+    "mode": "llm",
+    "model": "qwen3.6:35b-a3b",
+    "calls": 13,
+    "run_id": "b89a1a5ad884461ebf84e604b3140e1a"
+  }
+}
