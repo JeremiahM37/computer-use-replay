@@ -1,0 +1,86 @@
+{
+  "product": "juniper_workstation",
+  "tenant": "terminal",
+  "targets": {
+    "search": {
+      "kind": "screen",
+      "role": "command",
+      "name": "Find member"
+    },
+    "open_member": {
+      "kind": "screen",
+      "role": "command",
+      "name": "Open member"
+    },
+    "accounts": {
+      "kind": "screen",
+      "role": "command",
+      "name": "View accounts"
+    },
+    "savings": {
+      "kind": "screen",
+      "role": "command",
+      "name": "Open savings ledger"
+    },
+    "renew_session": {
+      "kind": "screen",
+      "role": "command",
+      "name": "Renew session"
+    },
+    "member_input": {
+      "kind": "screen",
+      "role": "field",
+      "name": "Member identifier"
+    },
+    "member_identity": {
+      "kind": "screen",
+      "role": "value",
+      "name": "Member identifier"
+    },
+    "balance": {
+      "kind": "screen",
+      "role": "value",
+      "name": "Available balance"
+    },
+    "results_screen": {
+      "kind": "screen",
+      "role": "heading",
+      "name": "Search results"
+    },
+    "member_screen": {
+      "kind": "screen",
+      "role": "heading",
+      "name": "Member summary"
+    },
+    "accounts_screen": {
+      "kind": "screen",
+      "role": "heading",
+      "name": "Account directory"
+    },
+    "savings_screen": {
+      "kind": "screen",
+      "role": "heading",
+      "name": "Savings ledger"
+    },
+    "not_found": {
+      "kind": "screen",
+      "role": "heading",
+      "name": "Member not found"
+    },
+    "validation": {
+      "kind": "screen",
+      "role": "heading",
+      "name": "Validation error"
+    },
+    "denied": {
+      "kind": "screen",
+      "role": "heading",
+      "name": "Permission denied"
+    },
+    "expired": {
+      "kind": "screen",
+      "role": "heading",
+      "name": "Session expired"
+    }
+  }
+}
