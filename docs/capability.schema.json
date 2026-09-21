@@ -1,0 +1,512 @@
+{
+  "$defs": {
+    "Click": {
+      "additionalProperties": false,
+      "properties": {
+        "op": {
+          "const": "click",
+          "default": "click",
+          "title": "Op",
+          "type": "string"
+        },
+        "target": {
+          "pattern": "^[a-z][a-z0-9_]{0,63}$",
+          "title": "Target",
+          "type": "string"
+        },
+        "after": {
+          "$ref": "#/$defs/Condition"
+        }
+      },
+      "required": [
+        "target",
+        "after"
+      ],
+      "title": "Click",
+      "type": "object"
+    },
+    "Condition": {
+      "additionalProperties": false,
+      "properties": {
+        "target": {
+          "pattern": "^[a-z][a-z0-9_]{0,63}$",
+          "title": "Target",
+          "type": "string"
+        },
+        "kind": {
+          "default": "visible",
+          "enum": [
+            "visible",
+            "equals_input",
+            "equals_integer_input",
+            "count_equals_input",
+            "absent"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "input": {
+          "anyOf": [
+            {
+              "pattern": "^[a-z][a-z0-9_]{0,63}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Input"
+        }
+      },
+      "required": [
+        "target"
+      ],
+      "title": "Condition",
+      "type": "object"
+    },
+    "Fill": {
+      "additionalProperties": false,
+      "properties": {
+        "op": {
+          "const": "fill",
+          "default": "fill",
+          "title": "Op",
+          "type": "string"
+        },
+        "target": {
+          "pattern": "^[a-z][a-z0-9_]{0,63}$",
+          "title": "Target",
+          "type": "string"
+        },
+        "input": {
+          "pattern": "^[a-z][a-z0-9_]{0,63}$",
+          "title": "Input",
+          "type": "string"
+        }
+      },
+      "required": [
+        "target",
+        "input"
+      ],
+      "title": "Fill",
+      "type": "object"
+    },
+    "Input": {
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "enum": [
+            "identifier",
+            "text",
+            "multiline",
+            "integer",
+            "boolean"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "sensitive": {
+          "const": true,
+          "default": true,
+          "title": "Sensitive",
+          "type": "boolean"
+        },
+        "max_length": {
+          "default": 80,
+          "maximum": 1000,
+          "minimum": 1,
+          "title": "Max Length",
+          "type": "integer"
+        },
+        "pattern": {
+          "anyOf": [
+            {
+              "maxLength": 200,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Pattern"
+        },
+        "minimum": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Minimum"
+        },
+        "maximum": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Maximum"
+        }
+      },
+      "required": [
+        "kind"
+      ],
+      "title": "Input",
+      "type": "object"
+    },
+    "Output": {
+      "additionalProperties": false,
+      "properties": {
+        "source": {
+          "anyOf": [
+            {
+              "pattern": "^[a-z][a-z0-9_]{0,63}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Source"
+        },
+        "kind": {
+          "enum": [
+            "money",
+            "text"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "sensitive": {
+          "const": true,
+          "default": true,
+          "title": "Sensitive",
+          "type": "boolean"
+        },
+        "allowed_values": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Allowed Values",
+          "type": "array"
+        }
+      },
+      "required": [
+        "kind"
+      ],
+      "title": "Output",
+      "type": "object"
+    },
+    "Provenance": {
+      "additionalProperties": false,
+      "properties": {
+        "mode": {
+          "enum": [
+            "llm",
+            "test_fixture"
+          ],
+          "title": "Mode",
+          "type": "string"
+        },
+        "model": {
+          "maxLength": 100,
+          "minLength": 1,
+          "title": "Model",
+          "type": "string"
+        },
+        "calls": {
+          "minimum": 0,
+          "title": "Calls",
+          "type": "integer"
+        },
+        "run_id": {
+          "title": "Run Id",
+          "type": "string"
+        },
+        "accepted_by": {
+          "anyOf": [
+            {
+              "enum": [
+                "flag",
+                "tty"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Accepted By"
+        }
+      },
+      "required": [
+        "mode",
+        "model",
+        "calls",
+        "run_id"
+      ],
+      "title": "Provenance",
+      "type": "object"
+    },
+    "Read": {
+      "additionalProperties": false,
+      "properties": {
+        "op": {
+          "const": "read",
+          "default": "read",
+          "title": "Op",
+          "type": "string"
+        },
+        "target": {
+          "pattern": "^[a-z][a-z0-9_]{0,63}$",
+          "title": "Target",
+          "type": "string"
+        },
+        "output": {
+          "pattern": "^[a-z][a-z0-9_]{0,63}$",
+          "title": "Output",
+          "type": "string"
+        }
+      },
+      "required": [
+        "target",
+        "output"
+      ],
+      "title": "Read",
+      "type": "object"
+    },
+    "Target": {
+      "additionalProperties": false,
+      "properties": {
+        "frames": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Frames",
+          "type": "array"
+        },
+        "kind": {
+          "enum": [
+            "role",
+            "label",
+            "row_value",
+            "row_input",
+            "css",
+            "screen"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "name": {
+          "maxLength": 200,
+          "minLength": 1,
+          "title": "Name",
+          "type": "string"
+        },
+        "role": {
+          "anyOf": [
+            {
+              "enum": [
+                "button",
+                "link",
+                "heading",
+                "dialog",
+                "status",
+                "alert",
+                "field",
+                "command",
+                "value"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Role"
+        },
+        "scope": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/TargetScope"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        }
+      },
+      "required": [
+        "kind",
+        "name"
+      ],
+      "title": "Target",
+      "type": "object"
+    },
+    "TargetScope": {
+      "additionalProperties": false,
+      "description": "A reviewed container and identity anchor, matched against an invocation input.",
+      "properties": {
+        "container": {
+          "maxLength": 200,
+          "minLength": 1,
+          "title": "Container",
+          "type": "string"
+        },
+        "anchor": {
+          "maxLength": 200,
+          "minLength": 1,
+          "title": "Anchor",
+          "type": "string"
+        },
+        "attribute": {
+          "anyOf": [
+            {
+              "maxLength": 64,
+              "pattern": "^[a-z][a-z0-9_-]*$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Attribute"
+        }
+      },
+      "required": [
+        "container",
+        "anchor"
+      ],
+      "title": "TargetScope",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": "2.0",
+      "default": "2.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "name": {
+      "pattern": "^[a-z][a-z0-9_]{0,63}$",
+      "title": "Name",
+      "type": "string"
+    },
+    "version": {
+      "const": "0.1.0",
+      "default": "0.1.0",
+      "title": "Version",
+      "type": "string"
+    },
+    "binding_sha256": {
+      "pattern": "^[a-f0-9]{64}$",
+      "title": "Binding Sha256",
+      "type": "string"
+    },
+    "product": {
+      "pattern": "^[a-z][a-z0-9_]{0,63}$",
+      "title": "Product",
+      "type": "string"
+    },
+    "targets": {
+      "description": "Discovery-time locator hints; execution resolves these logical keys through the current reviewed tenant presentation.",
+      "minProperties": 1,
+      "patternProperties": {
+        "^[a-z][a-z0-9_]{0,63}$": {
+          "$ref": "#/$defs/Target"
+        }
+      },
+      "title": "Targets",
+      "type": "object"
+    },
+    "inputs": {
+      "minProperties": 1,
+      "patternProperties": {
+        "^[a-z][a-z0-9_]{0,63}$": {
+          "$ref": "#/$defs/Input"
+        }
+      },
+      "title": "Inputs",
+      "type": "object"
+    },
+    "outputs": {
+      "minProperties": 1,
+      "patternProperties": {
+        "^[a-z][a-z0-9_]{0,63}$": {
+          "$ref": "#/$defs/Output"
+        }
+      },
+      "title": "Outputs",
+      "type": "object"
+    },
+    "steps": {
+      "items": {
+        "discriminator": {
+          "mapping": {
+            "click": "#/$defs/Click",
+            "fill": "#/$defs/Fill",
+            "read": "#/$defs/Read"
+          },
+          "propertyName": "op"
+        },
+        "oneOf": [
+          {
+            "$ref": "#/$defs/Click"
+          },
+          {
+            "$ref": "#/$defs/Fill"
+          },
+          {
+            "$ref": "#/$defs/Read"
+          }
+        ]
+      },
+      "maxItems": 40,
+      "minItems": 1,
+      "title": "Steps",
+      "type": "array"
+    },
+    "checkpoint": {
+      "items": {
+        "$ref": "#/$defs/Condition"
+      },
+      "minItems": 1,
+      "title": "Checkpoint",
+      "type": "array"
+    },
+    "provenance": {
+      "$ref": "#/$defs/Provenance"
+    }
+  },
+  "required": [
+    "name",
+    "binding_sha256",
+    "product",
+    "targets",
+    "inputs",
+    "outputs",
+    "steps",
+    "checkpoint",
+    "provenance"
+  ],
+  "title": "Capability",
+  "type": "object"
+}

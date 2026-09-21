@@ -1,0 +1,388 @@
+"""Wire contracts. No browser, model SDK, or invocation values belong here."""
+
+from __future__ import annotations
+
+import hashlib
+import json
+import re
+from decimal import Decimal
+from typing import Annotated, Literal
+
+import re2
+from pydantic import BaseModel, ConfigDict, Field, PrivateAttr, model_serializer, model_validator
+
+Name = Annotated[str, Field(pattern=r"^[a-z][a-z0-9_]{0,63}$")]
+
+
+class Strict(BaseModel):
+    model_config = ConfigDict(extra="forbid", frozen=True)
+
+
+class TargetScope(Strict):
+    """A reviewed container and identity anchor, matched against an invocation input."""
+
+    container: str = Field(min_length=1, max_length=200)
+    anchor: str = Field(min_length=1, max_length=200)
+    attribute: str | None = Field(default=None, max_length=64, pattern=r"^[a-z][a-z0-9_-]*$")
+
+
+class Target(Strict):
+    frames: tuple[str, ...] = ()
+    kind: Literal["role", "label", "row_value", "row_input", "css", "screen"]
+    name: str = Field(min_length=1, max_length=200)
+    role: (
+        Literal[
+            "button", "link", "heading", "dialog", "status", "alert", "field", "command", "value"
+        ]
+        | None
+    ) = None
+
+    scope: TargetScope | None = None
+
+    @model_serializer(mode="wrap")
+    def serialized(self, handler):
+        data = handler(self)
+        if self.scope is None:
+            data.pop("scope", None)
+        return data
+
+    @model_validator(mode="after")
+    def shape(self):
+        if (self.kind in {"role", "screen"}) != (self.role is not None):
+            raise ValueError("role is required only for role or screen targets")
+        if self.scope is not None and self.kind != "css":
+            raise ValueError("container scopes require CSS targets")
+        return self
+
+
+class Input(Strict):
+    _identifier: object = PrivateAttr(default=None)
+
+    kind: Literal["identifier", "text", "multiline", "integer", "boolean"]
+    sensitive: Literal[True] = True
+    max_length: int = Field(default=80, ge=1, le=1000)
+    pattern: str | None = Field(default=None, max_length=200)
+
+    minimum: int | None = Field(default=None, strict=True)
+    maximum: int | None = Field(default=None, strict=True)
+
+    @model_serializer(mode="wrap")
+    def serialized(self, handler):
+        data = handler(self)
+        for key in ("minimum", "maximum"):
+            if getattr(self, key) is None:
+                data.pop(key, None)
+        return data
+
+    @model_validator(mode="after")
+    def pattern_shape(self):
+        if (self.minimum is not None or self.maximum is not None) and self.kind != "integer":
+            raise ValueError("numeric bounds require an integer input")
+        if self.minimum is not None and self.maximum is not None and self.minimum > self.maximum:
+            raise ValueError("minimum exceeds maximum")
+        if self.kind == "identifier" and not self.pattern:
+            raise ValueError("identifier requires a configured pattern")
+        if self.pattern is not None:
+            try:
+                options = re2.Options()
+                options.log_errors = False
+                options.max_mem = 8 * 1024 * 1024
+                self._identifier = re2.compile(self.pattern, options=options)
+            except re2.error:
+                raise ValueError("invalid identifier pattern") from None
+        return self
+
+    def validate_value(self, value):
+        valid = False
+        if self.kind == "identifier":
+            valid = (
+                isinstance(value, str)
+                and len(value) <= self.max_length
+                and bool(self._identifier.fullmatch(value))
+            )
+        elif self.kind in {"text", "multiline"}:
+            # Text stays single-line; multiline explicitly permits paragraph breaks.
+            # Reject lossy whitespace instead of silently changing caller arguments.
+            word = r"[^\s\x00-\x1f\x7f-\x9f\ud800-\udfff]+"
+            line = word + r"(?: " + word + r")*"
+            pattern = line if self.kind == "text" else line + r"(?:\n+" + line + r")*"
+            valid = (
+                isinstance(value, str)
+                and 0 < len(value) <= self.max_length
+                and re.fullmatch(pattern, value) is not None
+                and len(value.encode("utf-16-le")) // 2 <= self.max_length
+            )
+        elif self.kind == "integer":
+            valid = (
+                type(value) is int
+                and (self.minimum is None or value >= self.minimum)
+                and (self.maximum is None or value <= self.maximum)
+            )
+        elif self.kind == "boolean":
+            valid = type(value) is bool
+        if not valid:
+            raise ValueError("input_type_mismatch")
+        return value
+
+
+class Output(Strict):
+    source: Name | None = None
+    kind: Literal["money", "text"]
+    sensitive: Literal[True] = True
+    allowed_values: tuple[str, ...] = ()
+
+    @model_validator(mode="after")
+    def allowed_shape(self):
+        if self.allowed_values and (
+            self.kind != "text"
+            or any(not value.strip() for value in self.allowed_values)
+            or len(set(self.allowed_values)) != len(self.allowed_values)
+        ):
+            raise ValueError("allowed values require distinct nonempty text")
+        return self
+
+    def parse(self, value: str):
+        if self.kind == "text":
+            if not value.strip():
+                raise ValueError("empty_output")
+            if self.allowed_values and value.strip() not in self.allowed_values:
+                raise ValueError("unexpected_output_value")
+            return value.strip()
+        if not re.fullmatch(r"\$[ \u00a0]?(?:0|[1-9]\d*|[1-9]\d{0,2}(?:,\d{3})+)\.\d{2}", value):
+            raise ValueError("invalid_money")
+        return {"amount": str(Decimal(value[1:].replace(",", ""))), "currency": "USD"}
+
+
+class Condition(Strict):
+    target: Name
+    kind: Literal[
+        "visible", "equals_input", "equals_integer_input", "count_equals_input", "absent"
+    ] = "visible"
+    input: Name | None = None
+
+    @model_validator(mode="after")
+    def shape(self):
+        if (self.kind in {"equals_input", "equals_integer_input", "count_equals_input"}) != (
+            self.input is not None
+        ):
+            raise ValueError("equality requires exactly one input reference")
+        return self
+
+    def check_input_type(self, inputs):
+        if self.kind in {"equals_integer_input", "count_equals_input"} and (
+            self.input not in inputs or inputs[self.input].kind != "integer"
+        ):
+            raise ValueError("integer equality requires an integer input")
+        if self.kind == "count_equals_input" and (
+            inputs[self.input].minimum is None or inputs[self.input].minimum < 0
+        ):
+            raise ValueError("count equality requires a nonnegative input bound")
+
+    def matches_value(self, value, arguments):
+        expected = arguments[self.input]
+        if type(expected) is bool:
+            return type(value) is bool and value is expected
+        text = value.strip()
+        if self.kind == "equals_integer_input":
+            return (
+                type(expected) is int
+                and len(text) <= 1000
+                and re.fullmatch(
+                    r"[+-]?(?:0|[1-9][0-9]*|[1-9][0-9]{0,2}(?:,[0-9]{3})+)(?:\.0+)?",
+                    text,
+                )
+                is not None
+                and Decimal(text.replace(",", "")) == expected
+            )
+        return text == str(expected)
+
+
+class Review(Strict):
+    """Present only on a model-proposed contract; absent means hand-authored and
+    already treated as reviewed. `goal` preserves the exact sentence the model
+    saw, even if a caller later overrides GoalRequest.goal (e.g. `discover --goal`).
+    """
+
+    status: Literal["draft", "accepted"] = "draft"
+    proposed_by: str = Field(min_length=1, max_length=200)
+    goal: str = Field(min_length=1, max_length=2000)
+
+
+class GoalRequest(Strict):
+    """Caller-owned task contract; no example values or recorded action sequence."""
+
+    name: Name
+    goal: str = Field(min_length=1, max_length=2000)
+    inputs: dict[Name, Input] = Field(min_length=1)
+    outputs: dict[Name, Output] = Field(min_length=1)
+    checkpoint: tuple[Condition, ...] = Field(min_length=1)
+    review: Review | None = None
+
+    @model_serializer(mode="wrap")
+    def serialized(self, handler):
+        data = handler(self)
+        if self.review is None:
+            data.pop("review", None)
+        return data
+
+    @classmethod
+    def load(cls, path):
+        return cls.model_validate_json(path.read_text())
+
+    def arguments(self, values):
+        if not isinstance(values, dict) or values.keys() != self.inputs.keys():
+            raise ValueError("input_names_mismatch")
+        return {key: spec.validate_value(values[key]) for key, spec in self.inputs.items()}
+
+
+class Click(Strict):
+    op: Literal["click"] = "click"
+    target: Name
+    after: Condition
+
+
+class Fill(Strict):
+    op: Literal["fill"] = "fill"
+    target: Name
+    input: Name
+
+
+class Read(Strict):
+    op: Literal["read"] = "read"
+    target: Name
+    output: Name
+
+
+Step = Annotated[Click | Fill | Read, Field(discriminator="op")]
+
+
+class Provenance(Strict):
+    mode: Literal["llm", "test_fixture"]
+    model: str = Field(min_length=1, max_length=100)
+    calls: int = Field(ge=0)
+    run_id: str
+    # Set only when discovery ran against a model-proposed (draft) contract:
+    # how the operator accepted it, never what they saw. Omitted (not null) when
+    # absent so hand-authored-contract artifacts keep byte-identical serialization.
+    accepted_by: Literal["flag", "tty"] | None = None
+
+    @model_serializer(mode="wrap")
+    def serialized(self, handler):
+        data = handler(self)
+        if self.accepted_by is None:
+            data.pop("accepted_by", None)
+        return data
+
+    @model_validator(mode="after")
+    def genuine(self):
+        if self.mode == "llm" and self.calls < 1:
+            raise ValueError("LLM provenance needs at least one actual call")
+        return self
+
+
+class Capability(Strict):
+    schema_version: Literal["2.0"] = "2.0"
+    name: Name
+    version: Literal["0.1.0"] = "0.1.0"
+    binding_sha256: str = Field(pattern=r"^[a-f0-9]{64}$")
+    product: Name
+    targets: dict[Name, Target] = Field(
+        min_length=1,
+        description="Discovery-time locator hints; execution resolves these logical keys through the current reviewed tenant presentation.",
+    )
+    inputs: dict[Name, Input] = Field(min_length=1)
+    outputs: dict[Name, Output] = Field(min_length=1)
+    steps: tuple[Step, ...] = Field(min_length=1, max_length=40)
+    checkpoint: tuple[Condition, ...] = Field(min_length=1)
+    provenance: Provenance
+
+    @model_validator(mode="after")
+    def references(self):
+        produced = []
+        for step in self.steps:
+            if step.target not in self.targets:
+                raise ValueError("undeclared target")
+            if isinstance(step, Fill) and step.input not in self.inputs:
+                raise ValueError("undeclared input")
+            if isinstance(step, Read):
+                produced.append(step.output)
+        if len(produced) != len(set(produced)) or set(produced) != set(self.outputs):
+            raise ValueError("each output requires exactly one producer")
+        for step in self.steps:
+            if isinstance(step, Read) and self.outputs[step.output].source not in {
+                None,
+                step.target,
+            }:
+                raise ValueError("output source mismatch")
+        conditions = [*self.checkpoint, *(s.after for s in self.steps if isinstance(s, Click))]
+        for condition in conditions:
+            if condition.target not in self.targets:
+                raise ValueError("undeclared condition target")
+            if condition.input and condition.input not in self.inputs:
+                raise ValueError("undeclared condition input")
+            condition.check_input_type(self.inputs)
+        return self
+
+    def arguments(self, values: dict) -> dict:
+        if not isinstance(values, dict) or values.keys() != self.inputs.keys():
+            raise ValueError("input_names_mismatch")
+        return {key: spec.validate_value(values[key]) for key, spec in self.inputs.items()}
+
+    def digest(self) -> str:
+        return digest(self.model_dump(mode="json"))
+
+
+class Failure(Strict):
+    code: Name
+    step: int | None = None
+    expected: str
+    observed: str
+    evidence: str | None = None
+    screenshot: str | None = None
+    target: Name | None = None
+    locator: Target | None = None
+    match_count: int | None = Field(default=None, ge=0)
+    intervention_id: str | None = None
+    # Only set for target_drift: whether the artifact's discovery-time hint for
+    # `target` differs from what the current reviewed presentation resolves. False
+    # points at a live surface anomaly rather than a reviewed tenant/version change.
+    hint_differs: bool | None = None
+
+
+class Success(Strict):
+    status: Literal["success"] = "success"
+    outputs: dict
+    llm_calls: int = 0
+    # Non-sensitive, informational: e.g. "fallback_resolved:search:normalized"
+    # per rescued control (never the matched text -- see fallback.py/engine.py).
+    # Omitted (not an empty list) when no fallback ran, so every existing
+    # result.json and committed artifact stays byte-identical.
+    warnings: tuple[str, ...] = ()
+
+    @model_serializer(mode="wrap")
+    def serialized(self, handler):
+        data = handler(self)
+        if not self.warnings:
+            data.pop("warnings", None)
+        return data
+
+
+class BusinessOutcome(Strict):
+    status: Literal["business_outcome"] = "business_outcome"
+    code: Name
+    llm_calls: int = 0
+
+
+class Failed(Strict):
+    status: Literal["failure"] = "failure"
+    failure: Failure
+    llm_calls: int = 0
+
+
+Result = Annotated[Success | BusinessOutcome | Failed, Field(discriminator="status")]
+
+
+def digest(value: dict) -> str:
+    return hashlib.sha256(
+        json.dumps(value, sort_keys=True, separators=(",", ":")).encode()
+    ).hexdigest()
