@@ -1,0 +1,213 @@
+{
+  "schema_version": "2.0",
+  "name": "read_savings",
+  "version": "0.1.0",
+  "binding_sha256": "90a623826b469a0bcc070a2f252943643b2c9b465ca865502c7f89cc0429511a",
+  "product": "meridian_core",
+  "targets": {
+    "page": {
+      "frames": [],
+      "kind": "css",
+      "name": "body",
+      "role": null
+    },
+    "operator_input": {
+      "frames": [],
+      "kind": "css",
+      "name": "input[name=\"operator\"]",
+      "role": null
+    },
+    "password_input": {
+      "frames": [],
+      "kind": "css",
+      "name": "input[name=\"password\"]",
+      "role": null
+    },
+    "branch_select": {
+      "frames": [],
+      "kind": "css",
+      "name": "select[name=\"branch\"]",
+      "role": null
+    },
+    "sign_on": {
+      "frames": [],
+      "kind": "role",
+      "name": "Sign On",
+      "role": "button"
+    },
+    "main_menu_screen": {
+      "frames": [],
+      "kind": "role",
+      "name": "MAIN MENU",
+      "role": "heading"
+    },
+    "member_inquiry_link": {
+      "frames": [],
+      "kind": "role",
+      "name": "Member Inquiry",
+      "role": "link"
+    },
+    "member_inquiry_screen": {
+      "frames": [],
+      "kind": "role",
+      "name": "MEMBER INQUIRY / SELECTION",
+      "role": "heading"
+    },
+    "search_value_input": {
+      "frames": [],
+      "kind": "css",
+      "name": "input[name=\"q\"]",
+      "role": null
+    },
+    "search_button": {
+      "frames": [],
+      "kind": "role",
+      "name": "Search",
+      "role": "button"
+    },
+    "select_member": {
+      "frames": [],
+      "kind": "role",
+      "name": "Select",
+      "role": "link"
+    },
+    "savings_screen": {
+      "frames": [],
+      "kind": "role",
+      "name": "MEMBER RECORD",
+      "role": "heading"
+    },
+    "member_identity": {
+      "frames": [],
+      "kind": "css",
+      "name": "td.lbl:text-is(\"Member No.:\") + td",
+      "role": null
+    },
+    "balance": {
+      "frames": [],
+      "kind": "css",
+      "name": "tr:has(> td:text-is(\"Regular Shares\")) > td:nth-child(3)",
+      "role": null
+    }
+  },
+  "inputs": {
+    "operator": {
+      "kind": "text",
+      "sensitive": true,
+      "max_length": 80,
+      "pattern": null
+    },
+    "password": {
+      "kind": "text",
+      "sensitive": true,
+      "max_length": 80,
+      "pattern": null
+    },
+    "branch": {
+      "kind": "identifier",
+      "sensitive": true,
+      "max_length": 80,
+      "pattern": "MAIN-001 - Main Office|WEST-014 - Westside|EAST-022 - Eastgate"
+    },
+    "member_id": {
+      "kind": "identifier",
+      "sensitive": true,
+      "max_length": 80,
+      "pattern": "[0-9]{6}"
+    }
+  },
+  "outputs": {
+    "savings_balance": {
+      "source": "balance",
+      "kind": "money",
+      "sensitive": true,
+      "allowed_values": []
+    }
+  },
+  "steps": [
+    {
+      "op": "fill",
+      "target": "operator_input",
+      "input": "operator"
+    },
+    {
+      "op": "fill",
+      "target": "password_input",
+      "input": "password"
+    },
+    {
+      "op": "fill",
+      "target": "branch_select",
+      "input": "branch"
+    },
+    {
+      "op": "click",
+      "target": "sign_on",
+      "after": {
+        "target": "main_menu_screen",
+        "kind": "visible",
+        "input": null
+      }
+    },
+    {
+      "op": "click",
+      "target": "member_inquiry_link",
+      "after": {
+        "target": "member_inquiry_screen",
+        "kind": "visible",
+        "input": null
+      }
+    },
+    {
+      "op": "fill",
+      "target": "search_value_input",
+      "input": "member_id"
+    },
+    {
+      "op": "click",
+      "target": "search_button",
+      "after": {
+        "target": "select_member",
+        "kind": "visible",
+        "input": null
+      }
+    },
+    {
+      "op": "click",
+      "target": "select_member",
+      "after": {
+        "target": "savings_screen",
+        "kind": "visible",
+        "input": null
+      }
+    },
+    {
+      "op": "read",
+      "target": "balance",
+      "output": "savings_balance"
+    }
+  ],
+  "checkpoint": [
+    {
+      "target": "page",
+      "kind": "visible",
+      "input": null
+    },
+    {
+      "target": "savings_screen",
+      "kind": "visible",
+      "input": null
+    },
+    {
+      "target": "member_identity",
+      "kind": "equals_input",
+      "input": "member_id"
+    }
+  ],
+  "provenance": {
+    "mode": "llm",
+    "model": "qwen3.6:35b-a3b",
+    "calls": 9,
+    "run_id": "3813f9fca3aa49cd939a20aef9b81197"
+  }
+}

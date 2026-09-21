@@ -1,0 +1,7 @@
+{
+  "target": "https://web-sample.interface-hiring.com",
+  "binding": "integrations/meridian/profile.json",
+  "request": "integrations/meridian/request.json",
+  "capabilities": "integrations/meridian",
+  "capability": "read_savings"
+}

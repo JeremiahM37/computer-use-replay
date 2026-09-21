@@ -1,0 +1,308 @@
+{
+  "version": "1.0",
+  "product": "meridian_core",
+  "entry": "/signon",
+  "routes": {
+    "/signon": ["GET"],
+    "/menu": ["GET"]
+  },
+  "request_rules": [
+    {
+      "path": "/signon",
+      "methods": ["POST"],
+      "query_keys": [],
+      "body_keys": ["operator", "password", "branch"],
+      "body_equals": {},
+      "redirect_to": ["/menu"]
+    },
+    {
+      "path": "/members",
+      "methods": ["GET"],
+      "query_keys": ["by", "q"],
+      "body_keys": [],
+      "body_equals": {},
+      "query_values": {
+        "by": ["number"]
+      }
+    },
+    {
+      "path": "/members/[0-9]{6}",
+      "methods": ["GET"],
+      "query_keys": [],
+      "body_keys": [],
+      "body_equals": {}
+    }
+  ],
+  "controls": {
+    "page": {
+      "target": {
+        "frames": [],
+        "kind": "css",
+        "name": "body",
+        "role": null
+      },
+      "operations": [],
+      "risk": "reversible",
+      "description": "Application page"
+    },
+    "operator_input": {
+      "target": {
+        "frames": [],
+        "kind": "css",
+        "name": "input[name=\"operator\"]",
+        "role": null
+      },
+      "operations": ["fill"],
+      "risk": "reversible",
+      "description": "Operator ID (no label/id in the legacy markup; matched by form field name)",
+      "allowed_inputs": ["operator"]
+    },
+    "password_input": {
+      "target": {
+        "frames": [],
+        "kind": "css",
+        "name": "input[name=\"password\"]",
+        "role": null
+      },
+      "operations": ["fill"],
+      "risk": "reversible",
+      "description": "Operator password",
+      "allowed_inputs": ["password"]
+    },
+    "branch_select": {
+      "target": {
+        "frames": [],
+        "kind": "css",
+        "name": "select[name=\"branch\"]",
+        "role": null
+      },
+      "operations": ["fill"],
+      "risk": "reversible",
+      "description": "Operator home branch",
+      "allowed_inputs": ["branch"]
+    },
+    "sign_on": {
+      "target": {
+        "frames": [],
+        "kind": "role",
+        "name": "Sign On",
+        "role": "button"
+      },
+      "operations": ["click"],
+      "risk": "reversible",
+      "description": "Submit sign-on form"
+    },
+    "main_menu_screen": {
+      "target": {
+        "frames": [],
+        "kind": "role",
+        "name": "MAIN MENU",
+        "role": "heading"
+      },
+      "operations": [],
+      "risk": "reversible",
+      "description": "Main menu"
+    },
+    "member_inquiry_link": {
+      "target": {
+        "frames": [],
+        "kind": "role",
+        "name": "Member Inquiry",
+        "role": "link"
+      },
+      "operations": ["click"],
+      "risk": "reversible",
+      "description": "Navigate bar link to member inquiry"
+    },
+    "member_inquiry_screen": {
+      "target": {
+        "frames": [],
+        "kind": "role",
+        "name": "MEMBER INQUIRY / SELECTION",
+        "role": "heading"
+      },
+      "operations": [],
+      "risk": "reversible",
+      "description": "Member inquiry / selection screen"
+    },
+    "search_value_input": {
+      "target": {
+        "frames": [],
+        "kind": "css",
+        "name": "input[name=\"q\"]",
+        "role": null
+      },
+      "operations": ["fill"],
+      "risk": "reversible",
+      "description": "Search value (member number; search-by mode left at its default)",
+      "allowed_inputs": ["member_id"]
+    },
+    "search_button": {
+      "target": {
+        "frames": [],
+        "kind": "role",
+        "name": "Search",
+        "role": "button"
+      },
+      "operations": ["click"],
+      "risk": "reversible",
+      "description": "Submit member search"
+    },
+    "select_member": {
+      "target": {
+        "frames": [],
+        "kind": "role",
+        "name": "Select",
+        "role": "link"
+      },
+      "operations": ["click"],
+      "risk": "reversible",
+      "description": "Open the single matched member's record (number search returns at most one row)",
+      "checkpoint": true
+    },
+    "savings_screen": {
+      "target": {
+        "frames": [],
+        "kind": "role",
+        "name": "MEMBER RECORD",
+        "role": "heading"
+      },
+      "operations": [],
+      "risk": "reversible",
+      "description": "Member record screen; shares/balances (including the Regular Shares savings row) render on this same screen, not a separate ledger"
+    },
+    "member_identity": {
+      "target": {
+        "frames": [],
+        "kind": "css",
+        "name": "td.lbl:text-is(\"Member No.:\") + td",
+        "role": null
+      },
+      "operations": ["read"],
+      "risk": "reversible",
+      "description": "Displayed member number (no th/label exists; matched by the adjacent label cell's exact text)"
+    },
+    "balance": {
+      "target": {
+        "frames": [],
+        "kind": "css",
+        "name": "tr:has(> td:text-is(\"Regular Shares\")) > td:nth-child(3)",
+        "role": null
+      },
+      "operations": ["read"],
+      "risk": "reversible",
+      "description": "Regular Shares (savings) balance cell, matched by exact row type text; the header row is also a td, not a th, and the whole page is one nested layout table so the row match is restricted to a direct-child td to avoid matching an ancestor row"
+    },
+    "not_found": {
+      "target": {
+        "frames": [],
+        "kind": "css",
+        "name": "font.err:text-is(\"No member records matched your search.\")",
+        "role": null
+      },
+      "operations": [],
+      "risk": "reversible",
+      "description": "No member matched the search"
+    },
+    "validation": {
+      "target": {
+        "frames": [],
+        "kind": "css",
+        "name": "font.err:text-is(\"TRANSACTION REJECTED\")",
+        "role": null
+      },
+      "operations": [],
+      "risk": "reversible",
+      "description": "Transaction rejected / validation error"
+    },
+    "denied": {
+      "target": {
+        "frames": [],
+        "kind": "css",
+        "name": "font.err:text-is(\"SUPERVISOR OVERRIDE REQUIRED\")",
+        "role": null
+      },
+      "operations": [],
+      "risk": "reversible",
+      "description": "Operator not authorized; supervisor override required"
+    },
+    "expired": {
+      "target": {
+        "frames": [],
+        "kind": "css",
+        "name": "font.err:text-is(\"YOUR SESSION HAS TIMED OUT\")",
+        "role": null
+      },
+      "operations": [],
+      "risk": "reversible",
+      "description": "Session timed out"
+    },
+    "return_to_signon": {
+      "target": {
+        "frames": [],
+        "kind": "role",
+        "name": "Return to Sign On",
+        "role": "link"
+      },
+      "operations": ["click"],
+      "risk": "human_only",
+      "description": "Return to the sign-on screen after a timed-out session (re-entering credentials is a human action)"
+    }
+  },
+  "states": {
+    "member_not_found": {
+      "target": "not_found",
+      "kind": "business"
+    },
+    "validation_error": {
+      "target": "validation",
+      "kind": "business"
+    },
+    "permission_denied": {
+      "target": "denied",
+      "kind": "business"
+    },
+    "session_expired": {
+      "target": "expired",
+      "kind": "human",
+      "manual_recovery": "return_to_signon"
+    }
+  },
+  "input_types": {
+    "operator": {
+      "kind": "text",
+      "sensitive": true,
+      "max_length": 80,
+      "pattern": null
+    },
+    "password": {
+      "kind": "text",
+      "sensitive": true,
+      "max_length": 80,
+      "pattern": null
+    },
+    "branch": {
+      "kind": "identifier",
+      "sensitive": true,
+      "max_length": 80,
+      "pattern": "MAIN-001 - Main Office|WEST-014 - Westside|EAST-022 - Eastgate"
+    },
+    "member_id": {
+      "kind": "identifier",
+      "sensitive": true,
+      "max_length": 80,
+      "pattern": "[0-9]{6}"
+    }
+  },
+  "invariants": [
+    {
+      "target": "page",
+      "kind": "visible",
+      "input": null
+    }
+  ],
+  "max_steps": 20,
+  "step_timeout": 10.0,
+  "run_timeout": 300.0,
+  "max_recoveries": 2
+}

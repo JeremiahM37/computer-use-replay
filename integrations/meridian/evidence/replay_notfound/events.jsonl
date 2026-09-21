@@ -1,0 +1,16 @@
+{"event": "started", "capability": "read_savings", "llm_calls": 0, "artifact_sha256": "4ebebe1814dae6f792574edf3f8d0475ac66d23136a79d6665e4bcebdfe8ee4a", "sequence": 1, "time": "2026-09-18T22:51:16.225827+00:00"}
+{"event": "action_started", "target": "operator_input", "parameter": "operator", "op": "fill", "sequence": 2, "time": "2026-09-18T22:51:16.596069+00:00"}
+{"event": "action_completed", "target": "operator_input", "op": "fill", "sequence": 3, "time": "2026-09-18T22:51:16.608640+00:00"}
+{"event": "action_started", "target": "password_input", "parameter": "password", "op": "fill", "sequence": 4, "time": "2026-09-18T22:51:16.623194+00:00"}
+{"event": "action_completed", "target": "password_input", "op": "fill", "sequence": 5, "time": "2026-09-18T22:51:16.629442+00:00"}
+{"event": "action_started", "target": "branch_select", "parameter": "branch", "op": "fill", "sequence": 6, "time": "2026-09-18T22:51:16.641830+00:00"}
+{"event": "action_completed", "target": "branch_select", "op": "fill", "sequence": 7, "time": "2026-09-18T22:51:16.649105+00:00"}
+{"event": "action_started", "target": "sign_on", "op": "click", "sequence": 8, "time": "2026-09-18T22:51:16.660933+00:00"}
+{"event": "action_completed", "target": "sign_on", "op": "click", "sequence": 9, "time": "2026-09-18T22:51:16.864199+00:00"}
+{"event": "action_started", "target": "member_inquiry_link", "op": "click", "sequence": 10, "time": "2026-09-18T22:51:16.899466+00:00"}
+{"event": "action_completed", "target": "member_inquiry_link", "op": "click", "sequence": 11, "time": "2026-09-18T22:51:16.984941+00:00"}
+{"event": "action_started", "target": "search_value_input", "parameter": "member_id", "op": "fill", "sequence": 12, "time": "2026-09-18T22:51:17.017203+00:00"}
+{"event": "action_completed", "target": "search_value_input", "op": "fill", "sequence": 13, "time": "2026-09-18T22:51:17.023388+00:00"}
+{"event": "action_started", "target": "search_button", "op": "click", "sequence": 14, "time": "2026-09-18T22:51:17.033989+00:00"}
+{"event": "action_completed", "target": "search_button", "op": "click", "sequence": 15, "time": "2026-09-18T22:51:17.146521+00:00"}
+{"event": "business_outcome", "code": "member_not_found", "llm_calls": 0, "sequence": 16, "time": "2026-09-18T22:51:17.170061+00:00"}

@@ -1,0 +1,55 @@
+{
+  "name": "read_savings",
+  "goal": "Sign on to Meridian Core, look up the requested member by member number, and read their current Regular Shares (savings) balance from the member record screen.",
+  "inputs": {
+    "operator": {
+      "kind": "text",
+      "sensitive": true,
+      "max_length": 80,
+      "pattern": null
+    },
+    "password": {
+      "kind": "text",
+      "sensitive": true,
+      "max_length": 80,
+      "pattern": null
+    },
+    "branch": {
+      "kind": "identifier",
+      "sensitive": true,
+      "max_length": 80,
+      "pattern": "MAIN-001 - Main Office|WEST-014 - Westside|EAST-022 - Eastgate"
+    },
+    "member_id": {
+      "kind": "identifier",
+      "sensitive": true,
+      "max_length": 80,
+      "pattern": "[0-9]{6}"
+    }
+  },
+  "outputs": {
+    "savings_balance": {
+      "source": "balance",
+      "kind": "money",
+      "sensitive": true,
+      "allowed_values": []
+    }
+  },
+  "checkpoint": [
+    {
+      "target": "page",
+      "kind": "visible",
+      "input": null
+    },
+    {
+      "target": "savings_screen",
+      "kind": "visible",
+      "input": null
+    },
+    {
+      "target": "member_identity",
+      "kind": "equals_input",
+      "input": "member_id"
+    }
+  ]
+}

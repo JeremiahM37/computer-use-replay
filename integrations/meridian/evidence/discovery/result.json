@@ -1,0 +1,7 @@
+{
+  "status": "success",
+  "outputs": {
+    "savings_balance": "<withheld>"
+  },
+  "llm_calls": 9
+}
