@@ -1,0 +1,86 @@
+{
+  "controls": [
+    {
+      "target": "finalize",
+      "count": 1,
+      "ready": true,
+      "locator": {
+        "frames": [
+          "workbench"
+        ],
+        "kind": "role",
+        "name": "Finalize account closure",
+        "role": "button"
+      },
+      "box": {
+        "x": 32.0,
+        "y": 222.90625,
+        "width": 211.0625,
+        "height": 39.0
+      },
+      "data": "omitted"
+    },
+    {
+      "target": "member_identity",
+      "count": 1,
+      "ready": true,
+      "locator": {
+        "frames": [
+          "workbench"
+        ],
+        "kind": "row_value",
+        "name": "Member identifier",
+        "role": null
+      },
+      "box": {
+        "x": 323.890625,
+        "y": 78.90625,
+        "width": 428.109375,
+        "height": 47.5
+      },
+      "data": "omitted"
+    },
+    {
+      "target": "balance",
+      "count": 1,
+      "ready": true,
+      "locator": {
+        "frames": [
+          "workbench"
+        ],
+        "kind": "row_value",
+        "name": "Available balance",
+        "role": null
+      },
+      "box": {
+        "x": 323.890625,
+        "y": 126.40625,
+        "width": 428.109375,
+        "height": 48.0
+      },
+      "data": "omitted"
+    },
+    {
+      "target": "savings_screen",
+      "count": 1,
+      "ready": true,
+      "locator": {
+        "frames": [
+          "workbench"
+        ],
+        "kind": "role",
+        "name": "Savings ledger",
+        "role": "heading"
+      },
+      "box": {
+        "x": 32.0,
+        "y": 32.0,
+        "width": 1152.0,
+        "height": 27.0
+      },
+      "data": "omitted"
+    }
+  ],
+  "states": [],
+  "unknown_dialogs": 0
+}

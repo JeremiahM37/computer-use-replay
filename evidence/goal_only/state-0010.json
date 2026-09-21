@@ -1,0 +1,86 @@
+{
+  "controls": [
+    {
+      "target": "search",
+      "count": 1,
+      "ready": true,
+      "locator": {
+        "frames": [
+          "workbench"
+        ],
+        "kind": "role",
+        "name": "Find member",
+        "role": "button"
+      },
+      "box": {
+        "x": 32.0,
+        "y": 164.90625,
+        "width": 125.46875,
+        "height": 39.0
+      },
+      "data": "omitted"
+    },
+    {
+      "target": "member_input",
+      "count": 1,
+      "ready": true,
+      "locator": {
+        "frames": [
+          "workbench"
+        ],
+        "kind": "label",
+        "name": "Member identifier",
+        "role": null
+      },
+      "box": {
+        "x": 365.546875,
+        "y": 92.90625,
+        "width": 366.453125,
+        "height": 41.0
+      },
+      "data": "omitted"
+    },
+    {
+      "target": "member_identity",
+      "count": 1,
+      "ready": true,
+      "locator": {
+        "frames": [
+          "workbench"
+        ],
+        "kind": "row_value",
+        "name": "Member identifier",
+        "role": null
+      },
+      "box": {
+        "x": 345.546875,
+        "y": 78.90625,
+        "width": 406.453125,
+        "height": 69.5
+      },
+      "data": "omitted"
+    },
+    {
+      "target": "search_screen",
+      "count": 1,
+      "ready": true,
+      "locator": {
+        "frames": [
+          "workbench"
+        ],
+        "kind": "role",
+        "name": "Member search",
+        "role": "heading"
+      },
+      "box": {
+        "x": 32.0,
+        "y": 32.0,
+        "width": 1152.0,
+        "height": 27.0
+      },
+      "data": "omitted"
+    }
+  ],
+  "states": [],
+  "unknown_dialogs": 0
+}

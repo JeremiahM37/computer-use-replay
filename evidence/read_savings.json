@@ -1,0 +1,179 @@
+{
+  "schema_version": "2.0",
+  "name": "read_savings",
+  "version": "0.1.0",
+  "binding_sha256": "2bf53f64a907ebd00eb4e80ae7629f347027a526a9035414713f8098b7666a16",
+  "product": "juniper_workstation",
+  "targets": {
+    "search": {
+      "frames": [
+        "workbench"
+      ],
+      "kind": "role",
+      "name": "Find member",
+      "role": "button"
+    },
+    "open_member": {
+      "frames": [
+        "workbench"
+      ],
+      "kind": "role",
+      "name": "Open member",
+      "role": "button"
+    },
+    "accounts": {
+      "frames": [
+        "workbench"
+      ],
+      "kind": "role",
+      "name": "View accounts",
+      "role": "button"
+    },
+    "savings": {
+      "frames": [
+        "workbench"
+      ],
+      "kind": "role",
+      "name": "Open savings ledger",
+      "role": "button"
+    },
+    "member_input": {
+      "frames": [
+        "workbench"
+      ],
+      "kind": "label",
+      "name": "Member identifier",
+      "role": null
+    },
+    "member_identity": {
+      "frames": [
+        "workbench"
+      ],
+      "kind": "row_value",
+      "name": "Member identifier",
+      "role": null
+    },
+    "balance": {
+      "frames": [
+        "workbench"
+      ],
+      "kind": "row_value",
+      "name": "Available balance",
+      "role": null
+    },
+    "results_screen": {
+      "frames": [
+        "workbench"
+      ],
+      "kind": "role",
+      "name": "Search results",
+      "role": "heading"
+    },
+    "member_screen": {
+      "frames": [
+        "workbench"
+      ],
+      "kind": "role",
+      "name": "Member summary",
+      "role": "heading"
+    },
+    "accounts_screen": {
+      "frames": [
+        "workbench"
+      ],
+      "kind": "role",
+      "name": "Account directory",
+      "role": "heading"
+    },
+    "savings_screen": {
+      "frames": [
+        "workbench"
+      ],
+      "kind": "role",
+      "name": "Savings ledger",
+      "role": "heading"
+    }
+  },
+  "inputs": {
+    "member_id": {
+      "kind": "identifier",
+      "sensitive": true,
+      "max_length": 80,
+      "pattern": "[0-9]{5}"
+    }
+  },
+  "outputs": {
+    "available_balance": {
+      "source": "balance",
+      "kind": "money",
+      "sensitive": true,
+      "allowed_values": []
+    }
+  },
+  "steps": [
+    {
+      "op": "fill",
+      "target": "member_input",
+      "input": "member_id"
+    },
+    {
+      "op": "click",
+      "target": "search",
+      "after": {
+        "target": "results_screen",
+        "kind": "visible",
+        "input": null
+      }
+    },
+    {
+      "op": "click",
+      "target": "open_member",
+      "after": {
+        "target": "member_screen",
+        "kind": "visible",
+        "input": null
+      }
+    },
+    {
+      "op": "click",
+      "target": "accounts",
+      "after": {
+        "target": "accounts_screen",
+        "kind": "visible",
+        "input": null
+      }
+    },
+    {
+      "op": "click",
+      "target": "savings",
+      "after": {
+        "target": "savings_screen",
+        "kind": "visible",
+        "input": null
+      }
+    },
+    {
+      "op": "read",
+      "target": "balance",
+      "output": "available_balance"
+    }
+  ],
+  "checkpoint": [
+    {
+      "target": "savings_screen",
+      "kind": "visible",
+      "input": null
+    },
+    {
+      "target": "member_identity",
+      "kind": "equals_input",
+      "input": "member_id"
+    }
+  ],
+  "provenance": {
+    "mode": "llm",
+    "model": "qwen3.6:35b-a3b",
+    "calls": 6,
+    "run_id": "discovery_read_savings"
+  }
+}

@@ -1,0 +1,48 @@
+{
+  "controls": [
+    {
+      "target": "renew_session",
+      "count": 1,
+      "ready": true,
+      "locator": {
+        "frames": [
+          "workbench"
+        ],
+        "kind": "role",
+        "name": "Renew session",
+        "role": "button"
+      },
+      "box": {
+        "x": 32.0,
+        "y": 113.90625,
+        "width": 137.625,
+        "height": 39.0
+      },
+      "data": "omitted"
+    },
+    {
+      "target": "expired",
+      "count": 1,
+      "ready": true,
+      "locator": {
+        "frames": [
+          "workbench"
+        ],
+        "kind": "role",
+        "name": "Session expired",
+        "role": "heading"
+      },
+      "box": {
+        "x": 32.0,
+        "y": 32.0,
+        "width": 1152.0,
+        "height": 27.0
+      },
+      "data": "omitted"
+    }
+  ],
+  "states": [
+    "session_expired"
+  ],
+  "unknown_dialogs": 0
+}

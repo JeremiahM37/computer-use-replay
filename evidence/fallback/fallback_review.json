@@ -1,0 +1,15 @@
+{
+  "search": {
+    "op": "click",
+    "rung": "normalized",
+    "target": {
+      "frames": [
+        "workbench"
+      ],
+      "kind": "role",
+      "name": "Find member",
+      "role": "button"
+    },
+    "instruction": "A rescued control's on-screen wording no longer matches its reviewed target exactly (case/whitespace/decoration aside). Open the application and, if the current wording is acceptable, add it as a reviewed alternate for this control."
+  }
+}

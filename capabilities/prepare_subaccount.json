@@ -1,0 +1,238 @@
+{
+  "schema_version": "2.0",
+  "name": "prepare_subaccount",
+  "version": "0.1.0",
+  "binding_sha256": "2bf53f64a907ebd00eb4e80ae7629f347027a526a9035414713f8098b7666a16",
+  "product": "juniper_workstation",
+  "targets": {
+    "search": {
+      "frames": [
+        "workbench"
+      ],
+      "kind": "role",
+      "name": "Find member",
+      "role": "button"
+    },
+    "open_member": {
+      "frames": [
+        "workbench"
+      ],
+      "kind": "role",
+      "name": "Open member",
+      "role": "button"
+    },
+    "accounts": {
+      "frames": [
+        "workbench"
+      ],
+      "kind": "role",
+      "name": "View accounts",
+      "role": "button"
+    },
+    "member_input": {
+      "frames": [
+        "workbench"
+      ],
+      "kind": "label",
+      "name": "Member identifier",
+      "role": null
+    },
+    "member_identity": {
+      "frames": [
+        "workbench"
+      ],
+      "kind": "row_value",
+      "name": "Member identifier",
+      "role": null
+    },
+    "results_screen": {
+      "frames": [
+        "workbench"
+      ],
+      "kind": "role",
+      "name": "Search results",
+      "role": "heading"
+    },
+    "member_screen": {
+      "frames": [
+        "workbench"
+      ],
+      "kind": "role",
+      "name": "Member summary",
+      "role": "heading"
+    },
+    "accounts_screen": {
+      "frames": [
+        "workbench"
+      ],
+      "kind": "role",
+      "name": "Account directory",
+      "role": "heading"
+    },
+    "subaccount": {
+      "frames": [
+        "workbench"
+      ],
+      "kind": "role",
+      "name": "Start sub-account",
+      "role": "button"
+    },
+    "nickname_input": {
+      "frames": [
+        "workbench"
+      ],
+      "kind": "label",
+      "name": "Sub-account nickname",
+      "role": null
+    },
+    "review_subaccount": {
+      "frames": [
+        "workbench"
+      ],
+      "kind": "role",
+      "name": "Review sub-account",
+      "role": "button"
+    },
+    "subaccount_screen": {
+      "frames": [
+        "workbench"
+      ],
+      "kind": "role",
+      "name": "Sub-account setup",
+      "role": "heading"
+    },
+    "confirmation_screen": {
+      "frames": [
+        "workbench"
+      ],
+      "kind": "role",
+      "name": "Sub-account confirmation",
+      "role": "heading"
+    },
+    "review_status": {
+      "frames": [
+        "workbench"
+      ],
+      "kind": "row_value",
+      "name": "Review status",
+      "role": null
+    },
+    "review_nickname": {
+      "frames": [
+        "workbench"
+      ],
+      "kind": "row_value",
+      "name": "Nickname",
+      "role": null
+    }
+  },
+  "inputs": {
+    "member_id": {
+      "kind": "identifier",
+      "sensitive": true,
+      "max_length": 80,
+      "pattern": "[0-9]{5}"
+    },
+    "nickname": {
+      "kind": "text",
+      "sensitive": true,
+      "max_length": 40,
+      "pattern": null
+    }
+  },
+  "outputs": {
+    "review_status": {
+      "source": "review_status",
+      "kind": "text",
+      "sensitive": true,
+      "allowed_values": [
+        "Ready for confirmation"
+      ]
+    }
+  },
+  "steps": [
+    {
+      "op": "fill",
+      "target": "member_input",
+      "input": "member_id"
+    },
+    {
+      "op": "click",
+      "target": "search",
+      "after": {
+        "target": "results_screen",
+        "kind": "visible",
+        "input": null
+      }
+    },
+    {
+      "op": "click",
+      "target": "open_member",
+      "after": {
+        "target": "member_screen",
+        "kind": "visible",
+        "input": null
+      }
+    },
+    {
+      "op": "click",
+      "target": "accounts",
+      "after": {
+        "target": "accounts_screen",
+        "kind": "visible",
+        "input": null
+      }
+    },
+    {
+      "op": "click",
+      "target": "subaccount",
+      "after": {
+        "target": "subaccount_screen",
+        "kind": "visible",
+        "input": null
+      }
+    },
+    {
+      "op": "fill",
+      "target": "nickname_input",
+      "input": "nickname"
+    },
+    {
+      "op": "click",
+      "target": "review_subaccount",
+      "after": {
+        "target": "confirmation_screen",
+        "kind": "visible",
+        "input": null
+      }
+    },
+    {
+      "op": "read",
+      "target": "review_status",
+      "output": "review_status"
+    }
+  ],
+  "checkpoint": [
+    {
+      "target": "confirmation_screen",
+      "kind": "visible",
+      "input": null
+    },
+    {
+      "target": "member_identity",
+      "kind": "equals_input",
+      "input": "member_id"
+    },
+    {
+      "target": "review_nickname",
+      "kind": "equals_input",
+      "input": "nickname"
+    }
+  ],
+  "provenance": {
+    "mode": "llm",
+    "model": "qwen3.6:35b-a3b",
+    "calls": 8,
+    "run_id": "prepare_subaccount-normal-p1-m1"
+  }
+}

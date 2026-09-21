@@ -1,0 +1,37 @@
+{
+  "name": "lookup_member_savings",
+  "goal": "Look up the requested member and read their current available savings balance.",
+  "inputs": {
+    "member_id": {
+      "kind": "identifier",
+      "sensitive": true,
+      "max_length": 80,
+      "pattern": "[0-9]{5}"
+    }
+  },
+  "outputs": {
+    "savings_balance": {
+      "source": "balance",
+      "kind": "money",
+      "sensitive": true,
+      "allowed_values": []
+    }
+  },
+  "checkpoint": [
+    {
+      "target": "savings_screen",
+      "kind": "visible",
+      "input": null
+    },
+    {
+      "target": "member_identity",
+      "kind": "equals_input",
+      "input": "member_id"
+    }
+  ],
+  "review": {
+    "status": "draft",
+    "proposed_by": "ollama/qwen3.6:35b-a3b",
+    "goal": "Look up the requested member and read their current available savings balance."
+  }
+}

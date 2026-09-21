@@ -1,0 +1,15 @@
+{"event": "started", "capability": "read_savings", "llm_calls": 0, "artifact_sha256": "55980dd88b6ef5f584d67326b24de6befa4a79bcfd3dc59977cad5081d01f40a", "sequence": 1, "time": "2026-09-21T17:59:33.071955+00:00"}
+{"event": "action_started", "target": "member_input", "parameter": "member_id", "op": "fill", "sequence": 2, "time": "2026-09-21T17:59:33.194821+00:00"}
+{"event": "action_completed", "target": "member_input", "op": "fill", "sequence": 3, "time": "2026-09-21T17:59:33.207074+00:00"}
+{"event": "fallback_resolved", "target": "search", "op": "click", "sequence": 4, "rung": "normalized", "time": "2026-09-21T17:59:36.256753+00:00"}
+{"event": "action_started", "target": "search", "op": "click", "sequence": 5, "time": "2026-09-21T17:59:36.265976+00:00"}
+{"event": "action_completed", "target": "search", "op": "click", "sequence": 6, "time": "2026-09-21T17:59:36.299950+00:00"}
+{"event": "action_started", "target": "open_member", "op": "click", "sequence": 7, "time": "2026-09-21T17:59:36.386986+00:00"}
+{"event": "action_completed", "target": "open_member", "op": "click", "sequence": 8, "time": "2026-09-21T17:59:36.405784+00:00"}
+{"event": "action_started", "target": "accounts", "op": "click", "sequence": 9, "time": "2026-09-21T17:59:36.496136+00:00"}
+{"event": "action_completed", "target": "accounts", "op": "click", "sequence": 10, "time": "2026-09-21T17:59:36.505781+00:00"}
+{"event": "action_started", "target": "savings", "op": "click", "sequence": 11, "time": "2026-09-21T17:59:36.598365+00:00"}
+{"event": "action_completed", "target": "savings", "op": "click", "sequence": 12, "time": "2026-09-21T17:59:36.605415+00:00"}
+{"event": "action_started", "target": "balance", "op": "read", "sequence": 13, "time": "2026-09-21T17:59:36.705951+00:00"}
+{"event": "action_completed", "target": "balance", "op": "read", "sequence": 14, "time": "2026-09-21T17:59:36.707704+00:00"}
+{"event": "success", "llm_calls": 0, "sequence": 15, "time": "2026-09-21T17:59:36.720871+00:00"}

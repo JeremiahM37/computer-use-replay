@@ -1,0 +1,41 @@
+{"event": "model_response", "provider": "ollama", "model": "qwen3.6:35b-a3b", "llm_calls": 1, "elapsed_ms": 14997, "prompt_tokens": 1618, "output_tokens": 93, "response_sha256": "3a833998b464f963c60f7979e054a547e116e2feabd58d3c6c18666de1d5738c", "sequence": 1, "time": "2026-09-19T03:51:25.001873+00:00"}
+{"event": "contract_proposed", "capability": "lookup_member_savings", "provider": "ollama", "model": "qwen3.6:35b-a3b", "llm_calls": 1, "sequence": 2, "time": "2026-09-19T03:51:25.002563+00:00"}
+{"event": "contract_accepted", "capability": "lookup_member_savings", "code": "flag", "sequence": 3, "time": "2026-09-19T03:51:25.071433+00:00"}
+{"event": "started", "model": "qwen3.6:35b-a3b", "llm_calls": 0, "sequence": 4, "time": "2026-09-19T03:51:25.071746+00:00"}
+{"event": "observation", "step": 0, "sequence": 5, "time": "2026-09-19T03:51:25.193890+00:00"}
+{"event": "model_response", "provider": "ollama", "model": "qwen3.6:35b-a3b", "llm_calls": 1, "elapsed_ms": 3138, "prompt_tokens": 1455, "output_tokens": 40, "response_sha256": "c4611223881f5a39e6504cfb5af121de0f8f9d32de679797adbc37486718b799", "sequence": 6, "time": "2026-09-19T03:51:28.378227+00:00"}
+{"event": "decision", "step": 0, "target": "member_input", "parameter": "member_id", "op": "fill", "code": "enter_parameter", "sequence": 7, "time": "2026-09-19T03:51:28.378607+00:00"}
+{"event": "action_started", "target": "member_input", "parameter": "member_id", "op": "fill", "sequence": 8, "time": "2026-09-19T03:51:28.393453+00:00"}
+{"event": "action_completed", "target": "member_input", "op": "fill", "sequence": 9, "time": "2026-09-19T03:51:28.402833+00:00"}
+{"event": "observation", "step": 1, "sequence": 10, "time": "2026-09-19T03:51:28.422207+00:00"}
+{"event": "model_response", "provider": "ollama", "model": "qwen3.6:35b-a3b", "llm_calls": 2, "elapsed_ms": 2861, "prompt_tokens": 1490, "output_tokens": 26, "response_sha256": "f4e2c874686e67b52dda8281d232e3f01b51b9f60ad060e9e499246963912a63", "sequence": 11, "time": "2026-09-19T03:51:31.315992+00:00"}
+{"event": "decision", "step": 1, "target": "search", "op": "click", "code": "follow_navigation", "sequence": 12, "time": "2026-09-19T03:51:31.316334+00:00"}
+{"event": "action_started", "target": "search", "op": "click", "sequence": 13, "time": "2026-09-19T03:51:31.339017+00:00"}
+{"event": "action_completed", "target": "search", "op": "click", "sequence": 14, "time": "2026-09-19T03:51:31.361718+00:00"}
+{"event": "checkpoint_observed", "step": 1, "target": "results_screen", "sequence": 15, "time": "2026-09-19T03:51:31.450010+00:00"}
+{"event": "observation", "step": 2, "sequence": 16, "time": "2026-09-19T03:51:31.460028+00:00"}
+{"event": "model_response", "provider": "ollama", "model": "qwen3.6:35b-a3b", "llm_calls": 3, "elapsed_ms": 2559, "prompt_tokens": 1206, "output_tokens": 27, "response_sha256": "40648214b6d176b66ee4fe3afafb8ea5c266b6308f8cd29a06e4ad83e6deb938", "sequence": 17, "time": "2026-09-19T03:51:34.048155+00:00"}
+{"event": "decision", "step": 2, "target": "open_member", "op": "click", "code": "follow_navigation", "sequence": 18, "time": "2026-09-19T03:51:34.048476+00:00"}
+{"event": "action_started", "target": "open_member", "op": "click", "sequence": 19, "time": "2026-09-19T03:51:34.062429+00:00"}
+{"event": "action_completed", "target": "open_member", "op": "click", "sequence": 20, "time": "2026-09-19T03:51:34.071462+00:00"}
+{"event": "checkpoint_observed", "step": 2, "target": "member_screen", "sequence": 21, "time": "2026-09-19T03:51:34.154048+00:00"}
+{"event": "observation", "step": 3, "sequence": 22, "time": "2026-09-19T03:51:34.161613+00:00"}
+{"event": "model_response", "provider": "ollama", "model": "qwen3.6:35b-a3b", "llm_calls": 4, "elapsed_ms": 2751, "prompt_tokens": 1384, "output_tokens": 26, "response_sha256": "161dd721929b2b16d2512b40fa86c703960281cf1d942646b7b1f19bd1bd4683", "sequence": 23, "time": "2026-09-19T03:51:36.923874+00:00"}
+{"event": "decision", "step": 3, "target": "accounts", "op": "click", "code": "follow_navigation", "sequence": 24, "time": "2026-09-19T03:51:36.924307+00:00"}
+{"event": "action_started", "target": "accounts", "op": "click", "sequence": 25, "time": "2026-09-19T03:51:36.940467+00:00"}
+{"event": "action_completed", "target": "accounts", "op": "click", "sequence": 26, "time": "2026-09-19T03:51:36.954344+00:00"}
+{"event": "checkpoint_observed", "step": 3, "target": "accounts_screen", "sequence": 27, "time": "2026-09-19T03:51:37.033451+00:00"}
+{"event": "observation", "step": 4, "sequence": 28, "time": "2026-09-19T03:51:37.039453+00:00"}
+{"event": "model_response", "provider": "ollama", "model": "qwen3.6:35b-a3b", "llm_calls": 5, "elapsed_ms": 2744, "prompt_tokens": 1432, "output_tokens": 27, "response_sha256": "a0a84bfca86f4a50eed8935b997090067eb0ac1eeb7003c576a9ce81f09ac380", "sequence": 29, "time": "2026-09-19T03:51:39.790319+00:00"}
+{"event": "decision", "step": 4, "target": "savings", "op": "click", "code": "follow_navigation", "sequence": 30, "time": "2026-09-19T03:51:39.790656+00:00"}
+{"event": "action_started", "target": "savings", "op": "click", "sequence": 31, "time": "2026-09-19T03:51:39.804643+00:00"}
+{"event": "action_completed", "target": "savings", "op": "click", "sequence": 32, "time": "2026-09-19T03:51:39.819878+00:00"}
+{"event": "checkpoint_observed", "step": 4, "target": "savings_screen", "sequence": 33, "time": "2026-09-19T03:51:39.899063+00:00"}
+{"event": "observation", "step": 5, "sequence": 34, "time": "2026-09-19T03:51:39.905983+00:00"}
+{"event": "model_response", "provider": "ollama", "model": "qwen3.6:35b-a3b", "llm_calls": 6, "elapsed_ms": 3379, "prompt_tokens": 1635, "output_tokens": 38, "response_sha256": "7067613818c01e90906c057caf277749a23355ad50c071429a526e63ac250988", "sequence": 35, "time": "2026-09-19T03:51:43.297490+00:00"}
+{"event": "decision", "step": 5, "target": "balance", "op": "read", "code": "extract_output", "sequence": 36, "time": "2026-09-19T03:51:43.297809+00:00"}
+{"event": "action_started", "target": "balance", "op": "read", "sequence": 37, "time": "2026-09-19T03:51:43.326496+00:00"}
+{"event": "action_completed", "target": "balance", "op": "read", "sequence": 38, "time": "2026-09-19T03:51:43.330547+00:00"}
+{"event": "completion_verified", "step": 5, "sequence": 39, "time": "2026-09-19T03:51:43.340807+00:00"}
+{"event": "artifact_saved", "llm_calls": 6, "artifact_sha256": "d43f8de78c9695b4cedf9ac57b8cd2a1d0a3640ad275e7cd1a457f2700c2110d", "sequence": 40, "time": "2026-09-19T03:51:43.347253+00:00"}
+{"event": "success", "llm_calls": 6, "sequence": 41, "time": "2026-09-19T03:51:43.347290+00:00"}

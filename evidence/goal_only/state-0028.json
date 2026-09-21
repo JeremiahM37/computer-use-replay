@@ -1,0 +1,66 @@
+{
+  "controls": [
+    {
+      "target": "savings",
+      "count": 1,
+      "ready": true,
+      "locator": {
+        "frames": [
+          "workbench"
+        ],
+        "kind": "role",
+        "name": "Open savings ledger",
+        "role": "button"
+      },
+      "box": {
+        "x": 289.53125,
+        "y": 140.90625,
+        "width": 184.625,
+        "height": 39.0
+      },
+      "data": "omitted"
+    },
+    {
+      "target": "accounts_screen",
+      "count": 1,
+      "ready": true,
+      "locator": {
+        "frames": [
+          "workbench"
+        ],
+        "kind": "role",
+        "name": "Account directory",
+        "role": "heading"
+      },
+      "box": {
+        "x": 32.0,
+        "y": 32.0,
+        "width": 1152.0,
+        "height": 27.0
+      },
+      "data": "omitted"
+    },
+    {
+      "target": "subaccount",
+      "count": 1,
+      "ready": true,
+      "locator": {
+        "frames": [
+          "workbench"
+        ],
+        "kind": "role",
+        "name": "Start sub-account",
+        "role": "button"
+      },
+      "box": {
+        "x": 32.0,
+        "y": 194.90625,
+        "width": 162.328125,
+        "height": 39.0
+      },
+      "data": "omitted"
+    }
+  ],
+  "states": [],
+  "unknown_dialogs": 0
+}

@@ -1,0 +1,46 @@
+{
+  "controls": [
+    {
+      "target": "open_member",
+      "count": 1,
+      "ready": true,
+      "locator": {
+        "frames": [
+          "workbench"
+        ],
+        "kind": "role",
+        "name": "Open member",
+        "role": "button"
+      },
+      "box": {
+        "x": 32.0,
+        "y": 113.90625,
+        "width": 135.421875,
+        "height": 39.0
+      },
+      "data": "omitted"
+    },
+    {
+      "target": "results_screen",
+      "count": 1,
+      "ready": true,
+      "locator": {
+        "frames": [
+          "workbench"
+        ],
+        "kind": "role",
+        "name": "Search results",
+        "role": "heading"
+      },
+      "box": {
+        "x": 32.0,
+        "y": 32.0,
+        "width": 1152.0,
+        "height": 27.0
+      },
+      "data": "omitted"
+    }
+  ],
+  "states": [],
+  "unknown_dialogs": 0
+}
