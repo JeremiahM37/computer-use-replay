@@ -1,0 +1,17 @@
+backend: generic
+steps:
+  - name: lint-and-format
+    actions:
+      - shell:
+          cmd: mkdir -p runs && uv run ruff check src tests scripts && uv run ruff format --check src tests scripts
+          timeout: 60
+  - name: unit-integration-and-real-browser-tests
+    actions:
+      - shell:
+          cmd: uv run pytest --basetemp=runs/pytest-verify --cov=computer_use_replay --cov-branch --cov-report=term-missing --cov-fail-under=100 -q
+          timeout: 1200
+  - name: source-contract-preflight
+    actions:
+      - shell:
+          cmd: uv run python scripts/preflight.py
+          timeout: 60

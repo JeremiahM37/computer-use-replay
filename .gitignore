@@ -1,0 +1,102 @@
+.venv/
+.env
+__pycache__/
+.pytest_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+dist/
+*.egg-info/
+runs/
+.verify/
+.coverage.*
+.verify-artifacts/
+archive/
+
+# Generated recordings and evaluation output stay local.
+validation/
+/evidence/**
+/integrations/erpnext/evidence/**
+*.mp4
+*.webm
+*.log
+*.jsonl
+*.har
+*.cast
+*.zip
+screenshots/
+recordings/
+
+# Assignment-required, reviewed sample only; all other captures remain ignored.
+!/evidence/README.md
+!/evidence/manifest.json
+!/evidence/read_savings.json
+!/evidence/goal_only.json
+!/evidence/discovery/
+!/evidence/discovery/events.jsonl
+!/evidence/discovery/result.json
+!/evidence/goal_only/
+!/evidence/goal_only/events.jsonl
+!/evidence/goal_only/result.json
+!/evidence/goal_only/request.json
+!/evidence/replay/
+!/evidence/replay/events.jsonl
+!/evidence/replay/result.json
+!/evidence/failure/
+!/evidence/failure/events.jsonl
+!/evidence/failure/result.json
+!/evidence/failure/state-*.json
+!/evidence/failure/failure-masked.png
+!/evidence/business_outcome/
+!/evidence/business_outcome/events.jsonl
+!/evidence/business_outcome/result.json
+!/evidence/handoff/
+!/evidence/handoff/events.jsonl
+!/evidence/handoff/result.json
+!/evidence/handoff/state-*.json
+!/evidence/tenant_b/
+!/evidence/tenant_b/events.jsonl
+!/evidence/tenant_b/result.json
+!/evidence/terminal/
+!/evidence/terminal/events.jsonl
+!/evidence/terminal/result.json
+!/evidence/fallback/
+!/evidence/fallback/events.jsonl
+!/evidence/fallback/result.json
+!/evidence/fallback/fallback_review.json
+
+# capture_evidence.py may emit more than one state-NNNN.json snapshot per role
+# (e.g. failure/ gets one from the pre-intervention settle() and one from the
+# terminal fail() path) -- a per-file allow-rule silently drops whichever exact
+# sequence number a future recapture happens to produce. This blanket rule
+# covers every role directory above so a fresh clone never falls behind
+# manifest.json's own file list; scripts/preflight.py additionally asserts
+# every manifest-listed path is git-tracked when run inside a checkout.
+!/evidence/*/state-*.json
+
+# A disposable-target development capture, not a live secret; see its own README.
+!/integrations/erpnext/evidence/README.md
+!/integrations/erpnext/evidence/discovery.jsonl
+!/integrations/erpnext/evidence/discovery-result.json
+!/integrations/erpnext/evidence/replay_current/
+!/integrations/erpnext/evidence/replay_current/events.jsonl
+!/integrations/erpnext/evidence/replay_current/result.json
+!/integrations/erpnext/evidence/replay_not_found/
+!/integrations/erpnext/evidence/replay_not_found/events.jsonl
+!/integrations/erpnext/evidence/replay_not_found/result.json
+!/integrations/erpnext/evidence/original/
+!/integrations/erpnext/evidence/original/discovery.jsonl
+!/integrations/erpnext/evidence/original/discovery-result.json
+!/integrations/erpnext/evidence/original/validation.json
+
+# A genuine live-target capture against a public sample app; see its own README.
+!/integrations/meridian/evidence/README.md
+!/integrations/meridian/evidence/discovery/
+!/integrations/meridian/evidence/discovery/events.jsonl
+!/integrations/meridian/evidence/discovery/result.json
+!/integrations/meridian/evidence/replay_changed/
+!/integrations/meridian/evidence/replay_changed/events.jsonl
+!/integrations/meridian/evidence/replay_changed/result.json
+!/integrations/meridian/evidence/replay_notfound/
+!/integrations/meridian/evidence/replay_notfound/events.jsonl
+!/integrations/meridian/evidence/replay_notfound/result.json
