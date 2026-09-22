@@ -79,8 +79,11 @@ checkable without storing the transcript. Events contain actions, reason codes a
 that model-call metadata, not raw
 model messages, credentials or customer values. No account-changing action ran.
 
-[manifest.json](manifest.json) pins the capture commit, model digest, source-file
-hashes and every selected data file. Run `uv run python scripts/preflight.py` to
+[manifest.json](manifest.json) pins the validation runtime, model digest, source-file
+hashes and every selected data file. `catalog_discovery_provenance` preserves the
+older catalog capture provenance; refreshing replay checks does not turn those
+original model recordings into new discoveries. The live-form cases are separate
+genuine captures. Run `uv run python scripts/preflight.py` to
 check integrity, current-runtime compatibility, event schemas and call counts.
 Discovery's directory label is shortened for navigation; the manifest retains its
 original run identifier. `scripts/capture_evidence.py` produces and validates the
@@ -102,7 +105,42 @@ To reproduce the exceptional state, restart the fixture with
 `uv run computer-use-replay serve --scenario expired` and repeat the replay without
 `--human`. To reproduce the business-outcome, handoff, tenant B and text-terminal
 runs exactly as tracked here (replaying the committed `read_savings.json`, no model needed),
-run `uv run python scripts/capture_evidence.py --extend-submission --output
-runs/my-evidence`. New output stays in ignored `runs/`; this directory contains
-only the reviewed submission sample. See the root README for interactive human
-recovery.
+copy the selected bundle to a fresh local directory, then refresh its replays:
+
+```bash
+mkdir -p runs
+cp -a evidence runs/my-evidence
+uv run python scripts/capture_evidence.py --extend-submission --output runs/my-evidence
+```
+
+New output stays in ignored `runs/`; this directory contains only the reviewed
+submission sample. See the root README for interactive human recovery.
+
+## Live form perception
+
+[live_forms/summary.json](live_forms/summary.json) records three genuine Qwen
+runs using `profiles/juniper_live.json`: savings lookup, sub-account preparation,
+and savings lookup with four unfamiliar button labels and extra layout wrappers.
+Ordinary input/button locators are discovered at runtime in reviewed form scopes.
+Each case includes the schema-3 artifact, sanitized discovery events/result, and a
+changed-input replay with zero model calls. Both business branches stop before any
+account-changing action. These are three successful examples, not a reliability
+benchmark or evidence of general desktop/vision support.
+
+The capture checks known private fixture strings before sending each model context,
+and asserts the replay's expected result in memory. Those assertions are not a
+universal PII detector. Public interface labels and grounded locators are deliberately
+retained; raw model messages, page captures and caller values are not included.
+
+Reproduce all three cases against a reachable Ollama endpoint:
+
+```bash
+uv run python scripts/capture_live_evidence.py --output runs/my-live-evidence \
+  --model qwen3.6:35b-a3b
+```
+
+The output directory must be new so a failed rerun cannot overwrite prior evidence.
+`live_forms/capture.json` pins the runtime, profile, requests and capture script;
+the capture rejects source changes between its start and finish.
+`preflight.py` verifies artifact provenance, event call counts, artifact links,
+withheld outputs, permissions and file hashes for this selected sample.

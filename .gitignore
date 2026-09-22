@@ -100,3 +100,16 @@ recordings/
 !/integrations/meridian/evidence/replay_notfound/
 !/integrations/meridian/evidence/replay_notfound/events.jsonl
 !/integrations/meridian/evidence/replay_notfound/result.json
+
+# Selected live-perception proof; full captures and model transcripts stay local.
+!/evidence/live_forms/
+!/evidence/live_forms/summary.json
+!/evidence/live_forms/capture.json
+!/evidence/live_forms/*/
+!/evidence/live_forms/*/artifact.json
+!/evidence/live_forms/*/discovery/
+!/evidence/live_forms/*/replay/
+!/evidence/live_forms/*/discovery/events.jsonl
+!/evidence/live_forms/*/discovery/result.json
+!/evidence/live_forms/*/replay/events.jsonl
+!/evidence/live_forms/*/replay/result.json

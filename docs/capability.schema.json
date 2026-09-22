@@ -92,6 +92,69 @@
       "title": "Fill",
       "type": "object"
     },
+    "Grounding": {
+      "additionalProperties": false,
+      "description": "Discovery provenance for a dynamically grounded action target.",
+      "properties": {
+        "scope": {
+          "pattern": "^[a-z][a-z0-9_]{0,63}$",
+          "title": "Scope",
+          "type": "string"
+        },
+        "operation": {
+          "enum": [
+            "click",
+            "fill"
+          ],
+          "title": "Operation",
+          "type": "string"
+        },
+        "target": {
+          "$ref": "#/$defs/Target"
+        },
+        "role": {
+          "maxLength": 32,
+          "minLength": 1,
+          "title": "Role",
+          "type": "string"
+        },
+        "frame": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Frame",
+          "type": "array"
+        },
+        "label_source": {
+          "default": "structural",
+          "enum": [
+            "reviewed_static",
+            "structural"
+          ],
+          "title": "Label Source",
+          "type": "string"
+        },
+        "robustness": {
+          "enum": [
+            "role",
+            "label",
+            "scope_css"
+          ],
+          "title": "Robustness",
+          "type": "string"
+        }
+      },
+      "required": [
+        "scope",
+        "operation",
+        "target",
+        "role",
+        "robustness"
+      ],
+      "title": "Grounding",
+      "type": "object"
+    },
     "Input": {
       "additionalProperties": false,
       "properties": {
@@ -400,8 +463,11 @@
   "additionalProperties": false,
   "properties": {
     "schema_version": {
-      "const": "2.0",
       "default": "2.0",
+      "enum": [
+        "2.0",
+        "3.0"
+      ],
       "title": "Schema Version",
       "type": "string"
     },
@@ -494,6 +560,15 @@
     },
     "provenance": {
       "$ref": "#/$defs/Provenance"
+    },
+    "grounded": {
+      "patternProperties": {
+        "^[a-z][a-z0-9_]{0,63}$": {
+          "$ref": "#/$defs/Grounding"
+        }
+      },
+      "title": "Grounded",
+      "type": "object"
     }
   },
   "required": [

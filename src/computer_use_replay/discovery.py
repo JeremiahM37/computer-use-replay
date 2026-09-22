@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import asyncio
+import inspect
 import time
 
 from computer_use_replay.contracts import (
@@ -12,6 +13,7 @@ from computer_use_replay.contracts import (
     Condition,
     Fill,
     GoalRequest,
+    Grounding,
     Provenance,
     Read,
     Success,
@@ -33,6 +35,32 @@ def _progress_key(entry: dict) -> dict:
     if entry.get("op") != "click":
         return entry
     return {k: v for k, v in entry.items() if k != "after"}
+
+
+async def _surface_live_pin(surface, candidate_id: str):
+    """Pin a current live candidate, allowing browser surfaces to be async."""
+    pin = getattr(surface, "pin_live_candidate", None)
+    if pin is None:
+        return
+    result = pin(candidate_id)
+    if inspect.isawaitable(result):
+        result = await result
+    if result is False:
+        raise Stop(
+            "live_candidate_stale",
+            "current live candidate",
+            "candidate expired",
+            target=candidate_id,
+        )
+
+
+async def _surface_live_unpin(surface, candidate_id: str):
+    unpin = getattr(surface, "unpin_live_candidate", None)
+    if unpin is None:
+        return
+    result = unpin(candidate_id)
+    if inspect.isawaitable(result):
+        await result
 
 
 async def learn_click(ex, step, arguments, index, before, checkpoints=()):
@@ -139,6 +167,43 @@ async def _build_planner_context(
         "verified_completed_fields": [],
     }
 
+    live_catalog = {}
+    live_input_matches = {}
+    live_verified = []
+    for candidate in snapshot.live_candidates:
+        controls = getattr(execution.surface, "_live_controls", {})
+        if candidate.candidate_id not in controls:
+            continue
+        control = controls[candidate.candidate_id]
+        live_catalog[candidate.candidate_id] = {
+            "label": candidate.label or "unlabeled live control",
+            "description": "live scoped control; model-selected candidate",
+            "operations": control.operations,
+            "risk": control.risk,
+            "allowed_inputs": control.allowed_inputs,
+        }
+        matches = []
+        for input_name in control.allowed_inputs:
+            spec = request.inputs.get(input_name)
+            if spec is None:
+                continue
+            kind = "equals_integer_input" if spec.kind == "integer" else "equals_input"
+            if await execution.surface.condition(
+                Condition(target=candidate.candidate_id, kind=kind, input=input_name),
+                arguments,
+            ):
+                matches.append(input_name)
+        # A prior fill is only history. The current live value is the proof;
+        # if the application cleared or changed it, the input stays actionable.
+        assigned = matches
+        live_input_matches[candidate.candidate_id] = assigned or matches
+        if assigned and len(control.allowed_inputs) == 1:
+            live_catalog[candidate.candidate_id]["allowed_inputs"] = []
+            live_verified.append(candidate.candidate_id)
+    context["live_catalog"] = live_catalog
+    context["live_input_matches"] = live_input_matches
+    context["live_verified_fields"] = live_verified
+
     for key, control in binding.controls.items():
         available_inputs = [
             input_name for input_name in control.allowed_inputs if input_name in arguments
@@ -202,10 +267,19 @@ def _compile_decision(
     if decision.op == "fill":
         if decision.input not in request.inputs:
             raise Stop("undeclared_input")
-        execution.policy.check_fill(decision.target, decision.input)
+        controls = getattr(execution.surface, "_live_controls", {})
+        if decision.target in controls:
+            scope = execution.surface._live_scopes[decision.target][0]
+            execution.policy.check_live_action("fill", scope)
+            if decision.input not in controls[decision.target].allowed_inputs:
+                raise Stop("input_target_mismatch")
+        else:
+            execution.policy.check_fill(decision.target, decision.input)
         return Fill(target=decision.target, input=decision.input)
     if decision.op == "click":
-        if decision.after not in binding.controls:
+        if decision.after not in binding.controls and decision.after not in getattr(
+            execution.surface, "_live_controls", {}
+        ):
             raise Stop("undeclared_checkpoint")
         return Click(target=decision.target, after=Condition(target=decision.after))
     if decision.output not in request.outputs or decision.output in outputs:
@@ -281,14 +355,27 @@ async def discover(ex: Execution, planner, request, arguments, artifact_path, *,
                         raise Stop("false_completion", "all declared outputs", "outputs incomplete")
                     await ex.settle(request.checkpoint, arguments, index)
                     break
-                if decision.target not in visible:
+                current_live_ids = {
+                    candidate.candidate_id for candidate in snapshot.live_candidates
+                }
+                live_target = decision.target in current_live_ids
+                if decision.target not in visible and not live_target:
                     raise Stop(
                         "ungrounded_target", "currently visible control", "unobserved target"
                     )
-                if visible[decision.target].count != 1:
+                if not live_target and visible[decision.target].count != 1:
                     raise Stop("ambiguous_target")
-                ex.policy.check_action(decision.op, decision.target)
+                if live_target:
+                    ex.policy.check_live_action(
+                        decision.op, ex.surface._live_scopes[decision.target][0]
+                    )
+                else:
+                    ex.policy.check_action(decision.op, decision.target)
+                if live_target:
+                    await _surface_live_pin(ex.surface, decision.target)
                 if not await ex.surface.condition(Condition(target=decision.target), arguments):
+                    if live_target:
+                        await _surface_live_unpin(ex.surface, decision.target)
                     ex.evidence.emit(
                         Event(
                             event="recovery",
@@ -321,6 +408,8 @@ async def discover(ex: Execution, planner, request, arguments, artifact_path, *,
                     if isinstance(step, Read):
                         await ex.settle(request.checkpoint, arguments, index)
                     value = await ex.step(step, arguments, index)
+                if live_target:
+                    await _surface_live_unpin(ex.surface, decision.target)
                 if isinstance(step, Read):
                     try:
                         outputs[step.output] = request.outputs[step.output].parse(value)
@@ -356,19 +445,38 @@ async def discover(ex: Execution, planner, request, arguments, artifact_path, *,
             | {
                 binding.controls[step.target].after_fill.target
                 for step in steps
-                if isinstance(step, Fill) and binding.controls[step.target].after_fill
+                if isinstance(step, Fill)
+                and step.target in binding.controls
+                and binding.controls[step.target].after_fill
             }
             | {condition.target for condition in request.checkpoint}
         )
+        grounded = {}
+        for key in {step.target for step in steps}:
+            if key in getattr(ex.surface, "_live_history", {}):
+                _control, metadata = ex.surface._live_history[key]
+                scope, source, robustness, role, frames = metadata
+                grounded[key] = Grounding(
+                    scope=scope,
+                    operation=next(step.op for step in steps if step.target == key),
+                    target=_control.target,
+                    role=role,
+                    frame=frames,
+                    label_source=source,
+                    robustness=robustness,
+                )
         artifact = Capability(
+            schema_version="3.0" if grounded else "2.0",
             name=request.name,
             product=binding.product,
             binding_sha256=binding.digest(),
-            targets={k: v.target for k, v in binding.controls.items() if k in used_targets},
+            targets={k: v.target for k, v in binding.controls.items() if k in used_targets}
+            | {key: value.target for key, value in grounded.items()},
             inputs=request.inputs,
             outputs=request.outputs,
             steps=tuple(steps),
             checkpoint=request.checkpoint,
+            grounded=grounded,
             provenance=Provenance(
                 mode=planner.mode,
                 model=planner.model,

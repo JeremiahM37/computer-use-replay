@@ -8,7 +8,7 @@ from urllib.parse import unquote, urlsplit
 
 from pydantic import Field, model_serializer, model_validator
 
-from computer_use_replay.contracts import Condition, Input, Name, Strict, Target, digest
+from computer_use_replay.contracts import Condition, Input, LiveScope, Name, Strict, Target, digest
 from computer_use_replay.network import RequestRule
 
 
@@ -87,6 +87,9 @@ class Binding(Strict):
     routes: dict[str, tuple[Literal["GET", "POST"], ...]]
     request_rules: tuple[RequestRule, ...] = ()
     controls: dict[Name, Control]
+    live_mode: Literal["off", "forms"] = "off"
+    live_scopes: tuple[LiveScope, ...] = ()
+    live_candidate_limit: int = Field(default=64, ge=1, le=256)
     states: dict[Name, State]
     input_types: dict[Name, Input]
     invariants: tuple[Condition, ...] = Field(min_length=1)
@@ -107,10 +110,42 @@ class Binding(Strict):
         data = handler(self)
         if not self.request_rules:
             data.pop("request_rules", None)
+        if self.live_mode == "off":
+            data.pop("live_mode", None)
+            data.pop("live_scopes", None)
+            data.pop("live_candidate_limit", None)
         return data
 
     @model_validator(mode="after")
     def valid(self):
+        if self.live_mode == "forms" and not self.live_scopes:
+            raise ValueError("live mode requires reviewed scopes")
+        if self.live_mode == "off" and self.live_scopes:
+            raise ValueError("live scopes require live mode")
+        if len({scope.name for scope in self.live_scopes}) != len(self.live_scopes):
+            raise ValueError("duplicate live scope")
+        for scope in self.live_scopes:
+            if (
+                not scope.action.startswith("/")
+                or scope.action.startswith("//")
+                or any(token in scope.action for token in ("?", "#", "\\"))
+                or any(method not in self.routes.get(scope.action, ()) for method in scope.methods)
+            ):
+                raise ValueError("live scope action must be an allowed relative route")
+            for method in scope.methods:
+                if method != "POST":
+                    continue
+                try:
+                    rule = Policy(self, "https://binding.invalid").check_url(
+                        "https://binding.invalid" + scope.action, method
+                    )
+                except Stop:
+                    rule = None
+                if rule is None or rule.discard:
+                    raise ValueError("live POST scope requires a non-discard body grant")
+                if not set(scope.fields) <= set(rule.body_keys):
+                    raise ValueError("live scope fields require declared body grant keys")
+
         def allowed_get(path):
             try:
                 return Policy(self, "https://binding.invalid").check_network_request(
@@ -155,6 +190,10 @@ class Binding(Strict):
                 raise ValueError("fill controls require explicit input bindings")
             if not set(control.allowed_inputs) <= self.input_types.keys():
                 raise ValueError("undefined fill input")
+        for scope in self.live_scopes:
+            for names in scope.fields.values():
+                if not set(names) <= self.input_types.keys():
+                    raise ValueError("undefined live input")
         for state in self.states.values():
             if state.target not in self.controls or (
                 state.recovery and state.recovery not in self.controls
@@ -316,6 +355,13 @@ class Policy:
         if control.risk == "human_only" and not human:
             raise Stop("human_required", "manual execution", "irreversible control")
 
+    def check_live_action(self, op: str, scope: str):
+        if self.binding.live_mode != "forms":
+            raise Stop("action_policy", "live perception disabled", "action denied")
+        grant = next((item for item in self.binding.live_scopes if item.name == scope), None)
+        if grant is None or op not in grant.operations:
+            raise Stop("action_policy", "reviewed live scope and action", "action denied")
+
     def check_fill(self, target, parameter):
         self.check_action("fill", target)
         if parameter not in self.binding.controls[target].allowed_inputs:
@@ -345,20 +391,45 @@ class Policy:
             raise Stop("binding_mismatch", "reviewed binding digest", "incompatible capability")
         self.check_request(artifact)
         for name in artifact.targets:
-            if name not in self.binding.controls:
+            if name in artifact.grounded and name in self.binding.controls:
+                raise Stop("target_mismatch", "one target authority", "grounded/static collision")
+            if name not in self.binding.controls and name not in artifact.grounded:
                 raise Stop("target_mismatch")
         output_started = False
         for step in artifact.steps:
-            self.check_action(step.op, step.target)
+            if step.target in artifact.grounded:
+                grounding = artifact.grounded[step.target]
+                if step.op != grounding.operation:
+                    raise Stop("target_mismatch")
+                self.check_live_action(step.op, grounding.scope)
+                grant = next(
+                    scope for scope in self.binding.live_scopes if scope.name == grounding.scope
+                )
+                if step.op == "fill":
+                    allowed = {
+                        input_name for names in grant.fields.values() for input_name in names
+                    }
+                    if step.input not in allowed:
+                        raise Stop(
+                            "input_target_mismatch",
+                            "approved parameter for live scope",
+                            "binding denied",
+                            target=step.target,
+                        )
+            else:
+                self.check_action(step.op, step.target)
             if output_started and step.op != "read":
                 raise Stop(
                     "output_order", "outputs collected after final action", "action after output"
                 )
             output_started = step.op == "read"
-            parameter = self.binding.controls[step.target].match_input
+            if step.target in artifact.grounded:
+                parameter = None
+            else:
+                parameter = self.binding.controls[step.target].match_input
             if parameter and parameter not in artifact.inputs:
                 raise Stop("contract_mismatch")
-            if step.op == "fill":
+            if step.op == "fill" and step.target not in artifact.grounded:
                 self.check_fill(step.target, step.input)
             if step.op == "read" and artifact.outputs[step.output].source != step.target:
                 raise Stop("output_source_mismatch")
@@ -375,6 +446,7 @@ class Policy:
             sorted(
                 key
                 for key, target in artifact.targets.items()
+                if key in self.binding.controls
                 if self.binding.controls[key].target != target
             )
         )

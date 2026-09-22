@@ -1,0 +1,271 @@
+{
+  "schema_version": "3.0",
+  "name": "read_savings",
+  "version": "0.1.0",
+  "binding_sha256": "454960a58a964145caa5e373e772572cd4132157e9415d0054fe9eef15733c3c",
+  "product": "juniper_workstation",
+  "targets": {
+    "member_identity": {
+      "frames": [
+        "workbench"
+      ],
+      "kind": "row_value",
+      "name": "Member identifier",
+      "role": null
+    },
+    "balance": {
+      "frames": [
+        "workbench"
+      ],
+      "kind": "row_value",
+      "name": "Available balance",
+      "role": null
+    },
+    "results_screen": {
+      "frames": [
+        "workbench"
+      ],
+      "kind": "role",
+      "name": "Search results",
+      "role": "heading"
+    },
+    "member_screen": {
+      "frames": [
+        "workbench"
+      ],
+      "kind": "role",
+      "name": "Member summary",
+      "role": "heading"
+    },
+    "accounts_screen": {
+      "frames": [
+        "workbench"
+      ],
+      "kind": "role",
+      "name": "Account directory",
+      "role": "heading"
+    },
+    "savings_screen": {
+      "frames": [
+        "workbench"
+      ],
+      "kind": "role",
+      "name": "Savings ledger",
+      "role": "heading"
+    },
+    "live_1_b719831ec54d": {
+      "frames": [
+        "workbench"
+      ],
+      "kind": "css",
+      "name": "form[action=\"/desk/search\"] [name=\"member_key\"]",
+      "role": null
+    },
+    "live_16_1fbd1f9a8b01": {
+      "frames": [
+        "workbench"
+      ],
+      "kind": "role",
+      "name": "Open savings ledger",
+      "role": "button"
+    },
+    "live_8_e4a135398ad6": {
+      "frames": [
+        "workbench"
+      ],
+      "kind": "role",
+      "name": "Open member",
+      "role": "button"
+    },
+    "live_12_ca8724cced62": {
+      "frames": [
+        "workbench"
+      ],
+      "kind": "role",
+      "name": "View accounts",
+      "role": "button"
+    },
+    "live_4_27b533955f1b": {
+      "frames": [
+        "workbench"
+      ],
+      "kind": "role",
+      "name": "Find member",
+      "role": "button"
+    }
+  },
+  "inputs": {
+    "member_id": {
+      "kind": "identifier",
+      "sensitive": true,
+      "max_length": 80,
+      "pattern": "[0-9]{5}"
+    }
+  },
+  "outputs": {
+    "available_balance": {
+      "source": "balance",
+      "kind": "money",
+      "sensitive": true,
+      "allowed_values": []
+    }
+  },
+  "steps": [
+    {
+      "op": "fill",
+      "target": "live_1_b719831ec54d",
+      "input": "member_id"
+    },
+    {
+      "op": "click",
+      "target": "live_4_27b533955f1b",
+      "after": {
+        "target": "results_screen",
+        "kind": "visible",
+        "input": null
+      }
+    },
+    {
+      "op": "click",
+      "target": "live_8_e4a135398ad6",
+      "after": {
+        "target": "member_screen",
+        "kind": "visible",
+        "input": null
+      }
+    },
+    {
+      "op": "click",
+      "target": "live_12_ca8724cced62",
+      "after": {
+        "target": "accounts_screen",
+        "kind": "visible",
+        "input": null
+      }
+    },
+    {
+      "op": "click",
+      "target": "live_16_1fbd1f9a8b01",
+      "after": {
+        "target": "savings_screen",
+        "kind": "visible",
+        "input": null
+      }
+    },
+    {
+      "op": "read",
+      "target": "balance",
+      "output": "available_balance"
+    }
+  ],
+  "checkpoint": [
+    {
+      "target": "savings_screen",
+      "kind": "visible",
+      "input": null
+    },
+    {
+      "target": "member_identity",
+      "kind": "equals_input",
+      "input": "member_id"
+    }
+  ],
+  "provenance": {
+    "mode": "llm",
+    "model": "qwen3.6:35b-a3b",
+    "calls": 6,
+    "run_id": "discovery"
+  },
+  "grounded": {
+    "live_1_b719831ec54d": {
+      "scope": "lookup",
+      "operation": "fill",
+      "target": {
+        "frames": [
+          "workbench"
+        ],
+        "kind": "css",
+        "name": "form[action=\"/desk/search\"] [name=\"member_key\"]",
+        "role": null
+      },
+      "role": "field",
+      "frame": [
+        "workbench"
+      ],
+      "label_source": "reviewed_static",
+      "robustness": "scope_css"
+    },
+    "live_16_1fbd1f9a8b01": {
+      "scope": "savings",
+      "operation": "click",
+      "target": {
+        "frames": [
+          "workbench"
+        ],
+        "kind": "role",
+        "name": "Open savings ledger",
+        "role": "button"
+      },
+      "role": "button",
+      "frame": [
+        "workbench"
+      ],
+      "label_source": "reviewed_static",
+      "robustness": "role"
+    },
+    "live_8_e4a135398ad6": {
+      "scope": "member",
+      "operation": "click",
+      "target": {
+        "frames": [
+          "workbench"
+        ],
+        "kind": "role",
+        "name": "Open member",
+        "role": "button"
+      },
+      "role": "button",
+      "frame": [
+        "workbench"
+      ],
+      "label_source": "reviewed_static",
+      "robustness": "role"
+    },
+    "live_12_ca8724cced62": {
+      "scope": "accounts",
+      "operation": "click",
+      "target": {
+        "frames": [
+          "workbench"
+        ],
+        "kind": "role",
+        "name": "View accounts",
+        "role": "button"
+      },
+      "role": "button",
+      "frame": [
+        "workbench"
+      ],
+      "label_source": "reviewed_static",
+      "robustness": "role"
+    },
+    "live_4_27b533955f1b": {
+      "scope": "lookup",
+      "operation": "click",
+      "target": {
+        "frames": [
+          "workbench"
+        ],
+        "kind": "role",
+        "name": "Find member",
+        "role": "button"
+      },
+      "role": "button",
+      "frame": [
+        "workbench"
+      ],
+      "label_source": "reviewed_static",
+      "robustness": "role"
+    }
+  }
+}

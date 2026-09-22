@@ -1,0 +1,38 @@
+[
+  {
+    "case": "read_savings",
+    "status": "success",
+    "discovery_calls": 6,
+    "live_observation_turns": 5,
+    "grounded_targets": 5,
+    "discovery_seconds": 23.835,
+    "replay_seconds": 0.938,
+    "replay_calls": 0,
+    "changed_inputs_verified": true,
+    "private_context_canaries_absent": true
+  },
+  {
+    "case": "prepare_subaccount",
+    "status": "success",
+    "discovery_calls": 8,
+    "live_observation_turns": 7,
+    "grounded_targets": 7,
+    "discovery_seconds": 29.029,
+    "replay_seconds": 1.093,
+    "replay_calls": 0,
+    "changed_inputs_verified": true,
+    "private_context_canaries_absent": true
+  },
+  {
+    "case": "read_savings_relabeled",
+    "status": "success",
+    "discovery_calls": 6,
+    "live_observation_turns": 5,
+    "grounded_targets": 5,
+    "discovery_seconds": 20.094,
+    "replay_seconds": 0.96,
+    "replay_calls": 0,
+    "changed_inputs_verified": true,
+    "private_context_canaries_absent": true
+  }
+]

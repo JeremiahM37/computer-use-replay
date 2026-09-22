@@ -48,3 +48,87 @@ def test_provider_arguments_are_checked_against_offered_tools(context, args):
         parse_call(
             {"function": {"name": "click_control", "arguments": args}}, action_tools(context)
         )
+
+
+async def test_live_context_preserves_alternatives_and_uses_current_values(binding):
+    """A prior fill cannot prove a value still exists, or remove a valid alternative."""
+    import json
+    from types import SimpleNamespace
+
+    from computer_use_replay.contracts import Input, Target
+    from computer_use_replay.discovery import _build_planner_context
+    from computer_use_replay.evidence import LiveCandidate, Snapshot
+    from computer_use_replay.policy import Control
+
+    request = TASK.model_copy(
+        update={"inputs": {**TASK.inputs, "quantity": Input(kind="integer", minimum=1, maximum=10)}}
+    )
+    target = Target(kind="css", name='form input[name="lookup"]')
+    candidate = LiveCandidate(
+        candidate_id="live_field", scope="lookup", kind="field", role="field", locator=target
+    )
+    stale = candidate.model_copy(update={"candidate_id": "live_stale"})
+    control = Control(
+        target=target,
+        operations=("fill",),
+        risk="reversible",
+        description="live scoped field",
+        allowed_inputs=("member_id", "quantity", "not_in_request"),
+    )
+    matched = True
+    checks = []
+
+    async def condition(condition, arguments):
+        checks.append(condition)
+        return matched and condition.target == "live_field" and condition.input == "member_id"
+
+    surface = SimpleNamespace(_live_controls={"live_field": control}, condition=condition)
+    execution = SimpleNamespace(surface=surface)
+    snapshot = Snapshot(controls=(), states=(), live_candidates=(candidate, stale))
+    history = [{"op": "fill", "target": "live_field", "input": "member_id"}]
+    context, _ = await _build_planner_context(
+        execution, binding, request, {"member_id": "00123", "quantity": 2}, snapshot, history, {}
+    )
+    assert context["live_input_matches"] == {"live_field": ["member_id"]}
+    assert context["live_verified_fields"] == []
+    assert context["live_catalog"]["live_field"]["allowed_inputs"] == control.allowed_inputs
+    assert "live_stale" not in context["live_catalog"]
+    assert any(c.kind == "equals_integer_input" and c.input == "quantity" for c in checks)
+    assert "00123" not in json.dumps(context)
+    assert 'name="lookup"' not in json.dumps(context)
+
+    matched = False
+    cleared, _ = await _build_planner_context(
+        execution, binding, request, {"member_id": "00123", "quantity": 2}, snapshot, history, {}
+    )
+    assert cleared["live_input_matches"] == {"live_field": []}
+    fill = next(t for t in action_tools(cleared) if t["function"]["name"] == "fill_control")
+    assert fill["function"]["parameters"]["properties"]["parameter"]["enum"] == [
+        "member_id",
+        "quantity",
+    ]
+
+
+def test_live_compiler_rejects_parameter_not_granted_to_selected_field():
+    from types import SimpleNamespace
+
+    from computer_use_replay.discovery import _compile_decision
+    from computer_use_replay.planner import Decision
+    from computer_use_replay.policy import Binding, Policy, Stop
+
+    binding = Binding.load(Path("profiles/juniper_live.json"))
+    request = GoalRequest.load(Path("requests/prepare_subaccount.json"))
+    surface = SimpleNamespace(
+        _live_controls={"live_lookup": SimpleNamespace(allowed_inputs=("member_id",))},
+        _live_scopes={"live_lookup": ("lookup",)},
+    )
+    execution = SimpleNamespace(surface=surface, policy=Policy(binding, "http://localhost"))
+    with pytest.raises(Stop) as caught:
+        _compile_decision(
+            execution,
+            request,
+            binding,
+            Decision(op="fill", target="live_lookup", input="nickname", reason="enter_parameter"),
+            {},
+        )
+    assert caught.value.code == "input_target_mismatch"

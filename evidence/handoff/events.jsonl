@@ -1,20 +1,20 @@
-{"event": "started", "capability": "read_savings", "llm_calls": 0, "artifact_sha256": "55980dd88b6ef5f584d67326b24de6befa4a79bcfd3dc59977cad5081d01f40a", "sequence": 1, "time": "2026-09-21T17:59:30.844164+00:00"}
-{"event": "action_started", "target": "member_input", "parameter": "member_id", "op": "fill", "sequence": 2, "time": "2026-09-21T17:59:30.963692+00:00"}
-{"event": "action_completed", "target": "member_input", "op": "fill", "sequence": 3, "time": "2026-09-21T17:59:30.977063+00:00"}
-{"event": "action_started", "target": "search", "op": "click", "sequence": 4, "time": "2026-09-21T17:59:30.994226+00:00"}
-{"event": "action_completed", "target": "search", "op": "click", "sequence": 5, "time": "2026-09-21T17:59:31.037798+00:00"}
-{"event": "action_started", "target": "open_member", "op": "click", "sequence": 6, "time": "2026-09-21T17:59:31.089379+00:00"}
-{"event": "action_completed", "target": "open_member", "op": "click", "sequence": 7, "time": "2026-09-21T17:59:31.125856+00:00"}
-{"event": "action_started", "target": "accounts", "op": "click", "sequence": 8, "time": "2026-09-21T17:59:31.211779+00:00"}
-{"event": "action_completed", "target": "accounts", "op": "click", "sequence": 9, "time": "2026-09-21T17:59:31.222726+00:00"}
-{"event": "intervention_requested", "capability": "read_savings", "evidence": "state-0009.json", "step": 3, "code": "session_expired", "owner": "paused", "intervention_id": "cda97ca7b8574174b7849b69d02c158f", "session_id": "493121a9088b4add880dce0665756bd4", "sequence": 10, "time": "2026-09-21T17:59:31.304940+00:00"}
-{"event": "control_claimed", "owner": "human", "intervention_id": "cda97ca7b8574174b7849b69d02c158f", "session_id": "493121a9088b4add880dce0665756bd4", "sequence": 11, "time": "2026-09-21T17:59:31.305015+00:00"}
-{"event": "operator_action", "target": "renew_session", "owner": "human", "session_id": "493121a9088b4add880dce0665756bd4", "action_kind": "click", "sequence": 12, "time": "2026-09-21T17:59:31.322868+00:00"}
-{"event": "operator_action", "target": "renew_session", "owner": "human", "session_id": "493121a9088b4add880dce0665756bd4", "action_kind": "submit", "sequence": 13, "time": "2026-09-21T17:59:31.323126+00:00"}
-{"event": "operator_action", "owner": "human", "session_id": "493121a9088b4add880dce0665756bd4", "action_kind": "navigation", "sequence": 14, "time": "2026-09-21T17:59:31.342702+00:00"}
-{"event": "control_resumed", "owner": "automation", "intervention_id": "cda97ca7b8574174b7849b69d02c158f", "session_id": "493121a9088b4add880dce0665756bd4", "sequence": 15, "time": "2026-09-21T17:59:31.360756+00:00"}
-{"event": "action_started", "target": "savings", "op": "click", "sequence": 16, "time": "2026-09-21T17:59:31.436139+00:00"}
-{"event": "action_completed", "target": "savings", "op": "click", "sequence": 17, "time": "2026-09-21T17:59:31.456889+00:00"}
-{"event": "action_started", "target": "balance", "op": "read", "sequence": 18, "time": "2026-09-21T17:59:31.552694+00:00"}
-{"event": "action_completed", "target": "balance", "op": "read", "sequence": 19, "time": "2026-09-21T17:59:31.554081+00:00"}
-{"event": "success", "llm_calls": 0, "sequence": 20, "time": "2026-09-21T17:59:31.570861+00:00"}
+{"event": "started", "capability": "read_savings", "llm_calls": 0, "artifact_sha256": "55980dd88b6ef5f584d67326b24de6befa4a79bcfd3dc59977cad5081d01f40a", "sequence": 1, "time": "2026-09-22T05:20:57.220932+00:00"}
+{"event": "action_started", "target": "member_input", "parameter": "member_id", "op": "fill", "sequence": 2, "time": "2026-09-22T05:20:57.334245+00:00"}
+{"event": "action_completed", "target": "member_input", "op": "fill", "sequence": 3, "time": "2026-09-22T05:20:57.345812+00:00"}
+{"event": "action_started", "target": "search", "op": "click", "sequence": 4, "time": "2026-09-22T05:20:57.362590+00:00"}
+{"event": "action_completed", "target": "search", "op": "click", "sequence": 5, "time": "2026-09-22T05:20:57.396177+00:00"}
+{"event": "action_started", "target": "open_member", "op": "click", "sequence": 6, "time": "2026-09-22T05:20:57.491274+00:00"}
+{"event": "action_completed", "target": "open_member", "op": "click", "sequence": 7, "time": "2026-09-22T05:20:57.504023+00:00"}
+{"event": "action_started", "target": "accounts", "op": "click", "sequence": 8, "time": "2026-09-22T05:20:57.591729+00:00"}
+{"event": "action_completed", "target": "accounts", "op": "click", "sequence": 9, "time": "2026-09-22T05:20:57.604171+00:00"}
+{"event": "intervention_requested", "capability": "read_savings", "evidence": "state-0009.json", "step": 3, "code": "session_expired", "owner": "paused", "intervention_id": "b55f3f5003a74f878899a0b5d8681317", "session_id": "1a36cb70f0b84060966e4488e9442848", "sequence": 10, "time": "2026-09-22T05:20:57.688671+00:00"}
+{"event": "control_claimed", "owner": "human", "intervention_id": "b55f3f5003a74f878899a0b5d8681317", "session_id": "1a36cb70f0b84060966e4488e9442848", "sequence": 11, "time": "2026-09-22T05:20:57.688778+00:00"}
+{"event": "operator_action", "target": "renew_session", "owner": "human", "session_id": "1a36cb70f0b84060966e4488e9442848", "action_kind": "click", "sequence": 12, "time": "2026-09-22T05:20:57.703972+00:00"}
+{"event": "operator_action", "target": "renew_session", "owner": "human", "session_id": "1a36cb70f0b84060966e4488e9442848", "action_kind": "submit", "sequence": 13, "time": "2026-09-22T05:20:57.704196+00:00"}
+{"event": "operator_action", "owner": "human", "session_id": "1a36cb70f0b84060966e4488e9442848", "action_kind": "navigation", "sequence": 14, "time": "2026-09-22T05:20:57.725930+00:00"}
+{"event": "control_resumed", "owner": "automation", "intervention_id": "b55f3f5003a74f878899a0b5d8681317", "session_id": "1a36cb70f0b84060966e4488e9442848", "sequence": 15, "time": "2026-09-22T05:20:57.795538+00:00"}
+{"event": "action_started", "target": "savings", "op": "click", "sequence": 16, "time": "2026-09-22T05:20:57.871894+00:00"}
+{"event": "action_completed", "target": "savings", "op": "click", "sequence": 17, "time": "2026-09-22T05:20:57.887368+00:00"}
+{"event": "action_started", "target": "balance", "op": "read", "sequence": 18, "time": "2026-09-22T05:20:57.984006+00:00"}
+{"event": "action_completed", "target": "balance", "op": "read", "sequence": 19, "time": "2026-09-22T05:20:57.985487+00:00"}
+{"event": "success", "llm_calls": 0, "sequence": 20, "time": "2026-09-22T05:20:58.004393+00:00"}

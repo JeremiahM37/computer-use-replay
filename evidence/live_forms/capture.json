@@ -1,0 +1,31 @@
+{
+  "source_files": {
+    "scripts/capture_live_evidence.py": "e79ab0a451ab4efb337174ccbbf4e82a937b6abb51b84ab530c9fd60c1f976dd",
+    "profiles/juniper_live.json": "59c4ff1f3ddc8338edb6bdb82c9330606d09e3fe707970ec4255926159ac807d",
+    "requests/prepare_subaccount.json": "bdc40a230abc35af9c22c53632b858977177f9f49b486e41c1790613443ecbba",
+    "requests/read_savings.json": "d908411dc72a5df490822e7dcb6566e7ab73512c1c1c0451b09a60680d9ca2fe",
+    "src/computer_use_replay/__init__.py": "25f099990e2ff27202f6af2f4a0734f9eb3b189d1f1fc1cab366d8f7210b577a",
+    "src/computer_use_replay/browser.py": "85a24537a46622b6d29b5d3a6170650e4e43f78882daa89bf0d732b75b6fbbc4",
+    "src/computer_use_replay/browser_perception.py": "60c4a82d9aaf3713043339643a210a5f184a67022b03eb6d24d3ca126571a89e",
+    "src/computer_use_replay/catalog.py": "eedde04b5f5f47e655abfe73fdd0bff53bca2699aabdf43ecea97ffe6c78e9f5",
+    "src/computer_use_replay/cli.py": "e863f6a6e599f8af043781be3b64e85696058287ae563b0fa9844e18d1d12a93",
+    "src/computer_use_replay/console.py": "2ef443a1252860e41ba53c0c5dc11597a7440a2c0fabda18aa8d9e2c2ccb2fa3",
+    "src/computer_use_replay/contracts.py": "e7ea05c42bdb6c6a5b91de405d935d9e38a4784991cb6f7df844f5420b02c5c6",
+    "src/computer_use_replay/control.py": "7908837623167a767ea3c80ef79a9db83f296589acc839cfd1dcacde90871716",
+    "src/computer_use_replay/demo.py": "a44fd694fadd1274ce2cd42593767784bc35bf26cfd227656eabd7e6b99a8d36",
+    "src/computer_use_replay/discovery.py": "b527a0cbda8588d35409ff9cd90e24a170b96bde09156969ec6dad84e545a641",
+    "src/computer_use_replay/engine.py": "3c8265e55e2dd662dfc9474d5e256194958623367400ac8c41a3d150bfa3f651",
+    "src/computer_use_replay/evidence.py": "c560197997b2cef709861e37fd9b6bc916bb2d42c94015dca324f0f63064bb3c",
+    "src/computer_use_replay/fallback.py": "838aa1c1469762246542a43fb6f1bb5ee82cc3ae2c1c8d1b6400b4f24cfb2053",
+    "src/computer_use_replay/network.py": "da87ccfe043cfe691839cf234ffcaf2f0a5c15d83eed6e4a0686f26133f40386",
+    "src/computer_use_replay/onboarding.py": "76b727c04094dfeec8eb23d43091fceba4544ce1893099ce49dd649a56fb7f46",
+    "src/computer_use_replay/planner.py": "842c3159e0e0e822040d58fb53ad91fa5341783ee92250df02420e322bc611e5",
+    "src/computer_use_replay/policy.py": "0f32a6c180bf3615fd1151bd2e3edb6fd3274a8769df4f6b6a626b2cffdc6af9",
+    "src/computer_use_replay/providers.py": "865859d8afade76aacf43806d59bcf1cdf1039b39f78dc38777bffaad8258269",
+    "src/computer_use_replay/surface.py": "3fd22b96d518c1566e97351e6fdc3025e401e555778a1e6c2e14e28a45751b9e",
+    "src/computer_use_replay/terminal.py": "4db04eefcef5b2af1b32bb9693cb7b9ef4c3144472fa57d08a12e635d2eea342",
+    "src/computer_use_replay/tour.py": "f571c78d07ccc8f3c7b3e3db92b7339192e7caa42d4f5a92af2bbf18411f4b01"
+  },
+  "provider": "ollama",
+  "model": "qwen3.6:35b-a3b"
+}

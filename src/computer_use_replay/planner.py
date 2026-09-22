@@ -80,7 +80,12 @@ def action_tools(context):
         for node in context["observation"]["controls"]
         if node["count"] == 1 and node.get("ready", True)
     }
-    catalog = context["catalog"]
+    visible.update(
+        candidate["candidate_id"]
+        for candidate in context["observation"].get("live_candidates", [])
+        if candidate.get("ready", True)
+    )
+    catalog = {**context["catalog"], **context.get("live_catalog", {})}
     tools = []
     for op, fields in {
         "click": {},
@@ -239,7 +244,8 @@ class ModelPlanner:
                             )
                         )
                         decision = parse_call(call, offered)
-                        if decision.op == "fill" and decision.input not in context["catalog"][
+                        catalog = {**context["catalog"], **context.get("live_catalog", {})}
+                        if decision.op == "fill" and decision.input not in catalog[
                             decision.target
                         ].get("allowed_inputs", context["inputs"]):
                             raise ValueError("input does not belong to target")

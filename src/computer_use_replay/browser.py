@@ -13,6 +13,7 @@ from playwright.async_api import TimeoutError as BrowserTimeout
 from playwright.async_api import async_playwright
 
 from computer_use_replay import fallback
+from computer_use_replay.browser_perception import LivePerception
 from computer_use_replay.contracts import Click, Condition, Fill, Read, Target
 from computer_use_replay.control import Ownership
 from computer_use_replay.evidence import Event, Evidence, Node, Snapshot
@@ -69,6 +70,13 @@ class BrowserSurface:
         self._tour = {"capability": None, "total": None, "index": None}
         self._decision_note = None
         self._arguments = {}
+        self._live_controls = {}
+        self._live_scopes = {}
+        self._live_history = {}
+        self._live_pinned_handles = {}
+        self._live_current_ids = set()
+        self._live_epoch = 0
+        self._replay_groundings = {}
         self.blocked = None
         self.generation = 0
         self.last_snapshot = Snapshot(controls=(), states=())
@@ -93,7 +101,11 @@ class BrowserSurface:
                 context_kwargs["record_video_size"] = {"width": 1280, "height": 800}
                 context_kwargs["viewport"] = {"width": 1280, "height": 800}
             self.context = await self.browser.new_context(**context_kwargs)
-            self.context.set_default_timeout(self.policy.binding.step_timeout * 1000)
+            self.context.set_default_timeout(
+                self.policy.binding.step_timeout
+                * (3 if self.policy.binding.live_mode == "forms" else 1)
+                * 1000
+            )
             await self.context.route("**/*", self._request)
             await self.context.route_web_socket("**/*", self._websocket)
             await self.context.expose_binding("__computer_use_replay_event", self._human_event)
@@ -316,6 +328,9 @@ class BrowserSurface:
         selector = ":scope > td input" if target.kind == "row_input" else ":scope > td"
         return row.locator(selector).filter(visible=True)
 
+    def _control(self, key):
+        return self._live_controls.get(key) or self.policy.binding.controls.get(key)
+
     async def _resolve(self, key):
         """Try the reviewed primary target for `key`; only on ZERO visible matches,
         try each reviewed alternate in order (never positional, never fuzzy). Any
@@ -324,7 +339,9 @@ class BrowserSurface:
         Returns (locator_or_None, count, rank) for the rung actually used, where
         rank 0 is the primary and rank N is the Nth reviewed alternate.
         """
-        control = self.policy.binding.controls[key]
+        control = self._control(key)
+        if control is None:
+            return None, 0, None
         for rank, target in enumerate((control.target, *control.alternates)):
             loc = self._locator(target, control.match_input)
             count = await loc.count() if loc is not None else 0
@@ -514,9 +531,59 @@ class BrowserSurface:
         states = tuple(
             key for key, state in self.policy.binding.states.items() if state.target in present
         )
+        live = await self._observe_live() if self.policy.binding.live_mode == "forms" else ()
         return Snapshot(
-            controls=tuple(nodes), states=states, unknown_dialogs=await self._unknown_dialogs(nodes)
+            controls=tuple(nodes),
+            states=states,
+            unknown_dialogs=await self._unknown_dialogs(nodes),
+            live_candidates=tuple(live),
         )
+
+    async def _observe_live(self):
+        """Export only bounded, scope-authorized form structure and safe chrome text."""
+        return await LivePerception(self).observe()
+
+    def install_groundings(self, groundings):
+        self._replay_groundings = dict(groundings)
+
+    async def pin_live_candidate(self, key):
+        """Retain only a selected live target across the next observation."""
+        if (
+            key not in self._live_current_ids
+            and key not in self._replay_groundings
+            and key not in self._live_pinned_handles
+        ) or key not in self._live_controls:
+            raise Stop(
+                "live_candidate_stale", "current live candidate", "candidate expired", target=key
+            )
+        if (
+            len(self._live_history) >= self.policy.binding.max_steps
+            and key not in self._live_history
+        ):
+            raise Stop(
+                "live_candidate_limit", "bounded selected candidates", "selection budget exceeded"
+            )
+        self._live_history[key] = (self._live_controls[key], self._live_scopes[key])
+        if key not in self._live_pinned_handles:
+            loc = self._locator(self._live_controls[key].target)
+            if loc is None or await loc.count() != 1:
+                raise Stop(
+                    "live_candidate_stale",
+                    "current live candidate",
+                    "candidate expired",
+                    target=key,
+                )
+            handle = await loc.element_handle()
+            if handle is None:
+                raise Stop(
+                    "live_candidate_stale", "current live candidate", "element expired", target=key
+                )
+            self._live_pinned_handles[key] = handle
+
+    async def unpin_live_candidate(self, key):
+        handle = self._live_pinned_handles.pop(key, None)
+        if handle is not None:
+            await handle.dispose()
 
     async def _unknown_dialogs(self, nodes):
         # Count actual visible dialogs, not control aliases. A reviewed CSS scope
@@ -553,7 +620,7 @@ class BrowserSurface:
         return unknown
 
     def _paragraphs(self, target):
-        return self.policy.binding.controls[target].text_mode == "paragraphs"
+        return self._control(target).text_mode == "paragraphs"
 
     async def _text(self, loc, *, paragraphs=False, evaluate_timeout_ms=None):
         evaluate_timeout_ms = (
@@ -648,7 +715,7 @@ class BrowserSurface:
             return value == arguments[condition.input]
         return condition.matches_value(value, arguments)
 
-    async def _select(self, loc, value):
+    async def _select(self, loc, value, *, action_target):
         options = await loc.evaluate(
             """(el, label) => ({
                 multiple: el.multiple,
@@ -663,7 +730,9 @@ class BrowserSurface:
             )
         if not await loc.is_enabled() or options["options"][0]["disabled"]:
             raise Stop("control_not_ready", "enabled option", "option unavailable")
-        await loc.select_option(label=value, timeout=self.policy.binding.step_timeout * 1000)
+        await action_target.select_option(
+            label=value, timeout=self.policy.binding.step_timeout * 1000
+        )
         if await self._text(loc) != value:
             raise Stop("fill_mismatch")
 
@@ -759,7 +828,7 @@ class BrowserSurface:
         return [capability, f"step {index + 1}"]
 
     async def _present_before(self, step, loc):
-        control = self.policy.binding.controls[step.target]
+        control = self._control(step.target)
         lines = [*self._caption_prefix(), f"{step.op}: {control.target.name}"]
         if isinstance(step, Fill):
             lines.append(f"param: {step.input}")
@@ -787,89 +856,141 @@ class BrowserSurface:
 
     async def perform(self, step, arguments):
         async with self.ownership.lock:
-            self.ownership.require_automation()
-            self.check_health()
+            try:
+                return await self._perform(step, arguments)
+            finally:
+                # A live candidate is pinned for at most this action, including
+                # policy, readiness, presentation, and dispatch failures.
+                if step.target in self._live_pinned_handles:
+                    await self.unpin_live_candidate(step.target)
+
+    async def _perform(self, step, arguments):
+        self.ownership.require_automation()
+        self.check_health()
+        if step.target in self._live_controls:
+            scope = self._live_scopes[step.target][0]
+            self.policy.check_live_action(step.op, scope)
+            if step.target in self._live_current_ids or step.target in self._replay_groundings:
+                await self.pin_live_candidate(step.target)
+            await LivePerception(self).validate_action(step.target, step.op)
+            target = self._live_controls[step.target].target
+            duplicates = [
+                key
+                for key, control in self._live_controls.items()
+                if key != step.target and key in self._live_current_ids and control.target == target
+            ]
+            # A discovery decision may carry the prior observation's
+            # logical id; one current candidate with the same reviewed
+            # target is the safe alias case. Historical aliases must not
+            # count as a second visible control.
+            current_matches = [
+                key for key in self._live_current_ids if self._live_controls[key].target == target
+            ]
+            if len(current_matches) > 1 or (step.target in self._live_current_ids and duplicates):
+                raise Stop(
+                    "ambiguous_target",
+                    "exactly one visible live control",
+                    "multiple matches",
+                    target=step.target,
+                )
+            if (
+                isinstance(step, Fill)
+                and step.input not in self._live_controls[step.target].allowed_inputs
+            ):
+                raise Stop("input_target_mismatch")
+        else:
             self.policy.check_action(step.op, step.target)
             if isinstance(step, Fill):
                 self.policy.check_fill(step.target, step.input)
-            loc = await self._unique(step.target, log_alternate=True)
-            if isinstance(step, Click) and not await self._ready(loc):
-                raise Stop(
-                    "control_not_ready",
-                    "enabled control with valid required fields",
-                    "control unavailable",
-                    target=step.target,
-                )
-            if self.present:
-                await self._present_before(step, loc)
-            self.evidence.emit(
-                Event(
-                    event="action_started",
-                    op=step.op,
-                    target=step.target,
-                    parameter=step.input if isinstance(step, Fill) else None,
-                )
+        loc = await self._unique(step.target, log_alternate=True)
+        if isinstance(step, Click) and not await self._ready(loc):
+            raise Stop(
+                "control_not_ready",
+                "enabled control with valid required fields",
+                "control unavailable",
+                target=step.target,
             )
-            try:
-                if isinstance(step, Click):
-                    await loc.click(timeout=self.policy.binding.step_timeout * 1000)
-                    if self.present:
-                        # The click may navigate: drop the box at once, keep the caption,
-                        # so nothing stays outlined where the control used to be.
-                        await self._overlay(None, None)
-                elif isinstance(step, Fill):
-                    value = arguments[step.input]
-                    if type(value) is bool:
-                        if await self._checked(loc) is None:
-                            raise Stop(
-                                "unsupported_control", "native binary checkbox", "unsupported state"
-                            )
-                        await loc.set_checked(
-                            value, timeout=self.policy.binding.step_timeout * 1000
+        if self.present:
+            await self._present_before(step, loc)
+        action_target = loc
+        if step.target in self._live_controls:
+            # Resolve once, then act on that exact element. A lazy locator could
+            # otherwise select a replacement after validation or presentation.
+            await LivePerception(self).validate_action(step.target, step.op)
+            action_target = self._live_pinned_handles[step.target]
+        self.evidence.emit(
+            Event(
+                event="action_started",
+                op=step.op,
+                target=step.target,
+                parameter=step.input if isinstance(step, Fill) else None,
+            )
+        )
+        try:
+            if isinstance(step, Click):
+                await action_target.click(timeout=self.policy.binding.step_timeout * 1000)
+                if self.present:
+                    # The click may navigate: drop the box at once, keep the caption,
+                    # so nothing stays outlined where the control used to be.
+                    await self._overlay(None, None)
+            elif isinstance(step, Fill):
+                value = arguments[step.input]
+                if type(value) is bool:
+                    if await self._checked(loc) is None:
+                        raise Stop(
+                            "unsupported_control", "native binary checkbox", "unsupported state"
                         )
-                        if await self._checked(loc) is not value:
-                            raise Stop("fill_mismatch")
-                    elif await loc.evaluate("el => el.tagName === 'SELECT'"):
-                        await self._select(loc, str(value))
-                    else:
-                        editable = await loc.evaluate("el => el.isContentEditable")
-                        text = str(value)
-                        lines = text.split("\n") if editable else [text]
-                        await loc.fill(lines[0], timeout=self.policy.binding.step_timeout * 1000)
-                        for line in lines[1:]:
-                            await loc.press(
-                                "Shift+Enter", timeout=self.policy.binding.step_timeout * 1000
-                            )
-                            if line:
-                                await loc.press_sequentially(
-                                    line, timeout=self.policy.binding.step_timeout * 1000
-                                )
-                        observed = (
-                            await self._text(loc, paragraphs=self._paragraphs(step.target))
-                            if editable
-                            else await loc.input_value()
-                        )
-                        if observed != text:
-                            raise Stop("fill_mismatch")
-                    commit_key = self.policy.binding.controls[step.target].commit_key
-                    if commit_key is not None:
-                        await loc.press(commit_key, timeout=self.policy.binding.step_timeout * 1000)
-                elif isinstance(step, Read):
-                    value = await self._text(loc, paragraphs=self._paragraphs(step.target))
-                    self.check_health()
-                    self.evidence.emit(
-                        Event(event="action_completed", op=step.op, target=step.target)
+                    await action_target.set_checked(
+                        value, timeout=self.policy.binding.step_timeout * 1000
                     )
-                    return value.strip()
+                    if await self._checked(loc) is not value:
+                        raise Stop("fill_mismatch")
+                elif await loc.evaluate("el => el.tagName === 'SELECT'"):
+                    await self._select(loc, str(value), action_target=action_target)
                 else:
-                    raise Stop("unsupported_action")
-            except BrowserTimeout:
-                # A click can have reached the application even if its navigation did not settle.
-                # The engine checks the postcondition; it never dispatches this action twice.
-                raise Stop("effect_uncertain", "verified effect", "action timed out") from None
-            self.check_health()
-            self.evidence.emit(Event(event="action_completed", op=step.op, target=step.target))
-            return None
+                    editable = await loc.evaluate("el => el.isContentEditable")
+                    text = str(value)
+                    lines = text.split("\n") if editable else [text]
+                    await action_target.fill(
+                        lines[0], timeout=self.policy.binding.step_timeout * 1000
+                    )
+                    for line in lines[1:]:
+                        await action_target.press(
+                            "Shift+Enter", timeout=self.policy.binding.step_timeout * 1000
+                        )
+                        if line:
+                            # ElementHandle exposes sequential keyboard input as
+                            # type(); Locator calls it press_sequentially().
+                            type_line = getattr(
+                                action_target, "press_sequentially", action_target.type
+                            )
+                            await type_line(line, timeout=self.policy.binding.step_timeout * 1000)
+                    observed = (
+                        await self._text(loc, paragraphs=self._paragraphs(step.target))
+                        if editable
+                        else await loc.input_value()
+                    )
+                    if observed != text:
+                        raise Stop("fill_mismatch")
+                commit_key = self._control(step.target).commit_key
+                if commit_key is not None:
+                    await action_target.press(
+                        commit_key, timeout=self.policy.binding.step_timeout * 1000
+                    )
+            elif isinstance(step, Read):
+                value = await self._text(loc, paragraphs=self._paragraphs(step.target))
+                self.check_health()
+                self.evidence.emit(Event(event="action_completed", op=step.op, target=step.target))
+                return value.strip()
+            else:
+                raise Stop("unsupported_action")
+        except BrowserTimeout:
+            # A click can have reached the application even if its navigation did not settle.
+            # The engine checks the postcondition; it never dispatches this action twice.
+            raise Stop("effect_uncertain", "verified effect", "action timed out") from None
+        self.check_health()
+        self.evidence.emit(Event(event="action_completed", op=step.op, target=step.target))
+        return None
 
     async def failure_screenshot(self):
         """Structure-preserving failure image. Every glyph, value, placeholder and

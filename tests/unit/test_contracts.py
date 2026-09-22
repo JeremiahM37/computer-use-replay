@@ -484,3 +484,39 @@ def test_success_warnings_present_when_a_fallback_ran():
     result = Success(outputs={}, llm_calls=0, warnings=("fallback_resolved:search:normalized",))
     dumped = result.model_dump(mode="json")
     assert dumped["warnings"] == ["fallback_resolved:search:normalized"]
+
+
+def test_live_submission_evidence_matches_runtime():
+    from scripts.preflight import check_live_evidence
+
+    check_live_evidence(Path("evidence/live_forms"))
+
+
+@pytest.mark.parametrize("fault", ["scripted", "replay_model_calls", "artifact_link"])
+def test_live_submission_evidence_rejects_misleading_records(tmp_path, fault):
+    import shutil
+
+    from scripts.preflight import check_live_evidence
+
+    root = tmp_path / "live_forms"
+    shutil.copytree("evidence/live_forms", root)
+    directory = root / "read_savings"
+    if fault == "scripted":
+        path = directory / "artifact.json"
+        data = json.loads(path.read_text())
+        data["provenance"]["mode"] = "test_fixture"
+        path.write_text(json.dumps(data))
+    elif fault == "replay_model_calls":
+        path = directory / "replay/result.json"
+        data = json.loads(path.read_text())
+        data["llm_calls"] = 1
+        path.write_text(json.dumps(data))
+    else:
+        path = directory / "replay/events.jsonl"
+        rows = [json.loads(line) for line in path.read_text().splitlines()]
+        for row in rows:
+            if row["event"] == "started":
+                row["artifact_sha256"] = "0" * 64
+        path.write_text("\n".join(json.dumps(row) for row in rows) + "\n")
+    with pytest.raises(AssertionError):
+        check_live_evidence(root)

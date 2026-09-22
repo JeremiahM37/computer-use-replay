@@ -10,7 +10,7 @@ from pathlib import Path
 from typing import Literal
 from uuid import uuid4
 
-from pydantic import Field
+from pydantic import Field, model_serializer
 
 from computer_use_replay.contracts import Name, Strict, Target
 
@@ -25,10 +25,38 @@ class Node(Strict):
     data: Literal["omitted"] = "omitted"
 
 
+class LiveCandidate(Strict):
+    """Bounded, sanitized projection of one currently visible live control."""
+
+    candidate_id: Name
+    scope: Name
+    kind: Literal["button", "link", "field"]
+    role: str
+    label: str | None = None
+    frame: tuple[str, ...] = ()
+    ready: bool = True
+    # Runtime-only target is deliberately excluded from serialization/model view.
+    locator: Target | None = None
+
+    @model_serializer(mode="wrap")
+    def serialized(self, handler):
+        data = handler(self)
+        data.pop("locator", None)
+        return data
+
+
 class Snapshot(Strict):
     controls: tuple[Node, ...]
     states: tuple[Name, ...]
     unknown_dialogs: int = 0
+    live_candidates: tuple[LiveCandidate, ...] = ()
+
+    @model_serializer(mode="wrap")
+    def serialized(self, handler):
+        data = handler(self)
+        if not self.live_candidates:
+            data.pop("live_candidates", None)
+        return data
 
 
 class Event(Strict):

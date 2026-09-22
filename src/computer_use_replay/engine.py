@@ -63,8 +63,20 @@ class Execution:
         return not snapshot.states and snapshot.unknown_dialogs == 0
 
     def _control_label(self, target):
-        control = self._rescued.get(target, self.policy.binding.controls[target])
+        control = self._rescued.get(target) or self.policy.binding.controls.get(target)
+        if control is None:
+            control = getattr(self.surface, "_live_controls", {}).get(target)
+        if control is None:
+            return target
         return control.target.name
+
+    def _snapshot_has_target(self, snapshot, target):
+        return (
+            target in {node.target for node in snapshot.controls}
+            or target
+            in {candidate.candidate_id for candidate in getattr(snapshot, "live_candidates", ())}
+            or target in getattr(self.surface, "_live_history", {})
+        )
 
     async def _present(self, text):
         # Presentation is adapter-optional: engine.py stays agnostic of any
@@ -252,9 +264,7 @@ class Execution:
             elif not conditions or await self._satisfied(conditions, arguments or {}):
                 return snapshot
             if time.monotonic() >= deadline:
-                if single_target and not any(
-                    node.target == self.current_target for node in snapshot.controls
-                ):
+                if single_target and not self._snapshot_has_target(snapshot, self.current_target):
                     if acting_op and await self._rescue(self.current_target, acting_op):
                         deadline = time.monotonic() + self.policy.binding.step_timeout
                         continue
@@ -324,7 +334,11 @@ class Execution:
         if isinstance(step, Click):
             await self.await_effect(step.after, arguments, index)
             await self._present(f"verified: {self._control_label(step.after.target)}")
-        elif isinstance(step, Fill) and self.policy.binding.controls[step.target].after_fill:
+        elif (
+            isinstance(step, Fill)
+            and step.target in self.policy.binding.controls
+            and self.policy.binding.controls[step.target].after_fill
+        ):
             receipt = self.policy.binding.controls[step.target].after_fill
             await self.await_effect(receipt, arguments, index)
             await self._present(f"verified: {self._control_label(receipt.target)}")
@@ -347,12 +361,19 @@ class Execution:
             snapshot = getattr(self.surface, "last_snapshot", Snapshot(controls=(), states=()))
         path = self.evidence.snapshot(snapshot)
         target = stop.target or self.current_target
-        control = self._rescued.get(target, self.policy.binding.controls.get(target))
+        control = self._rescued.get(target) or self.policy.binding.controls.get(target)
+        if control is None:
+            control = getattr(self.surface, "_live_controls", {}).get(target)
         match_count = (
             next((node.count for node in snapshot.controls if node.target == target), 0)
             if control and current
             else None
         )
+        if control and current and target not in {node.target for node in snapshot.controls}:
+            match_count = sum(
+                candidate.candidate_id == target
+                for candidate in getattr(snapshot, "live_candidates", ())
+            )
         try:
             screenshot = await self.surface.failure_screenshot()
         except Exception:
@@ -394,6 +415,9 @@ class Replay:
             ex.handoff.ownership.capability = artifact.name
             ex.policy.check_artifact(artifact)
             ex.artifact = artifact
+            install = getattr(ex.surface, "install_groundings", None)
+            if install is not None:
+                install(artifact.grounded)
             if getattr(ex.surface, "present", False):
                 ex.surface.presentation_context(artifact.name, len(artifact.steps))
             try:

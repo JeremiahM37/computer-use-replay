@@ -219,6 +219,58 @@ def check_evidence(root):
         ), f"Unredacted fixture value in {name}"
 
 
+def check_live_evidence(root):
+    """Cross-check real live-discovery artifacts against their selected event records."""
+    capture = json.loads((root / "capture.json").read_text())
+    expected_sources = {
+        *map(str, Path("src/computer_use_replay").glob("*.py")),
+        "profiles/juniper_live.json",
+        "requests/read_savings.json",
+        "requests/prepare_subaccount.json",
+        "scripts/capture_live_evidence.py",
+    }
+    assert set(capture["source_files"]) == expected_sources
+    for name, expected in capture["source_files"].items():
+        assert hashlib.sha256(Path(name).read_bytes()).hexdigest() == expected, name
+    assert capture["provider"] == "ollama"
+    cases = json.loads((root / "summary.json").read_text())
+    assert {case["case"] for case in cases} == {
+        "read_savings",
+        "prepare_subaccount",
+        "read_savings_relabeled",
+    }
+    policy = Policy(Binding.load(Path("profiles/juniper_live.json")), "http://localhost")
+    for case in cases:
+        directory = root / case["case"]
+        artifact = Capability.model_validate_json((directory / "artifact.json").read_text())
+        assert artifact.schema_version == "3.0" and artifact.grounded
+        assert artifact.provenance.mode == "llm" and artifact.provenance.calls > 0
+        assert len(artifact.grounded) == case["grounded_targets"]
+        assert artifact.provenance.calls == case["discovery_calls"]
+        assert case["status"] == "success" and case["replay_calls"] == 0
+        policy.check_artifact(artifact)
+        for mode in ("discovery", "replay"):
+            result = json.loads((directory / mode / "result.json").read_text())
+            rows = [
+                json.loads(line)
+                for line in (directory / mode / "events.jsonl").read_text().splitlines()
+            ]
+            assert [row["sequence"] for row in rows] == list(range(1, len(rows) + 1))
+            for row in rows:
+                Event.model_validate({key: value for key, value in row.items() if key != "time"})
+            calls = [row for row in rows if row["event"] == "model_response"]
+            expected_calls = artifact.provenance.calls if mode == "discovery" else 0
+            assert len(calls) == result["llm_calls"] == expected_calls
+            assert result["status"] == "success"
+            assert result["outputs"] == {name: "<withheld>" for name in artifact.outputs}
+            event = "artifact_saved" if mode == "discovery" else "started"
+            assert any(
+                row["event"] == event and row["artifact_sha256"] == artifact.digest()
+                for row in rows
+            )
+            assert any(row["event"] == "success" for row in rows)
+
+
 def check(capability_root=Path("capabilities"), evidence_root=Path("evidence")):
     assert (
         json.loads(Path("docs/capability.schema.json").read_text())
@@ -248,6 +300,7 @@ def check(capability_root=Path("capabilities"), evidence_root=Path("evidence")):
         for variant in [binding, overlay, terminal]:
             Policy(variant, "http://localhost").check_artifact(artifact)
     check_evidence(evidence_root)
+    check_live_evidence(evidence_root / "live_forms")
     check_git_tracked(evidence_root)
     print("PASS: source contracts and genuine discovery, replay, and masked failure evidence")
 
