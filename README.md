@@ -3,13 +3,15 @@
 [![verify](https://github.com/JeremiahM37/computer-use-replay/actions/workflows/ci.yml/badge.svg)](https://github.com/JeremiahM37/computer-use-replay/actions/workflows/ci.yml)
 
 `computer-use-replay` lets an LLM *discover* a UI workflow once -- clicking, filling and
-reading a real (or fixture) web app under a reviewed product vocabulary and a
+reading a real (or fixture) web app under reviewed action permissions and a
 caller-owned task contract -- and saves what it learned as a typed, inspectable
 capability artifact. Every later call *replays* that artifact deterministically
 against the current live page with **zero model calls**; an unexpected page state
 escalates to a person on the same live session instead of guessing. Everything the
 engine may do is governed by a reviewed policy, and every run leaves a sanitized
-evidence trail with no secret or page value.
+evidence trail. Live perception exposes only interface chrome authorized by the
+installation policy; invocation values and extracted business data stay out of
+model requests and recorded artifacts.
 
 The bundled banking workstation is a controlled lab: it can produce every runtime
 failure on demand (expired session, service notice, slow load, wrong member,
@@ -45,7 +47,36 @@ acts, paced at roughly one action per second. The overlay is presentation only:
 it changes nothing about targeting, evidence or results. Add `--pace 0.3` to
 speed up, or run under `xvfb-run -a` / `COMPUTER_USE_REPLAY_HEADLESS=1`.
 
-## Learn it live
+## Discover controls from the live page
+
+For live control identification, start the fixture with `uv run computer-use-replay
+serve`, then use the live-forms profile with a reachable Ollama service:
+
+```bash
+export OLLAMA_URL=http://127.0.0.1:11434 OLLAMA_MODEL=qwen3.6:35b-a3b
+uv run computer-use-replay discover --binding profiles/juniper_live.json \
+  --request requests/read_savings.json --input member_id=00123 \
+  --artifact runs/live-savings.json
+uv run computer-use-replay replay --binding profiles/juniper_live.json \
+  --artifact runs/live-savings.json --input member_id=00456
+```
+
+This profile has no locators or labels for the business buttons and input controls.
+It defines permitted form scopes, destinations, input bindings and public text
+exports. The model selects controls observed at runtime; the executor derives and
+checks their locators. Checkpoints and output sources remain reviewed. The saved
+artifact includes grounding provenance and replays without a model.
+
+For the other branch, use `--request requests/prepare_subaccount.json`, add
+`--input nickname=Vacation`, and choose a different artifact path. Both tasks use
+the same live profile. This is bounded form discovery, not arbitrary desktop or
+screenshot automation. [Architecture and limitations](REPORT.md).
+
+The [recorded examples](evidence/live_forms/summary.json) include both branches and
+a relabeled layout. Reproduce all three with `uv run python
+scripts/capture_live_evidence.py --output runs/my-live-evidence`.
+
+## Reviewed-catalog discovery
 
 ```bash
 export OLLAMA_URL=http://127.0.0.1:11434 OLLAMA_MODEL=qwen3.6:35b-a3b

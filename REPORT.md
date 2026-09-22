@@ -2,59 +2,65 @@
 
 ## 1. Architecture
 
-`computer-use-replay` is one Python process: a constrained discovery loop, capability
-compiler, deterministic interpreter, policy layer and Playwright surface adapter.
-Its primary target is a fictional banking workstation with named frames,
-header-relative table values and no access to backing data -- a controlled lab
-producing every runtime failure mode on demand. The same engine, with no
-target-specific code, also runs on two applications this author did not
-write -- Meridian Core and unmodified ERPNext.
+A goal becomes a reviewed task contract. Discovery uses an LLM to choose actions
+from live observations, verifies their effects, and compiles the successful run;
+later invocations replay the artifact with zero model calls.
 
-A second target is interface.ai's hosted hiring sample, Meridian Core: a
-server-rendered, JavaScript-free legacy workstation with no `<label>` or
-`<th>` anywhere, and a real redirecting login (its genuine `302` needed one
-opt-in, per-rule `redirect_to` grant, §6). Discovery used `qwen3.6:35b-a3b`, 9
-native calls, 3/3 attempts; three replays all matched.
-[Integration guide](integrations/meridian/README.md).
+```text
+goal → accepted contract → observe / decide / act → verified artifact → deterministic replay
+                             ↑             ↓
+                        live surface   independent policy
+```
 
-A third target is unmodified ERPNext 16.34.2: the fixture and Meridian exercise
-text fields, buttons and one dropdown, so ERPNext is the complex-interaction
-check -- two autocomplete pickers, a dropdown, an editable grid row and an
-asynchronously priced grand total. The committed artifact of record is a
-genuine `qwen3.6:35b-a3b` discovery (13 native calls), re-learned twice as
-the profile changed (business states, then a discard rule, §6), never
-hand-edited; the original 12-call `gemma4:e4b` recording stays in
-`integrations/erpnext/evidence/original/` for history. Replayed live it reproduces the documented
-USD 371.00 total and, with a different customer/item/quantity, USD 503.50,
-zero model calls either way. An unrecognized customer now returns a
-`customer_not_found` business outcome, exit `0`, zero model calls -- same
-`business` kind as the fixture's `member_not_found`, added without touching
-the engine, since both pickers auto-select a fixed trailing option only when
-no real match precedes it, covering an unrecognized item (`item_not_found`)
-too. Not modeled: identifier shapes outside `input_types`, other ERPNext
-pickers, or scope beyond English/USD/one line item/unsaved quotation.
-[Integration guide](integrations/erpnext/README.md).
+**Perception and permission are separate.** In live-observation mode, the browser
+adapter finds controls in reviewed UI scopes on each turn. The model sees a bounded
+projection of their roles, permitted interface text and structure, and selects a
+live candidate rather than a pre-authored business-control key. The runtime grounds
+that choice, checks its current scope and action permission, and records the target
+for replay. The model cannot authorize an action, supply an executable selector,
+change a success condition, or choose an arbitrary source of output data.
 
-A person supplies a goal and a target. From the goal and the reviewed
-vocabulary alone -- never page content -- the system proposes the task contract
-(`computer-use-replay propose`, or `discover --goal` with no `--request`); the person
-accepts the draft (`--accept-draft`, or interactively) or hand-authors
-`requests/*.json` directly. The reviewed vocabulary -- controls, operations,
-risk, routes, invariants -- stays authored once by a person: the safety
-boundary the model proposes inside, never past. Measured (`qwen3.6:35b-a3b`,
-live): 6/6 proposals schema-valid, 6/6 discoveries succeeded, every replay
-zero model calls (`docs/DESIGN_CHOICES.md`). Each turn the model sees the
-goal, contract and visible controls and picks one offered action; the engine
-executes and verifies it. Parameter and extracted values never reach the model.
+This is structured browser perception, not vision. Export scopes identify interface
+chrome that the application owner has reviewed as safe to disclose; input values and
+business data are excluded. The privacy boundary depends on those scopes remaining
+appropriate for the application. It is not a claim that a general-purpose redactor
+can recognize every name or account number in arbitrary page text. Page-derived text
+is observation data, never instructions or execution authority.
 
-The goal steers choices but cannot lower the bar: holding the contract fixed,
-the real goal and an irrelevant one produced identical steps, while a
-conflicting goal reached a control that could not satisfy it and wrote no
-artifact. The contract defines success; English selects among legal paths.
+The older reviewed-catalog mode remains supported: a person locates and names the
+controls, and the model sequences them. Its existing recordings establish replay and
+integration behavior, not automatic control identification. Live perception removes
+that requirement for ordinary navigation and input controls within approved scopes;
+product permissions, identity checks, recovery rules and output definitions still
+require review. Each scope must contain only reviewed reversible operations;
+human-only operations need a separate destination or stable exclusion. POST body
+fields are independently allowlisted. Onboarding is reduced, not eliminated.
+
+`computer-use-replay` is one Python process with a planner, compiler, policy layer,
+interpreter and surface adapter. The fictional Juniper workstation supplies controlled
+failures and branching tasks. Meridian Core, the hosted hiring sample, checks a
+legacy server-rendered interface; unmodified ERPNext checks autocomplete, dropdowns,
+an editable grid and asynchronously calculated totals. Their existing integrations
+use reviewed catalogs; they are not evidence that live grounding works on arbitrary
+applications. See the [Meridian](integrations/meridian/README.md) and
+[ERPNext](integrations/erpnext/README.md) guides for the exact supported scope.
+
+The caller supplies typed inputs, output sources and success conditions through a
+request, or accepts a model-proposed task contract. The contract defines success;
+the English goal guides choices. Genuine local-model discovery is tested separately
+from scripted-planner regression tests. An irrelevant goal succeeding against a fixed
+contract in the older mode is a limitation, not evidence of general goal understanding.
+
+The [selected live-form runs](evidence/live_forms/summary.json) cover both tasks
+and a relabeled layout with genuine local Qwen calls (6, 8 and 6 respectively).
+Changed-input replay took 0.94–1.09 seconds with zero model calls; discovery took
+20–29 seconds on this machine. These three recordings demonstrate the path,
+not a statistical reliability or cross-provider benchmark.
 
 ## 2. Artifact schema
 
-Schema 2 declares a capability name, typed inputs/outputs, ordered discriminated
+Schema 2 preserves reviewed-catalog artifacts; schema 3 adds grounded live targets.
+Both declare a capability name, typed inputs/outputs, ordered discriminated
 actions (`fill`, `click`, `read`), logical control keys, success conditions, product
 fingerprint and discovery provenance. Fill actions reference parameters; read
 actions must match the request's output sources; clicks require an observed
@@ -62,8 +68,13 @@ postcondition; money parses to a decimal amount and currency, never a float.
 
 The caller's goal request owns the contract. Product policy supplies allowed
 input types, permitted parameter/control pairs, actions, risk and identity invariants.
-Recorded `targets` are discovery-time locator hints for review -- runtime targeting
-resolves their keys through the current presentation.
+In reviewed-catalog mode, recorded `targets` are review hints and the current
+presentation supplies locators. Live-discovered actions instead carry a grounded
+locator and its scope/strategy provenance. Replay resolves that locator only after
+checking the current permission grant; recording a locator does not approve it.
+Artifacts are local executable plans, not cryptographically signed discovery
+attestations. Provenance supports inspection; current policy and runtime checks
+enforce authority even if a plan is edited.
 
 Each locator kind trades off differently. `role` plus accessible name is what
 screen readers depend on, so restyling rarely breaks it. `label` binds only to
@@ -75,9 +86,12 @@ inputs, ERPNext's undecorated grid/dropdown fields -- and still needs an exact,
 unique, reviewed match. Frame lineage walks reviewed names, never indices; no
 kind falls back to position.
 
-The fingerprint excludes presentation locators but includes policy semantics: a
-renamed button can reuse an artifact, a permission change needs a new one, and
-schema-1 artifacts are rejected outright.
+The fingerprint excludes reviewed-catalog presentation locators but includes policy
+semantics. Catalog artifacts can reuse a reviewed tenant overlay after a button is
+renamed. Live groundings instead retain their discovered locators: layout changes
+can preserve them, but a changed accessible name requires rediscovery. A permission
+change needs a new artifact; schema-1 artifacts are rejected. Schema-3 groundings
+are not silently reinterpreted as schema-2 presentation hints.
 
 ## 3. Determinism & error handling
 
@@ -102,7 +116,10 @@ reports `target_drift`, not `checkpoint_failed` (§4).
 
 The seam is the `Surface` protocol: `navigate`, `observe`, `perform`, `condition`,
 `check_health` and `failure_screenshot` -- six operations, no DOM or Playwright type
-in any signature. A second, deliberately basic surface makes it concrete:
+in any signature. The browser perception adapter still relies on Playwright and DOM semantics; it
+does not establish operation on a pixel-only application. Perception and grounding
+are the parts that must change for OS accessibility, screenshots or a terminal.
+A second, deliberately basic execution surface makes the replay seam concrete:
 `ScreenSurface` resolves a new `screen` target kind (`heading | field | command |
 value`) against an in-process text-mode screen buffer, the kind of API a terminal
 emulator already exposes. The committed, web-learned `read_savings.json` replays
@@ -164,11 +181,13 @@ grant permitting one same-origin GET hop, re-checked and fetched by this
 layer, not the browser -- a fidelity gap. Unexpected windows,
 downloads, confirmations, WebSockets and service workers all fail closed;
 account closure and sub-account creation stay human-only. ERPNext's periodic
-update check failed closed the same way until reviewed (§1).
+update check failed closed the same way until its request rule was reviewed.
 
-Persistence is an allowlisted projection: model reasoning, raw DOM, invocation
-and output values are absent from logs and artifacts, though stdout returns
-requested outputs. Screenshot CSS conceals text, inputs and media across
+Persistence is a bounded projection: model reasoning, raw DOM, invocation values
+and extracted business values are excluded, though stdout returns requested
+outputs. Live-mode interface labels may reach both the model and grounded target
+metadata under the reviewed text-export policy. That is a deliberate change from
+the older catalog-only mode, not a claim that no page text ever leaves the browser. Screenshot CSS conceals text, inputs and media across
 frames without rewriting the DOM -- text paints as flat neutral blocks, so
 structure stays visible with nothing legible.
 
@@ -185,9 +204,10 @@ demo`/`--present` replay committed artifacts with no setup or model, changing
 nothing observed or recorded.
 
 Goal-only onboarding (`computer-use-replay propose`, or `discover --goal` alone) drafts a
-task *contract*, not the product vocabulary: controls, operations, risk, routes and
-invariants stay hand-reviewed per product in `profiles/*.json`. Drafting that
-vocabulary, and automatic risk classification, are both left to a person.
+task *contract*. Product permissions, text-export scopes, input bindings, identity
+invariants and output sources remain hand-reviewed. Live form discovery identifies
+ordinary controls within those permissions. It does not infer business risk,
+automatically approve a new application, or implement general screenshot grounding.
 
 A signed-approval path (an Ed25519 receipt gating replay of one artifact) and
 a loopback operator web console were prototyped and removed, to stay focused

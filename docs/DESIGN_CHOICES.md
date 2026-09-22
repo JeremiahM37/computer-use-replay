@@ -10,7 +10,7 @@ needs when changing the system.
 
 | Input | Owns | Cannot change |
 | --- | --- | --- |
-| Product binding | Logical controls, permitted operations, risk, routes, states, input types and identity rules | A task sequence or capability name |
+| Product binding | Permissions, live observation scopes, reviewed controls, routes, states, input types and identity rules | A task sequence or capability name |
 | Goal request | Capability name, natural-language goal, typed inputs/outputs and final checkpoint | Execution authority or policy |
 | Tenant presentation | Locator descriptions and frame mappings for existing controls | Actions, risk, recovery, outputs or checkpoints |
 
@@ -21,18 +21,21 @@ runtime all enforce the target/parameter pair, and a tenant overlay cannot add a
 control, route, action or permission. The product binding digest excludes
 presentation locators but includes control keys, operations, risk, descriptions,
 state definitions, input types, identity invariants, routes and budgets, so
-presentation changes never invalidate an artifact while the logical product
-contract is unchanged -- a changed meaning, navigation sequence or permission set
-requires a new reviewed capability, and schema 2 rejects schema-1 artifacts rather
-than reinterpreting their binding digest.
+catalog presentation changes do not invalidate an artifact while the logical product
+contract is unchanged. Live-grounded locators remain exact: a label change can require
+rediscovery even when policy is unchanged. A changed meaning, navigation sequence or
+permission set requires a new reviewed capability. Schema 2 remains the reviewed-catalog format;
+schema 3 adds live grounding. Schema-1 artifacts are rejected rather than
+reinterpreting their binding digest.
 
 ## Capabilities are typed plans, not model transcripts
 
 A capability names its typed inputs and outputs, ordered discriminated actions,
 logical targets, completion conditions, product fingerprint and discovery
 provenance. `targets` are review hints from discovery, with no authority to bypass
-policy -- runtime execution always resolves logical keys through the current
-reviewed binding instead.
+policy. Reviewed targets resolve through the current binding; live-grounded
+targets resolve through their recorded locator and must pass the current scope
+grant again before acting.
 
 Input validation happens before browser creation. Identifiers use configured
 full-match patterns and preserve leading zeroes; integers and booleans reject
@@ -50,16 +53,42 @@ the boundary is testable, but its route is outside the allowlist and human-only.
 
 ## Discovery and replay have different responsibilities
 
-Discovery observes the live surface, offers only currently visible and permitted
-controls, verifies each action's effect, and compiles a capability only after all
-outputs and checkpoints pass. It never sends caller values or extracted business
-data into the model context; model decisions carry symbolic parameter names,
-reviewed control keys and coarse state information. Replay does not import the
-model client or planner at all -- it resolves each logical target, requires one
-visible match, performs the action, observes its effect and applies bounded waits
-and approved reversible recovery, with an uncertain action observed rather than
-blindly repeated. Output collection is terminal: automated actions after a read
-are rejected.
+There are two observation modes. The original reviewed catalog resolves named
+controls from a product profile; the model chooses their sequence. The live-forms
+mode discovers ordinary input and navigation controls inside reviewed form scopes.
+The model selects live candidate IDs using their safe interface labels and
+structure; the runtime derives the locator and records its grounding strategy.
+Neither mode lets a model-generated string become an executable selector.
+
+The scope policy authorizes actions independently of perception. It specifies the
+frame lineage, form/container, submission destination and method, operations,
+permitted input bindings, and text-export exclusions. The live profile does not
+list business-button labels or their action order. Checkpoints, identity comparison,
+read sources, recovery and human-only actions remain explicit product contracts.
+This shifts authoring from every control's location to permission boundaries; it
+does not make a new application safe without review.
+A live scope is a reviewed reversible boundary. Human-only operations need separate
+form destinations or stable exclusion selectors; a mixed form with unknown destructive
+controls is unsuitable for this mode. A renamed dangerous control is not something
+a general-purpose risk classifier can safely recognize. POST scopes also require
+explicit request-body grants, so hidden extra fields do not inherit route permission.
+
+Live scope text is declared public interface chrome by the installation owner.
+Input values and extracted business data are not exported. Sensitive containers
+must be excluded, and a page placing private text into an approved public label
+violates that installation assumption. The design deliberately does not claim that
+regexes or an LLM can universally distinguish a person's name from interface text.
+Page text cannot expand the action tools, authorize an input binding, change an
+output source, or waive completion checks. The caller’s goal is sent to the model as
+text; keep private values in typed invocation arguments rather than embedding them
+in the goal sentence.
+
+Replay makes no model calls. A recorded live locator is checked against current
+scope authority, then resolved uniquely before each action; catalog targets retain
+their reviewed targeting path. Missing, duplicate or out-of-scope targets stop.
+Both modes verify action effects and use bounded waits and approved recovery.
+Uncertain actions are observed rather than blindly repeated. Output collection is
+terminal: automated actions after a read are rejected.
 
 Business outcomes such as missing records, validation rejection and permission
 denial are distinct from technical failures and return a machine-readable result.
@@ -348,12 +377,14 @@ unexpected dialog or in-flight action remains.
 Events and snapshots use typed, allowlisted fields, and exceptions become stable
 codes. Parameter values, raw model messages, output values, raw DOM, URLs and
 operator tokens are excluded from persisted receipts; caller stdout may return
-requested outputs. Failure screenshots apply masking across frames, including
+requested outputs. Live-mode public interface text and grounded locator metadata
+are also recorded under the scope export policy described above; business values
+are not. Failure screenshots apply masking across frames, including
 generated content, media, background images, text shadows and form controls -- if
 masking cannot be captured, JSON diagnostics remain and no raw screenshot fallback
 is used. The runtime writes receipts only to the caller's chosen output directory;
-the source tree contains the two functional capability JSONs and no generated
-browser, model or operator receipts. Business outcomes, caller errors and technical
+only curated assignment evidence and functional capabilities belong in the source
+tree. Raw recordings, model conversations and development runs stay local. Business outcomes, caller errors and technical
 failures stay distinct result kinds in every run's own `result.json`; drift is
 visible as events and failure codes per run, not aggregated across runs.
 
