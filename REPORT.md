@@ -89,7 +89,11 @@ kind falls back to position.
 The fingerprint excludes reviewed-catalog presentation locators but includes policy
 semantics. Catalog artifacts can reuse a reviewed tenant overlay after a button is
 renamed. Live groundings instead retain their discovered locators: layout changes
-can preserve them, but a changed accessible name requires rediscovery. A permission
+can preserve them, but a changed accessible name requires rediscovery. That is the
+deliberate trade-off between the two modes: a reviewed vocabulary buys cross-tenant
+reuse at the cost of onboarding, while live perception buys adaptability to unknown
+labels at the cost of pinning the labels it saw, so a live artifact is tenant-specific
+until a person promotes its groundings into the reviewed vocabulary. A permission
 change needs a new artifact; schema-1 artifacts are rejected. Schema-3 groundings
 are not silently reinterpreted as schema-2 presentation hints.
 
